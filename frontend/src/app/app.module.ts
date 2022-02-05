@@ -15,6 +15,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import { PostComponent } from './views/post/post.component';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import {MatNativeDateModule} from '@angular/material/core';
     TransferComponent,
     StartComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +39,7 @@ import {MatNativeDateModule} from '@angular/material/core';
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
