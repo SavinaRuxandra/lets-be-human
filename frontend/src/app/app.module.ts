@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TransferComponent } from './views/transfer/transfer.component';
 import { StartComponent } from './views/start/start.component';
 import { HeaderComponent } from './views/header/header.component';
 import { FooterComponent } from './views/footer/footer.component';
@@ -17,15 +16,21 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { PostComponent } from './views/post/post.component';
 import {MatCardModule} from '@angular/material/card';
+import {MatIconModule} from '@angular/material/icon';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { LoginComponent } from './views/login/login.component';
+import { MdbNavBar} from './mdb-nav-bar.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    TransferComponent,
     StartComponent,
     HeaderComponent,
     FooterComponent,
-    PostComponent
+    PostComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +45,10 @@ import {MatCardModule} from '@angular/material/card';
     FormsModule,
     ReactiveFormsModule,
     MatCardModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatToolbarModule,
+    MDBBootstrapModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

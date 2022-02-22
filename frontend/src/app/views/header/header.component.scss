@@ -1,20 +1,12 @@
-.nav {
-    margin-bottom: 0;
-    padding-left: 0;
-    list-style: none;
-  }
-  li {
-    display: block;
-    float: left;
-    width: 100px;
-    height: 25px;
-    padding: 5px;
-  }
-  .nav>li>a {
-    margin-bottom: 0;
-    padding-left: 0;
-    font-weight: 500;
-    font-size: 12px;
-    text-transform: uppercase;
-    position: relative;
-  }
+.flex-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 30px;
+  padding-bottom: 10px;
+}
+
+h3 {
+  color: rgb(207, 141, 79);
+  font-weight: bold;
+  font-size: 30px;
+}

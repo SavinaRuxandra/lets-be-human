@@ -14,7 +14,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @SuperBuilder
-public class Client extends BaseEntity {
+public class Donor extends BaseEntity {
     private String email;
     private String password;
     private String firstName;
@@ -24,8 +24,8 @@ public class Client extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Client client = (Client) o;
-        return id != null && Objects.equals(id, client.id);
+        Donor donor = (Donor) o;
+        return id != null && Objects.equals(id, donor.id);
     }
 
     @Override

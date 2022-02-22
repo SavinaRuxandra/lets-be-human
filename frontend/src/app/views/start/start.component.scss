@@ -1,0 +1,23 @@
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  row-gap: 20px;
+}
+
+.search-bar {
+  border-color: green;
+  display: block;
+}
+
+.second-row {
+  // flex: 2;
+  flex-basis: 700px;
+}
+// .first-row {
+//   flex: 1
+// }
+
+// .third-row {
+//   flex: 1
+// }

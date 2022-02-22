@@ -1,1 +1,19 @@
-<p>start works!</p>
+<html>
+    <div class="flex-container">
+        <div class="first-row">22222221</div>
+        <div class="second-row">
+            <form>
+                <mat-form-field appearance="outline" class="search-bar">
+                <input type="text" matInput placeholder="Search" name = "search" [(ngModel)]= "search">
+                <button matSuffix mat-button><mat-icon >search</mat-icon></button>
+                </mat-form-field>
+                <br/>
+                {{search}}
+            </form>
+            
+            <app-post class="post"></app-post>
+
+        </div>
+        <div class="third-row">3</div>  
+      </div>
+</html>
