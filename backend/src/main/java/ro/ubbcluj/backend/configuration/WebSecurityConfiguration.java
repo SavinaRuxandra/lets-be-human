@@ -19,25 +19,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.cors()
                 .and()
                 .csrf().disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(
-                        (request, response, authException) ->
-                                response.sendError(
-                                        HttpServletResponse.SC_UNAUTHORIZED,
-                                        authException.getMessage()
-                                )
-                )
-                .and()
                 .authorizeRequests()
-                .antMatchers( "/").permitAll()
-//                .antMatchers(HttpMethod.POST, LOGIN_URL).permitAll()
-//                .antMatchers(HttpMethod.POST, REGISTER_URL).permitAll()
-//                .antMatchers(HttpMethod.POST, PASSWORD_RESET_URL).permitAll()
-//                .antMatchers(HttpMethod.PUT, PASSWORD_CHANGE_URL).permitAll()
-                .anyRequest().authenticated();
+                .antMatchers("/**").permitAll()
+                .anyRequest()
+                .authenticated();
 //                .and()
 //                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }

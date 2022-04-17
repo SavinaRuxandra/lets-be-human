@@ -1,19 +1,36 @@
-<mat-card class="example-card">
+<mat-card class="card">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>Name</mat-card-title>
-      <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+      <mat-card-title *ngIf="(charityOrganization$ | async) as charityOrganization">{{ charityOrganization.name }}</mat-card-title>
+      <mat-card-subtitle>{{ post.headline }} </mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-    <mat-card-content>
+
+    <mat-card-content> 
+      <carousel [isAnimated]="true">
+        <slide *ngFor="let photo of photos">
+          <img [src]="photo" style="display: block; width: 100%;">   
+        </slide>   
+      </carousel>
+
+      <a href= "{{ post.readMoreUrl }}" target="_blank">
+        <div class="d-flex justify-content-end align-items-center">
+          <div>Read more</div>
+          <mat-icon>arrow_right_alt</mat-icon>
+        </div>
+      </a>
+
       <p>
-        DESCRIPTION
+        {{ post.description }}
       </p>
+
     </mat-card-content>
     <mat-card-actions class="button-list">
       <button mat-button matTooltip="Donate 1ETH" (click)="makeTransfer(1)">LIKE</button>
       <button mat-button matTooltip="Donate 5ETH" (click)="makeTransfer(5)">ADOR</button>
       <button mat-button matTooltip="Donate 10ETH" (click)="makeTransfer(10)"><3<3<3</button>
-      <button mat-button matTooltip="Customize donation">Custom</button>
+      <button mat-button matTooltip="Customize donation" (click)="openDialog()">Custom</button>
     </mat-card-actions>
   </mat-card>
+
+  
+  

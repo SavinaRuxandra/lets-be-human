@@ -1,45 +1,27 @@
 @use '@angular/material' as mat;
 @import "~bootstrap/dist/css/bootstrap.css";
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-p {
-  padding-left: 20px;
-  font-size: 12px;
-}
-
-.container {
-  margin-right: auto;
-  margin-left: auto;
-  padding: 20px 15px 30px;
-  width: 750px;
-}
-
-button {
-  color: #ffffff;
-  background-color: #611BBD;
-  border-color: #130269;
-  display: inline-block;
-  margin-bottom: 0;
-  font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
-  touch-action: manipulation;
-  cursor: pointer;
-  white-space: nowrap;
-  padding: 6px 12px;
-  font-size: 12px;
-  line-height: 1.42857143;
-  border-radius: 4px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-/* Importing Bootstrap SCSS file. */
 @import "~bootstrap/scss/bootstrap";
-
-/* Importing Datepicker SCSS file. */
 @import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
+html, body { height: 100%; }
+body {
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif; 
+  // background-image: url("assets/background/background.jpg");
+  background-color: rgb(162, 156, 192);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-width: 800px;
+}
+
+a, a:hover, a:focus, a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

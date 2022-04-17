@@ -1,0 +1,65 @@
+<form [formGroup]="createPostForm" (ngSubmit)="onSubmit()">
+    <div class="container">
+
+        <div class="header">
+            <h1 class="title"><p><b>Share a story</b></p></h1>
+        </div>
+        <hr color="#4CAF50">
+
+        <div class="content">
+                <div class="first-row">
+                    <p><b>Headline</b> - Summarize the post in a few words</p>
+                    <mat-form-field class="d-block" appearance="outline">
+                        <mat-label>Headline</mat-label>
+                        <input matInput type="text" autocomplete="off" placeholder="Enter headline" formControlName="headline" required/>
+                        <mat-hint class="text-danger" *ngIf="createPostForm.get('headline')?.hasError('required') && createPostForm.get('name')?.dirty">
+                            Please enter a headline
+                        </mat-hint>
+                    </mat-form-field>
+                </div>
+
+                <div class="second-row">
+                    <p><b>Description</b> - Add a detailed description about the charitable cause</p>
+                    <mat-form-field class="d-block" appearance="outline">
+                        <mat-label>Description</mat-label>
+                        <textarea matInput type="text" autocomplete="off" placeholder="Enter description" formControlName="description" required></textarea>
+                        <mat-hint class="text-danger" *ngIf="createPostForm.get('headline')?.hasError('required') && createPostForm.get('name')?.dirty">
+                            Please enter a description
+                        </mat-hint>
+                    </mat-form-field>
+                    </div>
+
+
+                <div class="third-row">
+                    <p><b>Link to extra information</b> - Add a link to a site for exta information</p>
+                    <mat-form-field class="d-block" appearance="outline">
+                        <mat-label>Link</mat-label>
+                        <input matInput type="text" autocomplete="off" placeholder="https://www.example.ro/charitable-cause" formControlName="readMoreUrl">
+                    </mat-form-field>
+                    </div>
+
+                <div class="forth-row d-inline-block">
+                    <p><b>Photos</b> - Add some photos</p>
+                    
+                    <div class="add-photo-button" (click)="fileInput.click()">
+                        <img class="add-photo-button" src='assets/add-photo-icon.jpg'>
+                        <input
+                        style="display: none"
+                        type="file"
+                        (change)="onFileChanges($event)"
+                        #fileInput>
+                    </div>   
+                    <div >
+                        <ng-container *ngFor="let photo of photos">
+                            <img [src]="photo" style="height: 100; width:70">
+                        </ng-container>   
+                    </div>
+                </div>
+            </div>
+
+        <div class="form-buttons-wrapper">
+            <button mat-flat-button (click)="cancel()" type="reset">Cancel</button>
+            <button mat-raised-button type="submit" [disabled]="createPostForm.invalid">Post</button>
+        </div>
+    </div>
+</form>

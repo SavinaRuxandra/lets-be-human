@@ -1,12 +1,59 @@
-.flex-container {
-  display: flex;
-  justify-content: center;
-  padding-top: 30px;
-  padding-bottom: 10px;
+.toolbar {
+  background-color: transparent;       
+  flex-direction: row;         
+  flex-wrap: nowrap;              
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
 }
 
-h3 {
-  color: rgb(207, 141, 79);
-  font-weight: bold;
+.toolbar > div {
+  width: 300px;
+}
+
+.first-column {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  margin: 0px 20px 0px 30px 
+}
+
+.title {
+  font-family: "Comic Sans", cursive;
+  display: inline-flex;
+  align-self: center;
+  align-items: center;
+}
+
+.second-column {
+  display: flex;
+  justify-content: space-around;
+}
+
+.third-column {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 15px;
+}
+
+.register-button {
+  margin-left: 20px;
+}
+
+h1 {
   font-size: 30px;
+  font-weight: bold;
+}
+ 
+.big-icon {
+  transform: scale(1.4);
+  align-self: center;
+}
+
+hr.rounded {
+  border-top: 8px solid #bbb;
+  border-radius: 5px;
+  margin-top: -10px;
 }

@@ -1,16 +1,22 @@
 package ro.ubbcluj.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ro.ubbcluj.backend.converter.impl.PostConverter;
-import ro.ubbcluj.backend.dto.PostDto;
-import ro.ubbcluj.backend.model.Post;
+import ro.ubbcluj.backend.domain.dto.PostDto;
+import ro.ubbcluj.backend.domain.model.Post;
+import ro.ubbcluj.backend.exception.FileStorageException;
 import ro.ubbcluj.backend.repository.PostRepository;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -18,19 +24,47 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final PostConverter postConverter;
+    private final FileStorageService fileStorageService;
+    @Value("${base.root.file.storage}")
+    private String BASE_ROOT_FILE_STORAGE;
 
     public Collection<PostDto> findAll() {
-        return postRepository.findAll().stream()
-                .map(postConverter::convertModelToDto)
-                .collect(Collectors.toList());
+        return postConverter.convertModelsToDtos(postRepository.findAll());
     }
 
     public PostDto findById(Long postId) {
         return postConverter.convertModelToDto(postRepository.findById(postId).orElseThrow());
     }
 
-    public PostDto add(PostDto postDto) {
-        return postConverter.convertModelToDto(postRepository.save(postConverter.convertDtoToModel(postDto)));
+    public PostDto add(PostDto postDto, MultipartFile[] photos) {
+        Post post = postRepository.save(postConverter.convertDtoToModel(postDto));
+        try {
+            mapPhotoToPath(post, photos);
+            savePhotosToServer(post, photos);
+        } catch (FileStorageException ex) {
+            delete(post.getId());
+            throw ex;
+        }
+
+        return postConverter.convertModelToDto(post);
+    }
+
+    private void mapPhotoToPath(Post post, MultipartFile[] photos) {
+        Long charityOrganizationId = post.getCharityOrganization().getId();
+        Long postId = post.getId();
+        AtomicInteger index = new AtomicInteger(0);
+
+        post.setPhotos(
+                Arrays.stream(photos)
+                .map(photo -> String.format("%s\\posts\\user%d\\post%d\\%d.png", BASE_ROOT_FILE_STORAGE, charityOrganizationId, postId, index.getAndIncrement()))
+                .collect(Collectors.toList())
+        );
+        postRepository.save(post);
+    }
+
+    private void savePhotosToServer(Post post, MultipartFile[] photos) {
+        IntStream.range(0, post.getPhotos().size())
+                .forEach(index -> fileStorageService.uploadFile(photos[index], post.getPhotos().get(index)));
     }
 
     public void delete(Long postId) {
@@ -44,9 +78,10 @@ public class PostService {
 
         postOptionalInDb.ifPresent(
                 newPost -> {
-                    newPost.setClient(post.getClient());
+                    newPost.setHeadline(post.getHeadline());
                     newPost.setDescription(post.getDescription());
-                    newPost.setContent(post.getContent());
+                    newPost.setReadMoreUrl(post.getReadMoreUrl());
+                    newPost.setPhotos(post.getPhotos());
                 }
         );
 

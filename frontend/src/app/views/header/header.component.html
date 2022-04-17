@@ -1,58 +1,56 @@
-<div class="flex-container">
+<mat-toolbar class=toolbar>
+  <div class="first-column">
+    <a href [routerLink]="['/start']">
+      <mat-icon class="logo big-icon">face</mat-icon>
+      <h1 class="title"><p>Let's be human</p></h1>
+    </a>
+  </div>
+  <div class="second-column">
+    <button mat-icon-button>
+      <mat-icon class="big-icon">home</mat-icon>
+    </button>
+    <button mat-icon-button>
+      <mat-icon class="big-icon">favorite</mat-icon>
+    </button>
+    <button mat-icon-button>
+      <mat-icon class="big-icon">person_pin_circle</mat-icon>
+    </button>
+  </div>
   
-<!--Navbar-->
-<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark purple lighten-1" [containerInside]="false">
+  <div class="third-column" *ngIf="isOnHomePage(); else loggedIn">
+    <button mat-raised-button
+            class="sign-in-button" 
+            (click)="login()">
+      Sign in
+    </button>
+    <button mat-raised-button
+            class="register-button"
+            (click)="registerCharityOrganization()">
+      Register
+    </button>
+  </div>
 
-  <!-- Navbar brand -->
-  <mdb-navbar-brand><a class="navbar-brand" href="#">Navbar</a></mdb-navbar-brand>
+  <ng-template #loggedIn>
+    <div class="third-column" >
+      <mat-icon class="big-icon">account_circle</mat-icon>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <a [routerLink]="['/create-post']">
+              <mat-icon> add_comment</mat-icon>
+              <span>Create new post</span>
+            </a>
+          </button>
+        <button mat-menu-item (click)="logOut()">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Sign out</span>
+        </button>
+      </mat-menu>
+    </div>
+  </ng-template>
 
-  <!-- Collapsible content -->
-  <links>
+</mat-toolbar>
+<hr class="rounded">
 
-    <!-- Links -->
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link waves-light" mdbWavesEffect>Home<span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link waves-light" mdbWavesEffect>Features</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link waves-light" mdbWavesEffect>Pricing</a>
-      </li>
-
-      <!-- Dropdown -->
-      <li class="nav-item dropdown" dropdown>
-        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
-          Basic dropdown<span class="caret"></span></a>
-        <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
-          <a class="dropdown-item waves-light" mdbWavesEffect href="#">Action</a>
-          <a class="dropdown-item waves-light" mdbWavesEffect href="#">Another action</a>
-          <a class="dropdown-item waves-light" mdbWavesEffect href="#">Something else here</a>
-          <div class="divider dropdown-divider"></div>
-          <a class="dropdown-item waves-light" mdbWavesEffect href="#">Separated link</a>
-        </div>
-      </li>
-
-    </ul>
-    <!-- Links -->
-
-    <ul class="navbar-nav ml-auto nav-flex-icons">
-      <li class="nav-item">
-        <a class="nav-link">1 <mdb-icon fas icon="envelope"></mdb-icon></a>
-      </li>
-      <li class="nav-item avatar dropdown" dropdown>
-        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
-          <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.webp" alt="" class="img-fluid rounded-circle z-depth-0"></a>
-        <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
-          <a class="dropdown-item waves-light" mdbWavesEffect href="#">My account</a>
-          <a class="dropdown-item waves-light" mdbWavesEffect href="#">Log out</a>
-        </div>
-      </li>
-    </ul>
-  </links>
-  <!-- Collapsible content -->
-
-</mdb-navbar>
-<!--/.Navbar-->
-</div>

@@ -1,0 +1,60 @@
+<div class="flex-container">
+    <h2>Register Charity Organization</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Name" formControlName="name">
+          <mat-error *ngIf="registerForm.controls['name'].hasError('required')">The name is required</mat-error>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Email" formControlName="email">
+          <mat-error *ngIf="registerForm.controls['email'].hasError('required')">The email is required</mat-error>
+          <mat-error *ngIf="registerForm.controls['email'].hasError('email')">Please enter a valid email</mat-error>
+          <mat-error *ngIf="registerForm.controls['email'].hasError('uniqueEmail')">This email is already used</mat-error>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Description" formControlName="description">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input type="number" matInput placeholder="Phone number" formControlName="phoneNumber">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Account Address" formControlName="accountAddress">
+          <mat-error *ngIf="registerForm.controls['accountAddress'].hasError('required')">The account address is required</mat-error>
+        </mat-form-field>
+      </div>  
+      <div>
+        <mat-form-field>
+          <input type="password" matInput placeholder="Password" formControlName="password">
+          <mat-error *ngIf="registerForm.controls['password'].hasError('required')">The password is required</mat-error>
+          <mat-error *ngIf="registerForm.controls['password'].hasError('minlength')">The password must have at least 8 characters</mat-error>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input type="password" matInput placeholder="Repeat password" formControlName="repeatPassword">
+          <mat-error *ngIf="registerForm.controls['repeatPassword'].hasError('required')">Confirm password</mat-error>
+          <mat-error *ngIf="registerForm.controls['repeatPassword'].hasError('mustMatch')">The passwords must be the same</mat-error>
+        </mat-form-field>
+      </div>
+  
+      <div class="buttons">
+        <div class="button">
+            <button type="reset" mat-flat-button mat-dialog-close>Cancel</button>
+        </div>
+        <div class="button">
+            <button type="submit" mat-raised-button mat-dialog-close [disabled]="registerForm.invalid">Register</button>
+        </div>
+    </div>
+  
+    </form>
+  </div>
+  

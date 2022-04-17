@@ -1,6 +1,6 @@
 package ro.ubbcluj.backend.converter;
 
-import ro.ubbcluj.backend.model.BaseEntity;
+import ro.ubbcluj.backend.domain.model.BaseEntity;
 
 import java.util.Collection;
 import java.util.List;

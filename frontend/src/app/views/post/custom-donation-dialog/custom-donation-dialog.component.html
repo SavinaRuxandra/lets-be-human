@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Customize Donation</h2>
+<mat-dialog-content>
+  <h3>Choose the amount you want to donate:</h3>
+  <mat-slider
+  class="example-margin"
+  [max]="1000"
+  [min]="0"
+  [thumbLabel]=true
+  [(ngModel)]="value"
+  aria-labelledby="example-name-label">
+</mat-slider>
+</mat-dialog-content>
+<mat-dialog-actions class="d-flex justify-content-end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Donate</button>
+</mat-dialog-actions>

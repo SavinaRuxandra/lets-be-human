@@ -1,28 +1,21 @@
-:host {
+.flex-container {
     display: flex;
     justify-content: center;
-    margin: 100px 0px;
-  }
+    flex-direction: column;
+    align-items: center;
 
-  .mat-form-field {
-    width: 100%;
-    min-width: 300px;
-  }
+}
 
-  mat-card-title,
-  mat-card-content {
-    display: flex;
-    justify-content: center;
-  }
+mat-form-field {
+  min-width: 300px;
+  min-height: 70px;
+}
 
-  .error {
-    padding: 16px;
-    width: 300px;
-    color: white;
-    background-color: red;
-  }
+.button {
+  display: flex;
+  justify-content: flex-end;
+}
 
-  .button {
-    display: flex;
-    justify-content: flex-end;
-  }
+
+
+  
