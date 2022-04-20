@@ -1,8 +1,8 @@
 .flex-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  row-gap: 20px;
+  justify-content: space-around;
+  gap: 1em;
 }
 
 .search-bar {
@@ -11,5 +11,11 @@
 }
 
 .second-row {
+  align-self: center;
   flex-basis: 700px;
+}
+
+.first-row, .third-row {
+  flex-grow: 1;
+  flex-basis: 0;
 }

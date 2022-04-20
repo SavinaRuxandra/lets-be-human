@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StartComponent } from './start.component';
+import { LiveTransactionsComponent } from './live-transactions.component';
 
-describe('StartComponent', () => {
-  let component: StartComponent;
-  let fixture: ComponentFixture<StartComponent>;
+describe('LiveTransactionsComponent', () => {
+  let component: LiveTransactionsComponent;
+  let fixture: ComponentFixture<LiveTransactionsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StartComponent ]
+      declarations: [ LiveTransactionsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StartComponent);
+    fixture = TestBed.createComponent(LiveTransactionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

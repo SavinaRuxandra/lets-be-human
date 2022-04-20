@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ro.ubbcluj.backend.domain.dto.CharityOrganizationDto;
 import ro.ubbcluj.backend.service.CharityOrganizationService;
 
+import java.util.Collection;
+
 @RestController
 @CrossOrigin
 @RequiredArgsConstructor
@@ -14,6 +16,12 @@ import ro.ubbcluj.backend.service.CharityOrganizationService;
 public class CharityOrganizationController {
     private final CharityOrganizationService charityOrganizationService;
     private static final Logger logger = LoggerFactory.getLogger(CharityOrganizationController.class);
+
+    @GetMapping
+    public Collection<CharityOrganizationDto> findAllCharityOrganizations() {
+        logger.trace("Find all charityOrganizations");
+        return charityOrganizationService.findAll();
+    }
 
     @PostMapping
     public CharityOrganizationDto addCharityOrganization(@RequestBody CharityOrganizationDto charityOrganizationDto) {

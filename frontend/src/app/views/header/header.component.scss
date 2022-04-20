@@ -1,4 +1,5 @@
 .toolbar {
+  position: sticky;
   background-color: transparent;       
   flex-direction: row;         
   flex-wrap: nowrap;              
@@ -10,6 +11,18 @@
 .toolbar > div {
   width: 300px;
 }
+
+.sticky {
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+}
+
+.title {
+  border: none;
+  background: none;
+}
+
 
 .first-column {
   display: flex;
@@ -56,4 +69,8 @@ hr.rounded {
   border-top: 8px solid #bbb;
   border-radius: 5px;
   margin-top: -10px;
+}
+
+.active {
+  background-color: rgb(111, 98, 155);
 }

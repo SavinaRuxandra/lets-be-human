@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StartComponent } from './views/start/start.component';
+import { MainPageComponent } from './views/main-page/main-page.component';
 import { HeaderComponent } from './views/header/header.component';
 import { HomeComponent } from './views/home/home.component';
 import { FooterComponent } from './views/footer/footer.component';
@@ -31,12 +31,17 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RegisterCharityOrganizationComponent } from './views/register/register-charity-organization/register-charity-organization.component';
 import { RegisterDonorComponent } from './views/register/register-donor/register-donor.component';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { SearchFilterPipe } from './pipes/search-filter.pipe';
+import { SharedDataService } from './shared/shared-data.service';
+import { LiveTransactionsComponent } from './views/live-transactions/live-transactions.component';
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    StartComponent,
+    MainPageComponent,
     HeaderComponent,
     FooterComponent,
     PostComponent,
@@ -46,6 +51,8 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
     RegisterCharityOrganizationComponent,
     RegisterDonorComponent,
     HomeComponent,
+    SearchFilterPipe,
+    LiveTransactionsComponent
   ],
   imports: [
     BrowserModule,
@@ -68,10 +75,15 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
     MatSliderModule,
     MatMenuModule,
     MatSnackBarModule,
+    BrowserModule,
     CarouselModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    SharedDataService
+  ],
   entryComponents:[MatDialogModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+platformBrowserDynamic().bootstrapModule(AppModule);

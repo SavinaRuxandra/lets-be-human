@@ -1,19 +1,8 @@
-<mat-toolbar class=toolbar>
+<mat-toolbar class="toolbar" [ngClass]="{'mat-elevation-z5' : true}">
   <div class="first-column">
-    <a href [routerLink]="['/start']">
+    <button class="d-flex title" id="navbar" (click)="goToMainPage()">
       <mat-icon class="logo big-icon">face</mat-icon>
       <h1 class="title"><p>Let's be human</p></h1>
-    </a>
-  </div>
-  <div class="second-column">
-    <button mat-icon-button>
-      <mat-icon class="big-icon">home</mat-icon>
-    </button>
-    <button mat-icon-button>
-      <mat-icon class="big-icon">favorite</mat-icon>
-    </button>
-    <button mat-icon-button>
-      <mat-icon class="big-icon">person_pin_circle</mat-icon>
     </button>
   </div>
   
@@ -31,6 +20,18 @@
   </div>
 
   <ng-template #loggedIn>
+    <div class="second-column">
+      <button mat-icon-button [ngClass]="{'active': (getActiveButton() | async) === ALL_POSTS_BUTTON}" (click)="changeMainPageView(ALL_POSTS_BUTTON)">
+        <mat-icon class="big-icon">home</mat-icon>
+      </button>
+      <button mat-icon-button [ngClass]="{'active': (getActiveButton() | async) === WISHLIST_POSTS_BUTTON}" (click)="changeMainPageView(WISHLIST_POSTS_BUTTON)">
+        <mat-icon class="big-icon">favorite</mat-icon>
+      </button>
+      <button mat-icon-button [ngClass]="{'active': (getActiveButton() | async) === CURRENT_USER_POSTS_BUTTON}" (click)="changeMainPageView(CURRENT_USER_POSTS_BUTTON)">
+        <mat-icon class="big-icon">person_pin_circle</mat-icon>
+      </button>
+    </div>
+
     <div class="third-column" >
       <mat-icon class="big-icon">account_circle</mat-icon>
       <button mat-icon-button [matMenuTriggerFor]="menu">
@@ -49,6 +50,10 @@
         </button>
       </mat-menu>
     </div>
+  </ng-template>
+
+  <ng-template #loggedIn>
+
   </ng-template>
 
 </mat-toolbar>

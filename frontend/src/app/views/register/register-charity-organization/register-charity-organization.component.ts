@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { map } from 'rxjs';
 import { equalValueValidator } from 'src/app/custom-validators/equal-value.validator';
 import { uniqueEmailValidator } from 'src/app/custom-validators/unique-email.validator';
 import { CharityOrganization } from 'src/app/models/charity-organization.model';
-import { UserRole } from 'src/app/models/user-role.model';
 import { User } from 'src/app/models/user.model';
 import { CharityOrganizationService } from 'src/app/services/charity-organization.service';
 import { UserService } from 'src/app/services/user.service';
@@ -40,7 +39,23 @@ export class RegisterCharityOrganizationComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const charityOrganizationToAdd = <CharityOrganization> {
+    const charityOrganizationToAdd = this.createCharityOrganization();
+    this.charityOrganizationService.addCharityOrganization(charityOrganizationToAdd)
+      .pipe(
+        map((response: CharityOrganization) => {
+          this.userService.login(<User> {email: response.email, password: response.password});
+          this.snack.open("Account created", "x", {duration: 4000})
+          this.router.navigate(['/main-page']);
+        })
+      );
+        // ,
+        // error => {
+        //   this.snack.open("Something went wrong. Please try again", "x", {duration: 4000})
+        // });
+  }
+
+  createCharityOrganization(): CharityOrganization {
+    return <CharityOrganization> {
       email: this.registerForm.controls['email'].value,
       password: this.registerForm.controls['password'].value,
       name: this.registerForm.controls['name'].value,
@@ -48,18 +63,5 @@ export class RegisterCharityOrganizationComponent implements OnInit {
       phoneNumber: this.registerForm.controls['phoneNumber'].value,
       accountAddress: this.registerForm.controls['accountAddress'].value,
     }    
-    
-    this.charityOrganizationService.addCharityOrganization(charityOrganizationToAdd)
-      .pipe(
-        map((response: CharityOrganization) => {
-          this.userService.login(<User> {email: response.email, password: response.password});
-          this.snack.open("Account created", "x", {duration: 4000})
-          this.router.navigate(['/start']);
-        })
-      );
-        // ,
-        // error => {
-        //   this.snack.open("Something went wrong. Please try again", "x", {duration: 4000})
-        // });
   }
 }

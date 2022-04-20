@@ -1,0 +1,32 @@
+<div class="flex-container">
+    <div class="first-row">1</div>
+    <div class="second-row">
+        <form>
+            <mat-form-field appearance="outline" class="search-bar">
+                <input autocomplete="off" type="text" matInput placeholder="Search" name = "search" [(ngModel)]= "searchInput">
+                <button matSuffix mat-button><mat-icon >search</mat-icon></button>
+            </mat-form-field>
+        </form>
+        
+        <ng-container>
+            <div *ngIf="(activeButton$ | async) === ALL_POSTS_BUTTON">
+                <div *ngFor="let post of (posts$ | async) | searchFilter: searchInput">
+                    <app-post class="post" [post]="post!"></app-post>
+                </div>
+            </div>
+
+            <div *ngIf="(activeButton$ | async) === WISHLIST_POSTS_BUTTON">
+                <div *ngFor="let post of (posts$ | async) | searchFilter: searchInput">
+                    <app-post class="post" [post]="post!"></app-post>
+                </div>
+            </div>
+
+            <div *ngIf="(activeButton$ | async) === CURRENT_USER_POSTS_BUTTON">
+                <div *ngFor="let post of (currentUserPosts$ | async) | searchFilter: searchInput">
+                    <app-post class="post" [post]="post!"></app-post>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <div class="third-row"><app-live-transactions></app-live-transactions></div>  
+</div>

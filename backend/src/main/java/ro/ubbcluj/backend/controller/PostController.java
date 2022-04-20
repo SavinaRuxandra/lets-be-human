@@ -1,10 +1,8 @@
 package ro.ubbcluj.backend.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ro.ubbcluj.backend.domain.dto.PostDto;
@@ -22,6 +20,7 @@ public class PostController {
 
     @GetMapping
     public Collection<PostDto> findAllPosts() {
+        logger.trace("Find all posts");
         return postService.findAll();
     }
 

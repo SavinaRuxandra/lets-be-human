@@ -1,21 +1,14 @@
 import { Injectable } from '@angular/core';
 import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-  UrlTree,
+  CanActivate
 } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { UserService } from '../services/user.service'
-import { loggedUser, LOGIN_URL, ROOT_URL } from '../constants/constants';
+import { UserService } from '../services/user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginGuard implements CanActivate {
-  constructor() {}
+  constructor(private userService: UserService) {}
 
   canActivate() {
     console.log("OnlyLoggedInUsers");

@@ -1,8 +1,8 @@
-import { Byte } from '@angular/compiler/src/util';
-import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Subscription, take } from 'rxjs';
 import { CharityOrganization } from 'src/app/models/charity-organization.model';
 import { Donor } from 'src/app/models/donor.model';
 import { Post } from 'src/app/models/post.model';
@@ -20,6 +20,7 @@ export class CreatePostComponent implements OnInit {
   photos: string[] = [];
   photosFile: File[] = [];
   currentUser!: CharityOrganization | Donor | null;
+  subscription$!: Subscription
 
   constructor(private postService: PostService,
               private userService: UserService,
@@ -29,7 +30,7 @@ export class CreatePostComponent implements OnInit {
               ) { }
 
   ngOnInit(): void {
-    this.userService.user.subscribe(user => this.currentUser = user);
+    this.subscription$ = this.userService.user.subscribe(user => this.currentUser = user);
     this.createFormGroup();
   }
 
@@ -76,6 +77,7 @@ export class CreatePostComponent implements OnInit {
     }
 
     this.postService.addPost(formData)
+        .pipe(take(1))
         .subscribe(() => {
           this.snack.open("Post successfully added", "x", {duration: 4000});
         },
@@ -92,6 +94,8 @@ export class CreatePostComponent implements OnInit {
     this.router.navigate(['/start']);
     window.location.reload;
   }
+
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
+  }
 }
-
-

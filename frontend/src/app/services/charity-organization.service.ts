@@ -13,6 +13,10 @@ export class CharityOrganizationService {
 
   constructor(private httpClient: HttpClient) { }
 
+  getAllCharityOrganizations(): Observable<CharityOrganization[]> {
+    return this.httpClient.get<CharityOrganization[]>(`${this.charityOrganizationUrl}`);
+  }
+
   addCharityOrganization(charityOrganization: CharityOrganization): Observable<CharityOrganization> {
     return this.httpClient.post<CharityOrganization>(`${this.charityOrganizationUrl}`, charityOrganization);
   }

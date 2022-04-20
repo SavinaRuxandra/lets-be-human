@@ -2,11 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { loggedRole } from 'src/app/constants/constants';
-import { UserRole } from 'src/app/models/user-role.model';
+import { take } from 'rxjs';
 import { User } from 'src/app/models/user.model';
-import { CharityOrganizationService } from 'src/app/services/charity-organization.service';
-import { DonorService } from 'src/app/services/donor.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -36,13 +33,16 @@ export class LoginComponent implements OnInit {
       email: this.loginForm.controls['email'].value,
       password: this.loginForm.controls['password'].value
     }
-    this.userService.login(user).subscribe(() => {
-      this.dialog.closeAll();
-      this.router.navigate(['/start']);
-    },
-    error => {
-      this.error = "Invalid credentials"
-    })
+
+    this.userService.login(user)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.dialog.closeAll();
+        this.router.navigate(['/main-page']);
+      },
+      error => {
+        this.error = "Invalid credentials"
+      })
   } 
 }
  

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HostListener, Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CharityOrganization } from '../models/charity-organization.model';
@@ -16,12 +16,18 @@ export class UserService {
 
   private userUrl = `${environment.baseUrl}/users`;
   private userSubject: BehaviorSubject<CharityOrganization | Donor | null>;
-  public user: Observable<CharityOrganization | Donor | null> ;
+  public user: Observable<CharityOrganization | Donor | null>;
+
+  @HostListener('window:unload', [ '$event' ])
+  unloadHandler() {
+    this.logOut;
+  }
 
   constructor(private httpClient: HttpClient,
               private charityOrganizationService: CharityOrganizationService, 
               private donorService: DonorService) { 
-    this.userSubject = new BehaviorSubject<CharityOrganization | Donor | null>(
+
+    this.userSubject = new BehaviorSubject<CharityOrganization | Donor | null> (
       JSON.parse(localStorage.getItem('currentUser')!)
     );
     this.user = this.userSubject.asObservable();

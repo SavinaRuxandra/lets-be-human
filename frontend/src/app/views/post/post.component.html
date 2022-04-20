@@ -1,12 +1,16 @@
 <mat-card class="card">
     <mat-card-header>
-      <div mat-card-avatar class="example-header-image"></div>
+      <div mat-card-avatar></div>
       <mat-card-title *ngIf="(charityOrganization$ | async) as charityOrganization">{{ charityOrganization.name }}</mat-card-title>
-      <mat-card-subtitle>{{ post.headline }} </mat-card-subtitle>
+      <mat-card-subtitle> {{ post.headline }} </mat-card-subtitle>
+      <div *ngIf="(activeButton$ | async) === CURRENT_USER_POSTS_BUTTON" class="modification-buttons">
+        <button mat-button (click)="updatePost()"><mat-icon>edit</mat-icon></button>
+        <button mat-button (click)="deletePost()"><mat-icon>delete</mat-icon></button>
+      </div>
     </mat-card-header>
 
     <mat-card-content> 
-      <carousel [isAnimated]="true">
+      <carousel [isAnimated]="true"  [interval]='0'>
         <slide *ngFor="let photo of photos">
           <img [src]="photo" style="display: block; width: 100%;">   
         </slide>   

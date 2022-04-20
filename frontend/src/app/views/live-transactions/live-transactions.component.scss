@@ -1,0 +1,23 @@
+.wrapper-container {
+    position: sticky;
+    top: 30%;
+    z-index:100;
+
+    border: 2px solid black;
+    padding: 1.5rem;
+    box-shadow: 18px 18px rgb(103, 77, 150);
+    width: 70%;
+    height: 500px;
+    align-self: center;
+}
+
+.divider {
+    width: 100%;
+    border: 1px solid #d7d7d7;
+}
+
+.heading {
+    font-size: 30px;
+    font-weight: 550;
+}
+
