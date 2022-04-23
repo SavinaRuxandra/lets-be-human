@@ -91,7 +91,7 @@ export class CreatePostComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/start']);
+    this.router.navigate(['/main-page']);
     window.location.reload;
   }
 

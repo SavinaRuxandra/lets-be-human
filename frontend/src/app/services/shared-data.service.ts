@@ -1,6 +1,6 @@
 import { HostListener, Injectable } from '@angular/core';
 import { BehaviorSubject, take } from 'rxjs';
-import { HeaderButtonEnum } from './constants/header-button.enum';
+import { HeaderButtonEnum } from '../shared/constants/header-button.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +25,6 @@ export class SharedDataService {
     if(localStorage.getItem('activeButton')) {
       this.changeActiveButton(this.mapStringToEnum.get(localStorage.getItem('activeButton')!)!);
     }
-
-      
   }    
     
   changeActiveButton(button: HeaderButtonEnum) {

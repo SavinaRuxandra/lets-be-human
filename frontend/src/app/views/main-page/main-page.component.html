@@ -7,7 +7,7 @@
                 <button matSuffix mat-button><mat-icon >search</mat-icon></button>
             </mat-form-field>
         </form>
-        
+
         <ng-container>
             <div *ngIf="(activeButton$ | async) === ALL_POSTS_BUTTON">
                 <div *ngFor="let post of (posts$ | async) | searchFilter: searchInput">

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { TransferService } from 'src/app/services/transfer.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private transferService: TransferService,
+              private router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  loginDoner(): void {
+    this.transferService.connectAccount()
+      .then(result => this.router.navigate(["main-page"]))
+
   }
 
 }

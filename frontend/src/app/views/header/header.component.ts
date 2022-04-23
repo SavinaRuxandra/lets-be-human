@@ -8,7 +8,7 @@ import { Donor } from 'src/app/models/donor.model';
 import { UserService } from 'src/app/services/user.service';
 import { LoginComponent } from '../login/login.component';
 import { RegisterCharityOrganizationComponent } from '../register/register-charity-organization/register-charity-organization.component';
-import { SharedDataService } from 'src/app/shared/shared-data.service';
+import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
   selector: 'app-header',
@@ -23,17 +23,6 @@ export class HeaderComponent implements OnInit {
   readonly ALL_POSTS_BUTTON = HeaderButtonEnum.ALL_POSTS
   readonly WISHLIST_POSTS_BUTTON = HeaderButtonEnum.WISHLIST_POSTS
   readonly CURRENT_USER_POSTS_BUTTON = HeaderButtonEnum.CURRENT_USER_POSTS
-
-  @HostListener('window:scroll', ['$event'])
-  onWindowScroll(_event: any) {
-    if (window.pageYOffset > 0) {
-      let element = document.getElementById('navbar');
-      element!.classList.add('sticky');
-    } else {
-     let element = document.getElementById('navbar');
-       element!.classList.remove('sticky'); 
-    }
-  }
 
   constructor(private userService: UserService,
               private sharedDataService: SharedDataService,

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-custom-donation-dialog',
@@ -7,11 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CustomDonationDialogComponent implements OnInit {
 
-  value?: number
+  amount: number = 0
+  message: string = ""
 
-  constructor() { }
+  constructor(private dialogRef: MatDialogRef<CustomDonationDialogComponent>) {}
 
   ngOnInit(): void {
   }
+
+  confirm(response: boolean): void {
+    this.dialogRef.close(
+    {
+      response: response,
+      amount: this.amount,
+      message: this.message
+    })
+}
 
 }

@@ -6,7 +6,7 @@ import { Donor } from 'src/app/models/donor.model';
 import { Post } from 'src/app/models/post.model';
 import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
-import { SharedDataService } from 'src/app/shared/shared-data.service';
+import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
   selector: 'app-main-page',

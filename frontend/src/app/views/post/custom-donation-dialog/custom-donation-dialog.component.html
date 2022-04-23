@@ -1,16 +1,34 @@
-<h2 mat-dialog-title>Customize Donation</h2>
-<mat-dialog-content>
-  <h3>Choose the amount you want to donate:</h3>
-  <mat-slider
-  class="example-margin"
-  [max]="1000"
-  [min]="0"
-  [thumbLabel]=true
-  [(ngModel)]="value"
-  aria-labelledby="example-name-label">
-</mat-slider>
-</mat-dialog-content>
-<mat-dialog-actions class="d-flex justify-content-end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Donate</button>
-</mat-dialog-actions>
+<div clas="dialog-wrapper">
+  <h2 mat-dialog-title>Customize Donation</h2>
+  <mat-dialog-content>
+    <h3>Choose the amount you want to donate:</h3>
+
+    <div class="d-flex flex-row justify-content-end">
+
+      <mat-slider
+        class="d-block"
+        [max]="100"
+        [min]="0"
+        thumbLabel
+        [(ngModel)]="amount">
+      </mat-slider>
+    
+      <input
+        type="number"
+        matInput
+        autocomplete="off" 
+        maxlength="50"
+        [(ngModel)]="amount">
+    </div>
+
+      <mat-form-field class="d-block">
+        <mat-label>Share a thought</mat-label>
+        <input matInput autocomplete="off" [(ngModel)]="message" >
+    </mat-form-field>
+
+  </mat-dialog-content>
+    <mat-dialog-actions class="action-buttons">
+      <button mat-raised-button (click)="confirm(false)">Cancel</button>
+      <button mat-raised-button class="mat-primary" (click)="confirm(true)">Donate</button>
+    </mat-dialog-actions>
+</div>

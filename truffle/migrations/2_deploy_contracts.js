@@ -1,4 +1,5 @@
-var Transfer = artifacts.require("./Transfer.sol");
+const Transfer = artifacts.require("Transfer");
+
 module.exports = function(deployer) {
   deployer.deploy(Transfer);
 };

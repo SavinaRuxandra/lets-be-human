@@ -6,16 +6,20 @@
 }
 
 .search-bar {
-  border-color: green;
+  margin-top: 100px;
   display: block;
 }
 
 .second-row {
-  align-self: center;
   flex-basis: 700px;
 }
 
 .first-row, .third-row {
   flex-grow: 1;
   flex-basis: 0;
+}
+
+.third-row {
+  display: block;
+  float: right;
 }

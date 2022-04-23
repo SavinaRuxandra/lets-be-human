@@ -32,10 +32,11 @@ import { RegisterCharityOrganizationComponent } from './views/register/register-
 import { RegisterDonorComponent } from './views/register/register-donor/register-donor.component';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { SearchFilterPipe } from './pipes/search-filter.pipe';
-import { SharedDataService } from './shared/shared-data.service';
+import { SharedDataService } from './services/shared-data.service';
 import { LiveTransactionsComponent } from './views/live-transactions/live-transactions.component';
-import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { ConfirmationDialogComponent } from './views/post/confirmation-dialog/confirmation-dialog.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
     RegisterDonorComponent,
     HomeComponent,
     SearchFilterPipe,
-    LiveTransactionsComponent
+    LiveTransactionsComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -76,6 +78,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
     MatMenuModule,
     MatSnackBarModule,
     BrowserModule,
+    ScrollingModule,
     CarouselModule.forRoot(),
   ],
   providers: [

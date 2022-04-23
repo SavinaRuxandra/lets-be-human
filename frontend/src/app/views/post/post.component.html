@@ -1,4 +1,4 @@
-<mat-card class="card">
+<mat-card class="post-wrapper" [ngClass]="{'mat-elevation-z5' : true}">
     <mat-card-header>
       <div mat-card-avatar></div>
       <mat-card-title *ngIf="(charityOrganization$ | async) as charityOrganization">{{ charityOrganization.name }}</mat-card-title>
@@ -29,10 +29,10 @@
 
     </mat-card-content>
     <mat-card-actions class="button-list">
-      <button mat-button matTooltip="Donate 1ETH" (click)="makeTransfer(1)">LIKE</button>
-      <button mat-button matTooltip="Donate 5ETH" (click)="makeTransfer(5)">ADOR</button>
-      <button mat-button matTooltip="Donate 10ETH" (click)="makeTransfer(10)"><3<3<3</button>
-      <button mat-button matTooltip="Customize donation" (click)="openDialog()">Custom</button>
+      <button mat-button matTooltip="Donate 1ETH" (click)="openConfirmationDialog(1)">LIKE</button>
+      <button mat-button matTooltip="Donate 5ETH" (click)="openConfirmationDialog(5)">ADOR</button>
+      <button mat-button matTooltip="Donate 10ETH" (click)="openConfirmationDialog(10)"><3<3<3</button>
+      <button mat-button matTooltip="Customize donation" (click)="openCustomDonationDialog()">Custom</button>
     </mat-card-actions>
   </mat-card>
 

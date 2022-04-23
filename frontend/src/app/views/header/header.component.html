@@ -1,61 +1,63 @@
-<mat-toolbar class="toolbar" [ngClass]="{'mat-elevation-z5' : true}">
-  <div class="first-column">
-    <button class="d-flex title" id="navbar" (click)="goToMainPage()">
-      <mat-icon class="logo big-icon">face</mat-icon>
-      <h1 class="title"><p>Let's be human</p></h1>
-    </button>
-  </div>
-  
-  <div class="third-column" *ngIf="isOnHomePage(); else loggedIn">
-    <button mat-raised-button
-            class="sign-in-button" 
-            (click)="login()">
-      Sign in
-    </button>
-    <button mat-raised-button
-            class="register-button"
-            (click)="registerCharityOrganization()">
-      Register
-    </button>
-  </div>
-
-  <ng-template #loggedIn>
-    <div class="second-column">
-      <button mat-icon-button [ngClass]="{'active': (getActiveButton() | async) === ALL_POSTS_BUTTON}" (click)="changeMainPageView(ALL_POSTS_BUTTON)">
-        <mat-icon class="big-icon">home</mat-icon>
+<div class="header-wrapper">
+  <mat-toolbar class="toolbar" [ngClass]="{'mat-elevation-z5' : true}">
+    <div class="first-column">
+      <button class="d-flex title" (click)="goToMainPage()">
+        <mat-icon class="logo big-icon">face</mat-icon>
+        <h1 class="title"><p>Let's be human</p></h1>
       </button>
-      <button mat-icon-button [ngClass]="{'active': (getActiveButton() | async) === WISHLIST_POSTS_BUTTON}" (click)="changeMainPageView(WISHLIST_POSTS_BUTTON)">
-        <mat-icon class="big-icon">favorite</mat-icon>
+    </div>
+    
+    <div class="third-column" *ngIf="isOnHomePage(); else loggedIn">
+      <button mat-raised-button
+              class="sign-in-button" 
+              (click)="login()">
+        Sign in
       </button>
-      <button mat-icon-button [ngClass]="{'active': (getActiveButton() | async) === CURRENT_USER_POSTS_BUTTON}" (click)="changeMainPageView(CURRENT_USER_POSTS_BUTTON)">
-        <mat-icon class="big-icon">person_pin_circle</mat-icon>
+      <button mat-raised-button
+              class="register-button"
+              (click)="registerCharityOrganization()">
+        Register
       </button>
     </div>
 
-    <div class="third-column" >
-      <mat-icon class="big-icon">account_circle</mat-icon>
-      <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-          <button mat-menu-item>
-            <a [routerLink]="['/create-post']">
-              <mat-icon> add_comment</mat-icon>
-              <span>Create new post</span>
-            </a>
-          </button>
-        <button mat-menu-item (click)="logOut()">
-          <mat-icon>exit_to_app</mat-icon>
-          <span>Sign out</span>
+    <ng-template #loggedIn>
+      <div class="second-column">
+        <button mat-icon-button [ngClass]="{'active': (getActiveButton() | async) === ALL_POSTS_BUTTON}" (click)="changeMainPageView(ALL_POSTS_BUTTON)">
+          <mat-icon class="big-icon">home</mat-icon>
         </button>
-      </mat-menu>
-    </div>
-  </ng-template>
+        <button mat-icon-button [ngClass]="{'active': (getActiveButton() | async) === WISHLIST_POSTS_BUTTON}" (click)="changeMainPageView(WISHLIST_POSTS_BUTTON)">
+          <mat-icon class="big-icon">favorite</mat-icon>
+        </button>
+        <button mat-icon-button [ngClass]="{'active': (getActiveButton() | async) === CURRENT_USER_POSTS_BUTTON}" (click)="changeMainPageView(CURRENT_USER_POSTS_BUTTON)">
+          <mat-icon class="big-icon">person_pin_circle</mat-icon>
+        </button>
+      </div>
 
-  <ng-template #loggedIn>
+      <div class="third-column" >
+        <mat-icon class="big-icon">account_circle</mat-icon>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <a [routerLink]="['/create-post']">
+                <mat-icon> add_comment</mat-icon>
+                <span>Create new post</span>
+              </a>
+            </button>
+          <button mat-menu-item (click)="logOut()">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Sign out</span>
+          </button>
+        </mat-menu>
+      </div>
+    </ng-template>
 
-  </ng-template>
+    <ng-template #loggedIn>
 
-</mat-toolbar>
-<hr class="rounded">
+    </ng-template>
+
+  </mat-toolbar>
+  <hr class="rounded">
+</div>
 

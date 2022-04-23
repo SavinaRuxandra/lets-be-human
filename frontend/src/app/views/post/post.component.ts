@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { TransferService } from 'src/app/services/transfer.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CustomDonationDialogComponent } from './custom-donation-dialog/custom-donation-dialog.component';
 import { Post } from 'src/app/models/post.model';
 import { CharityOrganizationService } from 'src/app/services/charity-organization.service';
@@ -8,9 +8,10 @@ import { CharityOrganization } from 'src/app/models/charity-organization.model';
 import { Observable, take } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HeaderButtonEnum } from 'src/app/shared/constants/header-button.enum';
-import { SharedDataService } from 'src/app/shared/shared-data.service';
+import { SharedDataService } from 'src/app/services/shared-data.service';
 import { PostService } from 'src/app/services/post.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-post',
@@ -58,21 +59,36 @@ export class PostComponent implements OnInit {
 
   }
 
-  makeTransfer(amount: number): void {
-    this.charityOrganization$
+  openConfirmationDialog(amount: number): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = amount;
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed()
       .pipe(take(1))
-      .subscribe((charityOrganization) => 
-            this.transferService.tranferEthereum(charityOrganization.accountAddress, amount)
-      );
+      .subscribe(result => {
+        if(result.response === true) 
+          this.makeTransfer(amount, result.message)
+      });
   }
- 
-  openDialog() {
+
+  openCustomDonationDialog(): void {
     const dialogRef = this.dialog.open(CustomDonationDialogComponent);
 
     dialogRef.afterClosed()
       .pipe(take(1))
       .subscribe(result => {
-        console.log(`Dialog result: ${result}`);
+        if(result.response === true) 
+          this.makeTransfer(result.amount, result.message)
       });
+  }
+
+  makeTransfer(amount: number, message: string): void {
+    this.charityOrganization$
+      .pipe(take(1))
+      .subscribe((charityOrganization) => 
+            this.transferService.tranferEthereum(charityOrganization.accountAddress, amount, this.post.id, message)
+      );
   }
 }
