@@ -1,6 +1,6 @@
 export interface Post {
     id: number
-    charityOrganizationId: number
+    charityOrganizationAddress: string
     headline: string
     description: string
     readMoreUrl: string

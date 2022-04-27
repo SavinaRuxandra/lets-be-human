@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Subscription, take } from 'rxjs';
-import { CharityOrganization } from 'src/app/models/charity-organization.model';
-import { Donor } from 'src/app/models/donor.model';
+import { take } from 'rxjs';
 import { Post } from 'src/app/models/post.model';
 import { PostService } from 'src/app/services/post.service';
-import { UserService } from 'src/app/services/user.service';
+import { SharedUserDataService } from 'src/app/services/shared-user-data.service';
 
 @Component({
   selector: 'app-create-post',
@@ -19,18 +17,17 @@ export class CreatePostComponent implements OnInit {
   createPostForm!: FormGroup;
   photos: string[] = [];
   photosFile: File[] = [];
-  currentUser!: CharityOrganization | Donor | null;
-  subscription$!: Subscription
+  currentAddress!: string;
 
   constructor(private postService: PostService,
-              private userService: UserService,
+              private sharedUserDataService: SharedUserDataService,
               private formBuilder: FormBuilder,
               private router: Router,
               private snack: MatSnackBar
               ) { }
 
   ngOnInit(): void {
-    this.subscription$ = this.userService.user.subscribe(user => this.currentUser = user);
+    this.sharedUserDataService.getCurrentAddress().pipe(take(1)).subscribe((address) => this.currentAddress = address)
     this.createFormGroup();
   }
 
@@ -63,7 +60,7 @@ export class CreatePostComponent implements OnInit {
 
   async addPost() {
     const postToAdd: Post = <Post> {
-      charityOrganizationId: this.currentUser!.id,
+      charityOrganizationAddress: this.currentAddress,
       headline: this.createPostForm.controls['headline'].value,
       description: this.createPostForm.controls['description'].value,
       readMoreUrl: this.createPostForm.controls['readMoreUrl'].value,
@@ -93,9 +90,5 @@ export class CreatePostComponent implements OnInit {
   goBack(): void {
     this.router.navigate(['/main-page']);
     window.location.reload;
-  }
-
-  ngOnDestroy() {
-    this.subscription$.unsubscribe();
   }
 }

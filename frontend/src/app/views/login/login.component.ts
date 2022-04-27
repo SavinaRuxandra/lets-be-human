@@ -11,38 +11,38 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
-  loginForm!: FormGroup;
-  error: string = '';
+  // loginForm!: FormGroup;
+  // error: string = '';
 
-  constructor(private userService: UserService,
-              private formBuilder: FormBuilder,
-              private dialog: MatDialog,
-              private router: Router) { }
+  // constructor(private userService: UserService,
+  //             private formBuilder: FormBuilder,
+  //             private dialog: MatDialog,
+  //             private router: Router) { }
 
-  ngOnInit(): void {
-    this.loginForm = this.formBuilder.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-    })
-  }
+  // ngOnInit(): void {
+  //   this.loginForm = this.formBuilder.group({
+  //     email: ['', Validators.required],
+  //     password: ['', Validators.required],
+  //   })
+  // }
 
-  onSubmit() {
-    const user = <User> {
-      email: this.loginForm.controls['email'].value,
-      password: this.loginForm.controls['password'].value
-    }
+  // onSubmit() {
+  //   const user = <User> {
+  //     email: this.loginForm.controls['email'].value,
+  //     password: this.loginForm.controls['password'].value
+  //   }
 
-    this.userService.login(user)
-      .pipe(take(1))
-      .subscribe(() => {
-        this.dialog.closeAll();
-        this.router.navigate(['/main-page']);
-      },
-      error => {
-        this.error = "Invalid credentials"
-      })
-  } 
+  //   this.userService.login(user)
+  //     .pipe(take(1))
+  //     .subscribe(() => {
+  //       this.dialog.closeAll();
+  //       this.router.navigate(['/main-page']);
+  //     },
+  //     error => {
+  //       this.error = "Invalid credentials"
+  //     })
+  // } 
 }
  

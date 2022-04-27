@@ -12,11 +12,8 @@ export class SearchFilterPipe implements PipeTransform {
   charityOrganizations!: CharityOrganization[]
 
   constructor(private charityOrganizationService: CharityOrganizationService) {
-    this.charityOrganizationService.getAllCharityOrganizations()
-      .pipe(take(1))
-      .subscribe(charityOrganizations => {      
-        this.charityOrganizations = charityOrganizations;      
-      });
+    this.charityOrganizationService.getCharityOrganizations()
+      .then((charityOrganizations) => this.charityOrganizations = charityOrganizations)
   }
 
   transform(posts: Post[] | null, searchInput: string): Post[] | null {
@@ -30,7 +27,7 @@ export class SearchFilterPipe implements PipeTransform {
     }
       
     return posts!.filter( post => {
-        const charityOrganization: CharityOrganization = this.charityOrganizations.filter(charityOrganization => charityOrganization.id === post.charityOrganizationId)[0];        
+        const charityOrganization: CharityOrganization = this.charityOrganizations.filter(charityOrganization => charityOrganization.accountAddress === post.charityOrganizationAddress)[0];        
         return charityOrganization.name.trim().toLowerCase().indexOf(searchInput.trim().toLowerCase()) == 0;
       });
   }

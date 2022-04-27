@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TransferService } from 'src/app/services/transfer.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CustomDonationDialogComponent } from './custom-donation-dialog/custom-donation-dialog.component';
@@ -8,7 +8,7 @@ import { CharityOrganization } from 'src/app/models/charity-organization.model';
 import { Observable, take } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HeaderButtonEnum } from 'src/app/shared/constants/header-button.enum';
-import { SharedDataService } from 'src/app/services/shared-data.service';
+import { SharedHeadlineButtonDataService } from 'src/app/services/shared-headline-button-data.service';
 import { PostService } from 'src/app/services/post.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
@@ -22,7 +22,7 @@ export class PostComponent implements OnInit {
 
   @Input() post!: Post
   photos: any
-  charityOrganization$!: Observable<CharityOrganization>
+  charityOrganization!: CharityOrganization
   activeButton$!: Observable<HeaderButtonEnum>;
 
   readonly CURRENT_USER_POSTS_BUTTON = HeaderButtonEnum.CURRENT_USER_POSTS
@@ -30,15 +30,25 @@ export class PostComponent implements OnInit {
   constructor(private postService: PostService,
               private transferService: TransferService,
               private charityOrganizationService: CharityOrganizationService,
-              private sharedDataService: SharedDataService,
+              private sharedHeadlineButtonDataService: SharedHeadlineButtonDataService,
               private dialog: MatDialog,
               private snack: MatSnackBar,
               private sanitizer: DomSanitizer) { }
 
-  ngOnInit(): void {
-    this.charityOrganization$ = this.charityOrganizationService.getCharityOrganizationById(this.post.charityOrganizationId);
+  ngOnInit(): void {    
+    this.charityOrganizationService.getCharityOrganizationByAddress(this.post.charityOrganizationAddress)
+      .then(result => {
+          const charityOrganization = <CharityOrganization> {
+            email: result[0],
+            name: result[1],
+            description: result[2],
+            phoneNumber: result[3],
+            accountAddress: this.post.charityOrganizationAddress
+          } 
+        this.charityOrganization = charityOrganization
+      })
     this.photos = this.post.photos.map((photo: string) => this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + photo));
-    this.activeButton$ = this.sharedDataService.activeButton;
+    this.activeButton$ = this.sharedHeadlineButtonDataService.activeButton;
   }
 
   deletePost(): void {
@@ -52,7 +62,7 @@ export class PostComponent implements OnInit {
         });
 
     window.location.reload();
-    this.sharedDataService.changeActiveButton(HeaderButtonEnum.CURRENT_USER_POSTS);
+    this.sharedHeadlineButtonDataService.changeActiveButton(HeaderButtonEnum.CURRENT_USER_POSTS);
   }
 
   updatePost(): void {
@@ -85,10 +95,6 @@ export class PostComponent implements OnInit {
   }
 
   makeTransfer(amount: number, message: string): void {
-    this.charityOrganization$
-      .pipe(take(1))
-      .subscribe((charityOrganization) => 
-            this.transferService.tranferEthereum(charityOrganization.accountAddress, amount, this.post.id, message)
-      );
+    this.transferService.tranferEthereum(this.charityOrganization.accountAddress, amount, this.post.id, message)
   }
 }

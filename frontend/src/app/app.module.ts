@@ -28,16 +28,17 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatMenuModule } from '@angular/material/menu';
 import { CreatePostComponent } from './views/create-post/create-post.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { RegisterCharityOrganizationComponent } from './views/register/register-charity-organization/register-charity-organization.component';
-import { RegisterDonorComponent } from './views/register/register-donor/register-donor.component';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { SearchFilterPipe } from './pipes/search-filter.pipe';
-import { SharedDataService } from './services/shared-data.service';
+import { SharedHeadlineButtonDataService } from './services/shared-headline-button-data.service';
 import { LiveTransactionsComponent } from './views/live-transactions/live-transactions.component';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ConfirmationDialogComponent } from './views/post/confirmation-dialog/confirmation-dialog.component';
-
+import { UserProfileComponent } from './views/user-profile/user-profile.component';
+import { RegisterDonorDialogComponent } from './views/register/register-donor-dialog/register-donor-dialog/register-donor-dialog.component';
+import { RegisterCharityOrganizationDialogComponent } from './views/register/register-charity-organization-dialog/register-charity-organization-dialog.component';
+import { SharedUserDataService } from './services/shared-user-data.service';
 
 @NgModule({
   declarations: [
@@ -49,12 +50,13 @@ import { ConfirmationDialogComponent } from './views/post/confirmation-dialog/co
     LoginComponent,
     CreatePostComponent,
     CustomDonationDialogComponent,
-    RegisterCharityOrganizationComponent,
-    RegisterDonorComponent,
     HomeComponent,
     SearchFilterPipe,
     LiveTransactionsComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    UserProfileComponent,
+    RegisterDonorDialogComponent,
+    RegisterCharityOrganizationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -82,7 +84,8 @@ import { ConfirmationDialogComponent } from './views/post/confirmation-dialog/co
     CarouselModule.forRoot(),
   ],
   providers: [
-    SharedDataService
+    SharedHeadlineButtonDataService,
+    SharedUserDataService
   ],
   entryComponents:[MatDialogModule],
   bootstrap: [AppComponent]

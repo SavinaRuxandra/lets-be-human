@@ -1,0 +1,5 @@
+<div class="wrapper">
+    <div *ngIf="(currentDonor | async) as donor">{{donor.accountAddress}}</div>
+    <div *ngIf="(userRole$ | async) as userRole">{{userRole}}</div>
+</div>
+

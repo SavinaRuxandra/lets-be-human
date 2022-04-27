@@ -1,37 +1,36 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { HeaderButtonEnum } from 'src/app/shared/constants/header-button.enum';
-import { CharityOrganization } from 'src/app/models/charity-organization.model';
-import { Donor } from 'src/app/models/donor.model';
-import { UserService } from 'src/app/services/user.service';
+import { Observable } from 'rxjs';
+import { HeaderButtonEnum } from 'src/app/shared/constants/header-button.enum';;
 import { LoginComponent } from '../login/login.component';
-import { RegisterCharityOrganizationComponent } from '../register/register-charity-organization/register-charity-organization.component';
-import { SharedDataService } from 'src/app/services/shared-data.service';
+import { AuthentificationService } from 'src/app/services/authentification.service';
+import { SharedHeadlineButtonDataService } from 'src/app/services/shared-headline-button-data.service';
+import { UserRole } from 'src/app/models/user-role.model';
+import { SharedUserDataService } from 'src/app/services/shared-user-data.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
-  currentUser!: CharityOrganization | Donor | null;
-  subscription$!: Subscription
+  currentUserRole: Observable<UserRole> = this.sharedUserDataService.getCurrentUserRole();
 
   readonly ALL_POSTS_BUTTON = HeaderButtonEnum.ALL_POSTS
   readonly WISHLIST_POSTS_BUTTON = HeaderButtonEnum.WISHLIST_POSTS
   readonly CURRENT_USER_POSTS_BUTTON = HeaderButtonEnum.CURRENT_USER_POSTS
 
-  constructor(private userService: UserService,
-              private sharedDataService: SharedDataService,
+  readonly DONOR = UserRole.DONOR
+  readonly CHARITY_ORGANIZATION = UserRole.CHARITY_ORGANIZATION
+  readonly LOGGED_OUT = UserRole.LOGGED_OUT
+
+  constructor(private sharedUserDataService: SharedUserDataService,
+              private sharedHeadlineButtonDataService: SharedHeadlineButtonDataService,
+              private authentificationService: AuthentificationService,
               private dialog: MatDialog,
               private router: Router) { }
-
-  ngOnInit(): void {
-    this.subscription$ = this.userService.user.subscribe(user => this.currentUser = user);
-  }
 
   isOnHomePage(): boolean {    
     return this.router.url === "/home";
@@ -42,32 +41,23 @@ export class HeaderComponent implements OnInit {
   }
 
   logOut(): void {
-    this.userService.logOut();
-    this.router.navigate(['home']);
-  }
-
-  registerCharityOrganization(): void {
-    this.dialog.open(RegisterCharityOrganizationComponent, { disableClose: true });
+    this.authentificationService.logOut();
   }
 
   changeMainPageView(button: HeaderButtonEnum): void {
-    this.sharedDataService.changeActiveButton(button);
+    this.sharedHeadlineButtonDataService.changeActiveButton(button);
   }
 
   getActiveButton(): Observable<HeaderButtonEnum> {
-    return this.sharedDataService.activeButton;
+    return this.sharedHeadlineButtonDataService.activeButton;
   }
 
   goToMainPage(): void {
     if(this.router.url != "/home")
       if(this.router.url == "/main-page") {
-        this.sharedDataService.changeActiveButton(HeaderButtonEnum.ALL_POSTS);
+        this.sharedHeadlineButtonDataService.changeActiveButton(HeaderButtonEnum.ALL_POSTS);
       }
       else 
         this.router.navigate(['/main-page'])
-  }
-
-  ngOnDestroy() {
-    this.subscription$.unsubscribe();
   }
 }

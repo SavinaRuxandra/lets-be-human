@@ -1,26 +1,14 @@
 <div class="header-wrapper">
   <mat-toolbar class="toolbar" [ngClass]="{'mat-elevation-z5' : true}">
+
     <div class="first-column">
       <button class="d-flex title" (click)="goToMainPage()">
         <mat-icon class="logo big-icon">face</mat-icon>
         <h1 class="title"><p>Let's be human</p></h1>
       </button>
     </div>
-    
-    <div class="third-column" *ngIf="isOnHomePage(); else loggedIn">
-      <button mat-raised-button
-              class="sign-in-button" 
-              (click)="login()">
-        Sign in
-      </button>
-      <button mat-raised-button
-              class="register-button"
-              (click)="registerCharityOrganization()">
-        Register
-      </button>
-    </div>
 
-    <ng-template #loggedIn>
+    <ng-container *ngIf="!isOnHomePage()">
       <div class="second-column">
         <button mat-icon-button [ngClass]="{'active': (getActiveButton() | async) === ALL_POSTS_BUTTON}" (click)="changeMainPageView(ALL_POSTS_BUTTON)">
           <mat-icon class="big-icon">home</mat-icon>
@@ -39,23 +27,24 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
+
+          <div *ngIf="(currentUserRole | async) === CHARITY_ORGANIZATION">
             <button mat-menu-item>
-              <a [routerLink]="['/create-post']">
-                <mat-icon> add_comment</mat-icon>
-                <span>Create new post</span>
-              </a>
-            </button>
+                <a [routerLink]="['/create-post']">
+                  <mat-icon> add_comment</mat-icon>
+                  <span>Create new post</span>
+                </a>
+            </button> 
+          </div>
+
           <button mat-menu-item (click)="logOut()">
             <mat-icon>exit_to_app</mat-icon>
             <span>Sign out</span>
           </button>
+
         </mat-menu>
       </div>
-    </ng-template>
-
-    <ng-template #loggedIn>
-
-    </ng-template>
+    </ng-container>
 
   </mat-toolbar>
   <hr class="rounded">

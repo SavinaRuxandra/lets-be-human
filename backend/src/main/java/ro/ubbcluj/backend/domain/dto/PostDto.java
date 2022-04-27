@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class PostDto implements Serializable {
     private Long id;
-    private Long charityOrganizationId;
+    private String charityOrganizationAddress;
     private String headline;
     private String description;
     private String readMoreUrl;

@@ -1,7 +1,7 @@
 <mat-card class="post-wrapper" [ngClass]="{'mat-elevation-z5' : true}">
     <mat-card-header>
       <div mat-card-avatar></div>
-      <mat-card-title *ngIf="(charityOrganization$ | async) as charityOrganization">{{ charityOrganization.name }}</mat-card-title>
+      <mat-card-title *ngIf="charityOrganization">{{ charityOrganization.name }}</mat-card-title>
       <mat-card-subtitle> {{ post.headline }} </mat-card-subtitle>
       <div *ngIf="(activeButton$ | async) === CURRENT_USER_POSTS_BUTTON" class="modification-buttons">
         <button mat-button (click)="updatePost()"><mat-icon>edit</mat-icon></button>

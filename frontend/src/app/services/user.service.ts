@@ -20,15 +20,16 @@ export class UserService {
 
   @HostListener('window:unload', [ '$event' ])
   unloadHandler() {
-    this.logOut;
+    // this.logOut;
   }
 
   constructor(private httpClient: HttpClient,
               private charityOrganizationService: CharityOrganizationService, 
-              private donorService: DonorService) { 
+              private donorService: DonorService
+              ) { 
 
     this.userSubject = new BehaviorSubject<CharityOrganization | Donor | null> (
-      JSON.parse(localStorage.getItem('currentUser')!)
+      JSON.parse(sessionStorage.getItem('currentUser')!)
     );
     this.user = this.userSubject.asObservable();
   }
@@ -37,31 +38,6 @@ export class UserService {
     return this.userSubject.value;
   }
 
-  login(user: User): Observable<User> {
-    return this.httpClient.post<User>(`${this.userUrl}/login`, user)
-      .pipe(
-        map((response) => {          
-          if(response.role === UserRole.CHARITY_ORGANIZATION) 
-            this.charityOrganizationService.getCharityOrganizationById(response.id)
-              .subscribe((charityOrganization) => {
-                localStorage.setItem('currentUser', JSON.stringify(charityOrganization));
-                this.userSubject.next(charityOrganization);
-              })
-          if(response.role === UserRole.DONOR) 
-            this.donorService.getDonorById(response.id)
-              .subscribe((donor) => {
-                localStorage.setItem('currentUser', JSON.stringify(donor));
-                this.userSubject.next(donor);
-              })
-          return response;
-        }) 
-      )
-  }
-
-  logOut(): void {
-    localStorage.removeItem('currentUser');
-    this.userSubject.next(null);
-  }
 
   checkUserEmailUnique(email: string): Observable<Boolean> {
     return this.httpClient.get<Boolean>(`${this.userUrl}/check-unique-email/${email}`);

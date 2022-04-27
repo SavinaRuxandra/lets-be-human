@@ -15,7 +15,7 @@ export class LiveTransactionsComponent implements OnInit {
   constructor(private transferService: TransferService) { }
 
   ngOnInit(): void {
-      this.donations$ = this.transferService.donations$.pipe(map((donations) => donations.slice().reverse().slice(0,8)));      
+      this.donations$ = this.transferService.getLiveDonations().pipe(map((donations) => donations.slice().reverse().slice(0,8)));      
   }
 
 }

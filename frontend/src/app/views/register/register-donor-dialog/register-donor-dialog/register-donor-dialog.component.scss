@@ -1,0 +1,12 @@
+.dialog-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    height: 150px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content:flex-end;
+    align-content: space-between;
+}

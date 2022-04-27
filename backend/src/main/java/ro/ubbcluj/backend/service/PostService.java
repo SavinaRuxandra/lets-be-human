@@ -50,13 +50,13 @@ public class PostService {
     }
 
     private void mapPhotoToPath(Post post, MultipartFile[] photos) {
-        Long charityOrganizationId = post.getCharityOrganization().getId();
+        String charityOrganizationAddress = post.getCharityOrganizationAddress();
         Long postId = post.getId();
         AtomicInteger index = new AtomicInteger(0);
 
         post.setPhotos(
                 Arrays.stream(photos)
-                .map(photo -> String.format("%s\\posts\\user%d\\post%d\\%d.png", BASE_ROOT_FILE_STORAGE, charityOrganizationId, postId, index.getAndIncrement()))
+                .map(photo -> String.format("%s\\posts\\user%s\\post%d\\%d.png", BASE_ROOT_FILE_STORAGE, charityOrganizationAddress, postId, index.getAndIncrement()))
                 .collect(Collectors.toList())
         );
         postRepository.save(post);

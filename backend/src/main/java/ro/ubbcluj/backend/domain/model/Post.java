@@ -5,7 +5,6 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import java.util.List;
 
 @Entity
@@ -16,8 +15,7 @@ import java.util.List;
 @ToString
 @SuperBuilder
 public class Post extends BaseEntity {
-    @ManyToOne
-    private CharityOrganization charityOrganization;
+    private String charityOrganizationAddress;
     private String headline;
     private String description;
     private String readMoreUrl;
