@@ -58,8 +58,8 @@
             </div>
 
         <div class="form-buttons-wrapper">
-            <button mat-flat-button (click)="cancel()" type="reset">Cancel</button>
-            <button mat-raised-button type="submit" [disabled]="createPostForm.invalid">Post</button>
+            <button mat-raised-button type="reset" (click)="cancel()">Cancel</button>
+            <button mat-raised-button class="mat-primary" type="submit" [disabled]="createPostForm.invalid">Post</button>
         </div>
     </div>
 </form>

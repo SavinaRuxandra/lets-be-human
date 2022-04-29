@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { HeaderButtonEnum } from 'src/app/shared/constants/header-button.enum';;
-import { LoginComponent } from '../login/login.component';
+import { HeaderButtonEnum } from 'src/app/models/header-button.enum';;
 import { AuthentificationService } from 'src/app/services/authentification.service';
 import { SharedHeadlineButtonDataService } from 'src/app/services/shared-headline-button-data.service';
 import { UserRole } from 'src/app/models/user-role.model';
@@ -29,15 +28,10 @@ export class HeaderComponent {
   constructor(private sharedUserDataService: SharedUserDataService,
               private sharedHeadlineButtonDataService: SharedHeadlineButtonDataService,
               private authentificationService: AuthentificationService,
-              private dialog: MatDialog,
               private router: Router) { }
 
   isOnHomePage(): boolean {    
     return this.router.url === "/home";
-  }
-
-  login(): void {
-    this.dialog.open(LoginComponent);
   }
 
   logOut(): void {

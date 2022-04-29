@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { Donor } from 'src/app/models/donor.model';
+import { AuthentificationService } from 'src/app/services/authentification.service';
 import { DonorService } from 'src/app/services/donor.service';
 import { SharedUserDataService } from 'src/app/services/shared-user-data.service';
 
@@ -12,24 +14,25 @@ import { SharedUserDataService } from 'src/app/services/shared-user-data.service
 })
 export class RegisterDonorDialogComponent {
 
-  username: string = ""
-  currentAddress!: string
+  username: string = "";
+  address: string
 
-  constructor(private sharedUserDataService: SharedUserDataService,
+  constructor(private authentificationService: AuthentificationService,
               private donorService: DonorService,
-              private router: Router) {
-    this.sharedUserDataService.getCurrentAddress().pipe(take(1)).subscribe(address => this.currentAddress = address);
+              private router: Router,
+              @Inject(MAT_DIALOG_DATA) address: string) {
+    this.address = address;
   }
 
   continue(): void {    
-    if(this.username.trim() === "")
+    if(this.username.trim() == "")
       this.username = "New Donor"
-    this.donorService.setDonorUsername(this.currentAddress, this.username).then(() => {
+    this.donorService.setDonorUsername(this.address, this.username).then(() => {
       const donor = <Donor> {
-        accountAddress: this.currentAddress,
-        username: this.username
+        username: this.username,
+        accountAddress: this.address
       }
-      this.sharedUserDataService.setCurrentDonor(donor);
+      this.authentificationService.setCurrentDonor(donor);
       this.router.navigate(["main-page"]);
     })
   }

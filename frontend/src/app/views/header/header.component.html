@@ -4,7 +4,7 @@
     <div class="first-column">
       <button class="d-flex title" (click)="goToMainPage()">
         <mat-icon class="logo big-icon">face</mat-icon>
-        <h1 class="title"><p>Let's be human</p></h1>
+        <h1 class="title-text">Let's be human</h1>
       </button>
     </div>
 
@@ -16,37 +16,34 @@
         <button mat-icon-button [ngClass]="{'active': (getActiveButton() | async) === WISHLIST_POSTS_BUTTON}" (click)="changeMainPageView(WISHLIST_POSTS_BUTTON)">
           <mat-icon class="big-icon">favorite</mat-icon>
         </button>
-        <button mat-icon-button [ngClass]="{'active': (getActiveButton() | async) === CURRENT_USER_POSTS_BUTTON}" (click)="changeMainPageView(CURRENT_USER_POSTS_BUTTON)">
-          <mat-icon class="big-icon">person_pin_circle</mat-icon>
-        </button>
+
+        <div *ngIf="(currentUserRole |async) === CHARITY_ORGANIZATION">
+          <button mat-icon-button [ngClass]="{'active': (getActiveButton() | async) === CURRENT_USER_POSTS_BUTTON}" (click)="changeMainPageView(CURRENT_USER_POSTS_BUTTON)">
+            <mat-icon class="big-icon">person_pin_circle</mat-icon>
+          </button>
+        </div>
+
       </div>
 
       <div class="third-column" >
-        <mat-icon class="big-icon">account_circle</mat-icon>
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-          <mat-icon>more_vert</mat-icon>
+        
+        <div *ngIf="(currentUserRole | async) === CHARITY_ORGANIZATION">
+          <button mat-button>
+              <a [routerLink]="['/create-post']">
+                <mat-icon class="big-icon">add_comment</mat-icon>
+              </a>
+          </button> 
+        </div>
+
+        <button mat-button (click)="logOut()">
+          <mat-icon class="big-icon">exit_to_app</mat-icon>
         </button>
-        <mat-menu #menu="matMenu">
 
-          <div *ngIf="(currentUserRole | async) === CHARITY_ORGANIZATION">
-            <button mat-menu-item>
-                <a [routerLink]="['/create-post']">
-                  <mat-icon> add_comment</mat-icon>
-                  <span>Create new post</span>
-                </a>
-            </button> 
-          </div>
-
-          <button mat-menu-item (click)="logOut()">
-            <mat-icon>exit_to_app</mat-icon>
-            <span>Sign out</span>
-          </button>
-
-        </mat-menu>
+        
       </div>
     </ng-container>
 
   </mat-toolbar>
-  <hr class="rounded">
+  <!-- <hr class="rounded"> -->
 </div>
 

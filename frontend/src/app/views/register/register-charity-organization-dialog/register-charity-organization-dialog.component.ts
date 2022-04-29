@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { take } from 'rxjs';
 import { CharityOrganization } from 'src/app/models/charity-organization.model';
+import { AuthentificationService } from 'src/app/services/authentification.service';
 import { CharityOrganizationService } from 'src/app/services/charity-organization.service';
-import { SharedUserDataService } from 'src/app/services/shared-user-data.service';
 
 @Component({
   selector: 'app-register-charity-organization-dialog',
@@ -15,13 +14,14 @@ import { SharedUserDataService } from 'src/app/services/shared-user-data.service
 export class RegisterCharityOrganizationDialogComponent implements OnInit {
 
   registerForm!: FormGroup;
-  currentAddress!: string
+  address: string
 
-  constructor(private sharedUserDataService: SharedUserDataService,
+  constructor(private authentificationService: AuthentificationService,
               private charityOrganizationService: CharityOrganizationService,
               private formBuilder: FormBuilder,
-              private router: Router) {
-    this.sharedUserDataService.getCurrentAddress().pipe(take(1)).subscribe(address => this.currentAddress = address);
+              private router: Router,
+              @Inject(MAT_DIALOG_DATA) address: string) {
+    this.address = address;
   }
 
   ngOnInit(): void {
@@ -54,22 +54,22 @@ export class RegisterCharityOrganizationDialogComponent implements OnInit {
     return this.registerForm.controls['phoneNumber'].value;
   }
 
-  register(): void {        
+  register(): void {           
+    const charityOrganization = <CharityOrganization> {
+      email: this.getEmailFormControl(),
+      name:this.getNameFormControl(),
+      description: this.getDescriptionFormControl(),
+      phoneNumber: this.getPhoneNumberFormControl(),
+      accountAddress: this.address
+    } 
     this.charityOrganizationService.addCharityOrganization(
-        this.currentAddress,
-        this.getEmailFormControl(),
-        this.getNameFormControl(),
-        this.getDescriptionFormControl(),
-        this.getPhoneNumberFormControl(),
+        charityOrganization.accountAddress,
+        charityOrganization.email,
+        charityOrganization.name,
+        charityOrganization.description,
+        charityOrganization.phoneNumber
       ).then(() => {
-          const charityOrganization = <CharityOrganization> {
-            email: this.getEmailFormControl(),
-            name:this.getNameFormControl(),
-            description: this.getDescriptionFormControl(),
-            phoneNumber: this.getPhoneNumberFormControl(),
-            accountAddress: this.currentAddress
-          }
-          this.sharedUserDataService.setCurrentCharityOrganization(charityOrganization);
+          this.authentificationService.setCurrentCharityOrganization(charityOrganization);
           this.router.navigate(["main-page"]);
       })
   }

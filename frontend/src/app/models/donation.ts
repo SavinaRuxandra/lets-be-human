@@ -1,7 +1,7 @@
 export interface Donation {
     accountSender: string
     accountReceiver: string
-    value: number
+    amount: number
     postId: number
     message: string
 }

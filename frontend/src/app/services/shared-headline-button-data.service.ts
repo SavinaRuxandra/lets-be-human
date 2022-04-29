@@ -1,16 +1,16 @@
 import { HostListener, Injectable } from '@angular/core';
 import { BehaviorSubject, take } from 'rxjs';
-import { HeaderButtonEnum } from '../shared/constants/header-button.enum';
+import { HeaderButtonEnum } from '../models/header-button.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedHeadlineButtonDataService {
 
-  @HostListener('window:unload', [ '$event' ])
-  unloadHandler() {
-    this.changeActiveButton(HeaderButtonEnum.ALL_POSTS)
-  }
+  // @HostListener('window:unload', [ '$event' ])
+  // unloadHandler() {
+  //   this.changeActiveButton(HeaderButtonEnum.ALL_POSTS)
+  // }
 
   private buttonSource = new BehaviorSubject<HeaderButtonEnum>(HeaderButtonEnum.ALL_POSTS);
   activeButton = this.buttonSource.asObservable();  

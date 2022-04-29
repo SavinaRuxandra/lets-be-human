@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { map, Observable, Subscription } from 'rxjs';
-import { HeaderButtonEnum } from 'src/app/shared/constants/header-button.enum';
-import { CharityOrganization } from 'src/app/models/charity-organization.model';
-import { Donor } from 'src/app/models/donor.model';
-import { Post } from 'src/app/models/post.model';
+import { map, Observable, take } from 'rxjs';
+import { HeaderButtonEnum } from 'src/app/models/header-button.enum';
+    import { Post } from 'src/app/models/post.model';
 import { PostService } from 'src/app/services/post.service';
-import { UserService } from 'src/app/services/user.service';
 import { SharedHeadlineButtonDataService } from 'src/app/services/shared-headline-button-data.service';
+import { SharedUserDataService } from 'src/app/services/shared-user-data.service';
 
 @Component({
   selector: 'app-main-page',
@@ -16,38 +14,36 @@ import { SharedHeadlineButtonDataService } from 'src/app/services/shared-headlin
 
 export class MainPageComponent implements OnInit {
 
-  currentUser!: CharityOrganization | Donor | null;
+  currentAddress: Observable<string> = this.sharedUserDataService.getCurrentAddress();
   searchInput!: string;
   posts$!: Observable<Post[]>;
   currentUserPosts$!: Observable<Post[]>;
   activeButton$!: Observable<HeaderButtonEnum>;
-  subscription$!: Subscription
-  currentCharityOrganization?: CharityOrganization;
 
   readonly ALL_POSTS_BUTTON = HeaderButtonEnum.ALL_POSTS
   readonly WISHLIST_POSTS_BUTTON = HeaderButtonEnum.WISHLIST_POSTS
   readonly CURRENT_USER_POSTS_BUTTON = HeaderButtonEnum.CURRENT_USER_POSTS
 
   constructor(private postService: PostService,
-              private userService: UserService,
+              private sharedUserDataService: SharedUserDataService,
               private sharedHeadlineButtonDataService: SharedHeadlineButtonDataService) { }
 
   ngOnInit(): void {
-    this.subscription$ = this.userService.user.subscribe(user => this.currentUser = user);
 
     this.posts$ = this.postService.getAllPosts().pipe(map(posts => {
         return posts.slice().reverse();
       }))      
 
     this.currentUserPosts$ = this.posts$
-      .pipe(map((posts) => 
-          posts.filter(post => post.charityOrganizationAddress === this.currentCharityOrganization?.accountAddress)
-      ));
+      .pipe(
+        map((posts) => 
+          {
+          var currentAddress: string;
+          this.currentAddress.pipe(take(1)).subscribe(address => currentAddress = address)
+          return posts.filter(post => post.charityOrganizationAddress === currentAddress)
+        })
+      );
 
     this.activeButton$ = this.sharedHeadlineButtonDataService.activeButton;
-  }
-
-  ngOnDestroy() {
-    this.subscription$.unsubscribe();
   }
 }

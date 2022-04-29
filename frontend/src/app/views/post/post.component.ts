@@ -7,7 +7,7 @@ import { CharityOrganizationService } from 'src/app/services/charity-organizatio
 import { CharityOrganization } from 'src/app/models/charity-organization.model';
 import { Observable, take } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
-import { HeaderButtonEnum } from 'src/app/shared/constants/header-button.enum';
+import { HeaderButtonEnum } from 'src/app/models/header-button.enum';
 import { SharedHeadlineButtonDataService } from 'src/app/services/shared-headline-button-data.service';
 import { PostService } from 'src/app/services/post.service';
 import { MatSnackBar } from '@angular/material/snack-bar';

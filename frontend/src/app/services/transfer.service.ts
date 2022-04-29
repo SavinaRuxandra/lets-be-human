@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import Web3 from 'web3';
 import Web3Modal from "web3modal";
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 import { TRANSFER_CONTRACT_ADDRESS, TRANSFER_TOKEN_ABI } from "../../abis";
-import { Donation } from '../models/transfer';
-import { WEB3_MODAL_OPTIONS } from '../shared/constants/constants';
+import { Donation } from '../models/donation';
+import { WEB3_MODAL_OPTIONS } from 'src/environments/environment';
 
 
 @Injectable({
@@ -57,5 +57,21 @@ export class TransferService {
 
   getLiveDonations(): Observable<Donation[]> {
     return this.donationsSource$.asObservable();
+  }
+
+  getMoneyShared(account: string): Observable<string> {
+    return this.getLiveDonations().pipe((map(donations => {
+      const sum = donations.filter(donations => donations.accountSender === account)
+                           .reduce((sum, donation) => sum + +donation.amount, 0)                           
+      return Web3.utils.fromWei(sum.toString(), 'ether')
+    })))
+  }
+
+  getMoneyReceived(account: string): Observable<string> {
+    return this.getLiveDonations().pipe((map(donations => {
+      const sum = donations.filter(donations => donations.accountReceiver === account)
+                           .reduce((sum, donation) => sum + +donation.amount, 0)                           
+      return Web3.utils.fromWei(sum.toString(), 'ether')
+    })))
   }
 }

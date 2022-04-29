@@ -5,7 +5,6 @@
         <div *ngFor="let donation of (donations$ | async)!">
             <div class="donation">
                 {{donation.message}}
-                {{donation.value}}
                 <hr class="divider">    
             </div>
         </div>

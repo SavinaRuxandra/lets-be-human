@@ -3,26 +3,34 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { CharityOrganization } from '../models/charity-organization.model';
 import { Donor } from '../models/donor.model';
 import { UserRole } from '../models/user-role.model';
-import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedUserDataService {
 
-  private userRoleSource$: Subject<UserRole> = new BehaviorSubject(this.getCurrentUserRoleFromStorage());
-  private addressSource$: Subject<string> = new BehaviorSubject(this.getCurrentAddressFromStorage());
-  private donorSource$: Subject<Donor> = new BehaviorSubject(this.getCurrentDonorFromStorage());
-  private charityOrganizationSource$: Subject<CharityOrganization> = new BehaviorSubject(this.getCurrentCharityOrganizationFromStorage());
+  private userRoleSource$!: Subject<UserRole>;
+  private addressSource$!: Subject<string>;
+  private donorSource$!: Subject<Donor>;
+  private charityOrganizationSource$!: Subject<CharityOrganization>;
 
-  constructor() { }
+  constructor() { 
+    this.updateOnReload();
+  }
 
-  setCurrentUserRole(userRole: UserRole) {
+  updateOnReload() {
+    this.userRoleSource$ = new BehaviorSubject(this.getCurrentUserRoleFromStorage());
+    this.addressSource$ = new BehaviorSubject(this.getCurrentAddressFromStorage());
+    this.donorSource$ = new BehaviorSubject(this.getCurrentDonorFromStorage());
+    this.charityOrganizationSource$ = new BehaviorSubject(this.getCurrentCharityOrganizationFromStorage());
+  }
+
+  setCurrentUserRole(userRole: UserRole) {    
     sessionStorage.setItem('userRole', userRole);
     this.userRoleSource$.next(userRole);
   }
 
-  getCurrentUserRoleFromStorage(): UserRole {
+  private getCurrentUserRoleFromStorage(): UserRole {
     const role = sessionStorage.getItem('userRole')!;
     if(role == UserRole.CHARITY_ORGANIZATION) 
       return UserRole.CHARITY_ORGANIZATION
@@ -35,17 +43,15 @@ export class SharedUserDataService {
   }
 
   getCurrentUserRole(): Observable<UserRole> {
-    this.userRoleSource$.asObservable().subscribe(c => console.log(c)
-    )
     return this.userRoleSource$.asObservable();
   }
 
-  setCurrentAddress(address: string) {
+  setCurrentAddress(address: string): void {
     sessionStorage.setItem('currentAddress', address);
     this.addressSource$.next(address);
   }
 
-  getCurrentAddressFromStorage(): string {
+  private getCurrentAddressFromStorage(): string {
     return sessionStorage.getItem('currentAddress')!;
   }
 
@@ -53,12 +59,12 @@ export class SharedUserDataService {
     return this.addressSource$.asObservable();
   }
 
-  setCurrentDonor(donor: Donor) {    
+  setCurrentDonor(donor: Donor): void {    
     sessionStorage.setItem('currentDonor', JSON.stringify(donor));
     this.donorSource$.next(donor);
   }
 
-  getCurrentDonorFromStorage(): Donor {
+  private getCurrentDonorFromStorage(): Donor {
     const donor = JSON.parse(sessionStorage.getItem('currentDonor')!)
     return <Donor>(donor);
   }
@@ -67,12 +73,12 @@ export class SharedUserDataService {
     return this.donorSource$.asObservable();
   }
 
-  setCurrentCharityOrganization(charityOrganization: CharityOrganization) {
+  setCurrentCharityOrganization(charityOrganization: CharityOrganization): void {
     sessionStorage.setItem('charityOrganization', JSON.stringify(charityOrganization));
     this.charityOrganizationSource$.next(charityOrganization);
   }
 
-  getCurrentCharityOrganizationFromStorage(): CharityOrganization {
+  private getCurrentCharityOrganizationFromStorage(): CharityOrganization {
     const charityOrganization = JSON.parse(sessionStorage.getItem('charityOrganization')!)
     return <CharityOrganization>(charityOrganization);
   }

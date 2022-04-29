@@ -6,6 +6,7 @@ import { take } from 'rxjs';
 import { Post } from 'src/app/models/post.model';
 import { PostService } from 'src/app/services/post.service';
 import { SharedUserDataService } from 'src/app/services/shared-user-data.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 
 @Component({
   selector: 'app-create-post',
@@ -23,7 +24,7 @@ export class CreatePostComponent implements OnInit {
               private sharedUserDataService: SharedUserDataService,
               private formBuilder: FormBuilder,
               private router: Router,
-              private snack: MatSnackBar
+              private snackbar: SnackbarService
               ) { }
 
   ngOnInit(): void {
@@ -76,10 +77,10 @@ export class CreatePostComponent implements OnInit {
     this.postService.addPost(formData)
         .pipe(take(1))
         .subscribe(() => {
-          this.snack.open("Post successfully added", "x", {duration: 4000});
+          this.snackbar.success("Post successfully added");
         },
         err => {
-          this.snack.open("Post could not be added", "x", {duration: 4000})
+          this.snackbar.error("The post could not be added");
         })
   }
 
@@ -88,7 +89,8 @@ export class CreatePostComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/main-page']);
-    window.location.reload;
+    this.router.navigateByUrl('/main-page', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/main-page']); 
+    });
   }
 }

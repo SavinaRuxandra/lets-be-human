@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { MainPageComponent } from './views/main-page/main-page.component';
 import { HeaderComponent } from './views/header/header.component';
 import { HomeComponent } from './views/home/home.component';
-import { FooterComponent } from './views/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,7 +20,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { LoginComponent } from './views/login/login.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CustomDonationDialogComponent } from './views/post/custom-donation-dialog/custom-donation-dialog.component';
 import { MatSliderModule } from '@angular/material/slider';
@@ -45,9 +43,7 @@ import { SharedUserDataService } from './services/shared-user-data.service';
     AppComponent,
     MainPageComponent,
     HeaderComponent,
-    FooterComponent,
     PostComponent,
-    LoginComponent,
     CreatePostComponent,
     CustomDonationDialogComponent,
     HomeComponent,

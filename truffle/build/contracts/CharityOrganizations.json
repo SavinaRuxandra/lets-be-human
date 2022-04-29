@@ -6995,12 +6995,12 @@
     "1337": {
       "events": {},
       "links": {},
-      "address": "0xf8aC531133AE1844B39723734af62760A5b75aE9",
-      "transactionHash": "0xd5960dff417026b7208343049b7824c75e1b3677001a5dcc15ef59c144751fd2"
+      "address": "0x0393B0Cb9f3cf90F2f447b64C4857e0644F5bE34",
+      "transactionHash": "0x26e6d90813d64bdaffcce9732a66f111dd0fd876034f0a22a91dac4c7f929972"
     }
   },
   "schemaVersion": "3.4.7",
-  "updatedAt": "2022-04-26T10:52:47.951Z",
+  "updatedAt": "2022-04-29T21:06:03.598Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

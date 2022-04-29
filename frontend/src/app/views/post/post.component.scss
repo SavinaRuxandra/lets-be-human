@@ -1,7 +1,11 @@
+@use  "../../../styles.scss" as style;
+
 .post-wrapper {
+    background-color: style.$primary-color;
     margin-bottom: 30px;
-    box-shadow: 0px 0px 30px rgb(103, 77, 150);
+    box-shadow: 0px 0px 7px black;
     z-index: 101;
+    // border: 1px solid black;
 }
 
 .button-list {

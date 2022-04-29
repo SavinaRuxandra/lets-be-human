@@ -1,8 +1,12 @@
+@use  "../../../styles.scss" as style;
+
 .header-wrapper {
   display: block;
   position: fixed;
   width: 100%;
   z-index: 1000;
+  border-bottom: 1px solid black;
+
 }
 
 .toolbar {
@@ -12,7 +16,7 @@
   justify-content: space-between;
   align-items: center;
   height: 80px;
-  background-color: rgb(162, 156, 192);
+  background-color: style.$header-color;
 }
 
 .toolbar > div {
@@ -24,6 +28,10 @@
   background: none;
 }
 
+.title-text {
+  font-size: 40;
+  font-weight: 300;
+}
 
 .first-column {
   display: flex;
@@ -32,13 +40,6 @@
 
 .logo {
   margin: 0px 20px 0px 30px 
-}
-
-.title {
-  font-family: "Comic Sans", cursive;
-  display: inline-flex;
-  align-self: center;
-  align-items: center;
 }
 
 .second-column {
@@ -50,15 +51,6 @@
   display: flex;
   justify-content: flex-end;
   margin-right: 15px;
-}
-
-.register-button {
-  margin-left: 20px;
-}
-
-h1 {
-  font-size: 30px;
-  font-weight: bold;
 }
  
 .big-icon {
@@ -73,5 +65,5 @@ hr.rounded {
 }
 
 .active {
-  background-color: rgb(111, 98, 155);
+  color: white;
 }

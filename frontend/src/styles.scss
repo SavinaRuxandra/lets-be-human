@@ -2,12 +2,20 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~bootstrap/scss/bootstrap";
 @import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
+
+$background-color: #E6E6FA;
+$post-color: #ebebf7;
+
+$accent-color: #673AB7;
+$header-color: #877BAE;
+
+$primary-color: #877bae41 ;
+
 html, body { height: 100%; }
 body {
   margin: 0; 
   font-family: Roboto, "Helvetica Neue", sans-serif; 
-  // background-image: url("assets/background/background.jpg");
-  background-color: rgb(162, 156, 192);
+  background-color: $background-color;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -25,3 +33,21 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.mat-simple-snackbar {
+  font-size: 1.2em;
+  color: white;
+}
+
+.snackbar-error {
+  background-color: red;
+}
+
+.snackbar-success {
+  background-color: green;
+}
+
+.snackbar-info {
+  background-color: blue;
+}
+

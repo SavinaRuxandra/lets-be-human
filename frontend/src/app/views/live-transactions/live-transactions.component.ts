@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
-import { Donation } from 'src/app/models/transfer';
+import { Donation } from 'src/app/models/donation';
 import { TransferService } from 'src/app/services/transfer.service';
 
 @Component({
@@ -12,10 +13,14 @@ export class LiveTransactionsComponent implements OnInit {
 
   donations$!: Observable<Donation[]>
 
-  constructor(private transferService: TransferService) { }
+  constructor(private transferService: TransferService,
+              private router: Router) { }
 
   ngOnInit(): void {
-      this.donations$ = this.transferService.getLiveDonations().pipe(map((donations) => donations.slice().reverse().slice(0,8)));      
+    this.donations$ = this.transferService.getLiveDonations().pipe(map((donations) => donations.slice().reverse().slice(0,8)))
+    setInterval(()=> { 
+      this.donations$ = this.transferService.getLiveDonations().pipe(map((donations) => donations.slice().reverse().slice(0,8)))
+    }, 5 * 1000);;      
   }
 
 }

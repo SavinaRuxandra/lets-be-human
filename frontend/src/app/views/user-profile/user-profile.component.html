@@ -1,5 +1,42 @@
 <div class="wrapper">
-    <div *ngIf="(currentDonor | async) as donor">{{donor.accountAddress}}</div>
-    <div *ngIf="(userRole$ | async) as userRole">{{userRole}}</div>
-</div>
 
+    <div *ngIf="(currentUserRole$ | async) === DONOR">
+        <div class="card">
+            <img src="../../../assets/profile-donor.png" class="card-image">
+            <p class="card-title">{{(currentDonor$ | async)!.username}}</p>
+            <i><small>DONOR</small></i>
+            <i><small>{{(currentDonor$ | async)!.accountAddress}}</small></i>
+
+            <br><br>
+      
+            <div>
+                Money Shared: {{(moneyShared$ | async)}} ETH
+            </div>
+        </div>
+      
+    </div>
+
+    <div *ngIf="(currentUserRole$ | async) === CHARITY_ORGANIZATION">
+        <div class="card">
+            <img src="../../../assets/profile-organization.png" class="card-image">
+            <p class="card-title">{{(currentCharityOrganization$ | async)!.name}}</p>
+            <small>{{(currentCharityOrganization$ | async)!.accountAddress}}</small>
+
+            <small>CHARITY_ORGANIZATION</small>
+
+            <br><br>
+      
+            <div>
+                Money Shared: {{(moneyShared$ | async)}} ETH
+            </div>
+
+            <div>
+                Money Received: {{(moneyReceived$ | async)}} ETH
+            </div>
+    
+        </div>
+      
+    </div>
+
+
+</div>
