@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { map, Observable, Subscription } from 'rxjs';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
 import { CharityOrganization } from 'src/app/models/charity-organization.model';
 import { Donor } from 'src/app/models/donor.model';
 import { UserRole } from 'src/app/models/user-role.model';
+import { CharityOrganizationService } from 'src/app/services/charity-organization.service';
+import { DonorService } from 'src/app/services/donor.service';
+import { PostService } from 'src/app/services/post.service';
 import { SharedUserDataService } from 'src/app/services/shared-user-data.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { TransferService } from 'src/app/services/transfer.service';
 
 @Component({
@@ -13,37 +18,102 @@ import { TransferService } from 'src/app/services/transfer.service';
 })
 export class UserProfileComponent implements OnInit {
 
-  currentUserRole$: Observable<UserRole> = this.sharedUserDataService.getCurrentUserRole();
-  currentAddress$: Observable<string> = this.sharedUserDataService.getCurrentAddress();
-  currentDonor$: Observable<Donor>  = this.sharedUserDataService.getCurrentDonor();
-  currentCharityOrganization$: Observable<CharityOrganization> = this.sharedUserDataService.getCurrentCharityOrganization();
-  moneyShared$!: Observable<string>;
-  moneyReceived$!: Observable<string>;
+  currentUserRole!: UserRole;
+  currentAddress!: string
+  currentDonor!: Donor;
+  currentCharityOrganization!: CharityOrganization;
 
-  subscription1$!: Subscription;
-  subscription2$!: Subscription;
+  moneyShared$!: Observable<string>;
+  moneyReceived$!: Observable<string>; 
+  currentBalance$: Observable<number>= this.transferService.getCurrentBalance();
+  numberOfPosts$!: Observable<number>;
+  numberOfPostsHelped$!: Observable<number>;
+
+  username!: FormControl;
+  editCharityOrganizationForm!: FormGroup;
+  editMode: boolean = false;
+  subscriptions$: Subscription[] = [];
 
   readonly DONOR = UserRole.DONOR
   readonly CHARITY_ORGANIZATION = UserRole.CHARITY_ORGANIZATION
 
   constructor(private sharedUserDataService: SharedUserDataService,
-              private transferService: TransferService) {
-   }
+              private transferService: TransferService,
+              private donorService: DonorService,
+              private charityOrganizationService: CharityOrganizationService,
+              private postService: PostService,
+              private snackbar: SnackbarService,
+              private formBuilder: FormBuilder) {
+
+    this.subscriptions$.push(
+      this.sharedUserDataService.getCurrentUserRole().subscribe(role => this.currentUserRole = role),
+      this.sharedUserDataService.getCurrentAddress().subscribe(address => this.currentAddress = address),
+      this.sharedUserDataService.getCurrentDonor().subscribe(donor => this.currentDonor = donor),
+      this.sharedUserDataService.getCurrentCharityOrganization().subscribe(charityOrganization => this.currentCharityOrganization = charityOrganization)
+    )
+  }
 
   ngOnInit(): void {
-    this.subscription1$ = this.currentAddress$.subscribe(address => {
-      this.moneyShared$ = this.transferService.getMoneyShared(address);
-    })
+    this.moneyShared$=  this.transferService.getMoneyShared(this.currentAddress);
+    this.moneyReceived$ = this.transferService.getMoneyReceived(this.currentAddress);
+    this.currentBalance$ = this.transferService.getCurrentBalance();
+  }
 
-    this.subscription2$ = this.currentAddress$.subscribe(address => {
-      this.moneyReceived$ = this.transferService.getMoneyReceived(address);
+  createUsernameFormControl(): void {
+    this.username = new FormControl(this.currentDonor.username, [Validators.required]);
+  }
+
+  updateDonor(): void {
+    this.donorService.setDonorUsername(this.currentAddress, this.username.value).then(() => {
+      this.snackbar.success("Username updated successfully");
+      this.donorService.getDonorByAddress(this.currentAddress).then(donor => {
+        this.currentDonor = donor;       
+        this.sharedUserDataService.setCurrentDonor(donor);
+        this.editMode = false;  
+
+      })
+    }).catch(() => {
+      this.snackbar.error("Username could not be updated")
+      this.editMode = false; 
+    }
+    );
+  }
+
+  createCharityOrganizationFormBuilder() {
+    this.editCharityOrganizationForm = this.formBuilder.group({
+      name: [this.currentCharityOrganization.name, Validators.required],
+      email: [this.currentCharityOrganization.email, [Validators.required, Validators.email]],
+      description: [this.currentCharityOrganization.description, Validators.required],
+      phoneNumber: [this.currentCharityOrganization.phoneNumber]
     })
   }
-  
+
+  updateCharityOrganization(): void {
+    const charityOrganization: CharityOrganization = <CharityOrganization> {
+      accountAddress: this.currentAddress,
+      name: this.editCharityOrganizationForm.controls['name'].value,
+      email: this.editCharityOrganizationForm.controls['email'].value,
+      description: this.editCharityOrganizationForm.controls['description'].value,
+      phoneNumber: this.editCharityOrganizationForm.controls['phoneNumber'].value
+    }
+
+    this.charityOrganizationService.updateCharityOrganization(charityOrganization.accountAddress,
+                                                              charityOrganization.email,
+                                                              charityOrganization.name,
+                                                              charityOrganization.description,
+                                                              charityOrganization.phoneNumber)
+        .then(() => {
+          this.currentCharityOrganization = charityOrganization;       
+          this.sharedUserDataService.setCurrentCharityOrganization(charityOrganization);
+          this.editMode = false;  
+        }).catch(() => {
+          this.snackbar.error("Profile could not be updated")
+          this.editMode = false; 
+        })              
+  }
 
   ngOnDestroy() {
-    this.subscription1$.unsubscribe()
-    this.subscription2$.unsubscribe()
-}
+    this.subscriptions$.forEach((subscription) => subscription.unsubscribe())
+  }
 
 }

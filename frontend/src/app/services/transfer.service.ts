@@ -20,32 +20,38 @@ export class TransferService {
   contract: any
 
   donationsSource$ = new BehaviorSubject<Donation[]>([]);
+  balanceSource$ = new BehaviorSubject<number>(0);
   
   constructor() {
     this.web3Modal = new Web3Modal(WEB3_MODAL_OPTIONS);
     this.getDonations().then((result) => {
       this.donationsSource$.next(result);
     })
+    this.getBalance().then((balance) => {
+      this.balanceSource$.next(balance);
+    })
   }
 
-  async tranferEthereum(transferAddress: string, amount: number, postId: number, message: string) {
-    console.log(transferAddress);
-    
+  async tranferEthereum(transferAddress: string, amount: number, postId: number, message: string): Promise<void> {
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
     this.contract = new this.web3js.eth.Contract(TRANSFER_TOKEN_ABI, TRANSFER_CONTRACT_ADDRESS);
 
-    const donate = await this.contract.methods.pay(transferAddress, message, postId).send({ from: this.accounts[0], value: amount * 1e18 })
+    await this.contract.methods.pay(transferAddress, message, postId).send({
+       from: this.accounts[0], value: Web3.utils.toWei(amount.toString(), 'ether') }
+    )
 
-    this.getDonations().then((result) => {
-      this.donationsSource$.next(result);
+    this.getDonations().then((donation) => {
+      this.donationsSource$.next(donation);
     })
 
-    return donate;
+    this.getBalance().then((balance) => {
+      this.balanceSource$.next(balance);
+    })
   }
 
-  async getDonations() {
+  private async getDonations() {
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
@@ -55,21 +61,42 @@ export class TransferService {
     });
   }
 
+  private async getBalance(): Promise<number> {  
+    this.provider = await this.web3Modal.connect();
+    this.web3js = new Web3(this.provider);
+    this.accounts = await this.web3js.eth.getAccounts(); 
+    return this.web3js.eth.getBalance(this.accounts[0]).then((balance: string) => {
+      return parseFloat(Web3.utils.fromWei(balance, 'ether')).toFixed(2);
+    })
+  }
+
   getLiveDonations(): Observable<Donation[]> {
     return this.donationsSource$.asObservable();
   }
 
-  getMoneyShared(account: string): Observable<string> {
+  getCurrentBalance(): Observable<number> {
+    return this.balanceSource$.asObservable();
+  }
+
+  getMoneyShared(address: string): Observable<string> {
     return this.getLiveDonations().pipe((map(donations => {
-      const sum = donations.filter(donations => donations.accountSender === account)
+      const sum = donations.filter(donations => donations.accountSender === address)
                            .reduce((sum, donation) => sum + +donation.amount, 0)                           
       return Web3.utils.fromWei(sum.toString(), 'ether')
     })))
   }
 
-  getMoneyReceived(account: string): Observable<string> {
+  getMoneyReceived(address: string): Observable<string> {
     return this.getLiveDonations().pipe((map(donations => {
-      const sum = donations.filter(donations => donations.accountReceiver === account)
+      const sum = donations.filter(donations => donations.accountReceiver === address)
+                           .reduce((sum, donation) => sum + +donation.amount, 0)                           
+      return Web3.utils.fromWei(sum.toString(), 'ether')
+    })))
+  }
+
+  getMoneyRaisedForPost(postId: number): Observable<string> {
+    return this.getLiveDonations().pipe((map(donations => {      
+      const sum = donations.filter(donations => donations.postId == postId)
                            .reduce((sum, donation) => sum + +donation.amount, 0)                           
       return Web3.utils.fromWei(sum.toString(), 'ether')
     })))

@@ -56,11 +56,11 @@ export class RegisterCharityOrganizationDialogComponent implements OnInit {
 
   register(): void {           
     const charityOrganization = <CharityOrganization> {
+      accountAddress: this.address,
       email: this.getEmailFormControl(),
       name:this.getNameFormControl(),
       description: this.getDescriptionFormControl(),
-      phoneNumber: this.getPhoneNumberFormControl(),
-      accountAddress: this.address
+      phoneNumber: this.getPhoneNumberFormControl()
     } 
     this.charityOrganizationService.addCharityOrganization(
         charityOrganization.accountAddress,

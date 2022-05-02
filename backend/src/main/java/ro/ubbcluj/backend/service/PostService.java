@@ -81,7 +81,6 @@ public class PostService {
                     newPost.setHeadline(post.getHeadline());
                     newPost.setDescription(post.getDescription());
                     newPost.setReadMoreUrl(post.getReadMoreUrl());
-                    newPost.setPhotos(post.getPhotos());
                 }
         );
 

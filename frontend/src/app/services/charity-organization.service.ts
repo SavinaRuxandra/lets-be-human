@@ -28,22 +28,33 @@ export class CharityOrganizationService {
     this.contract = new this.web3js.eth.Contract(CHARITY_ORGANIZATIONS_TOKEN_ABI, CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS);
 
     await this.contract.methods.addCharityOrganization(address, email, name, description, phoneNumber).send({
-      from: address
+      from: this.accounts[0]
     });
   }
 
-  async getCharityOrganizationByAddress(address: string): Promise<any> {
+  async updateCharityOrganization(address: string, email: string, name: string, description: string, phoneNumber: string): Promise<void> {
+    this.provider = await this.web3Modal.connect();
+    this.web3js = new Web3(this.provider);
+    this.accounts = await this.web3js.eth.getAccounts(); 
+    this.contract = new this.web3js.eth.Contract(CHARITY_ORGANIZATIONS_TOKEN_ABI, CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS);
+
+    await this.contract.methods.updateCharityOrganization(address, email, name, description, phoneNumber).send({
+      from: this.accounts[0]
+    });
+  }
+
+  private async getCharityOrganizationByAddress(address: string): Promise<any> {
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
     this.contract = new this.web3js.eth.Contract(CHARITY_ORGANIZATIONS_TOKEN_ABI, CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS);
     
     return await this.contract.methods.getCharityOrganizationByAddress(address).call({
-      from: address
+      from: this.accounts[0]
     });
   }
 
-  async getCharityOrganizations(): Promise<any> {
+  private async getCharityOrganizations(): Promise<any> {
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
@@ -54,14 +65,28 @@ export class CharityOrganizationService {
     });
   }
 
+  getCharityOrganizationsAsObjects(): Promise<CharityOrganization[]> {
+    return this.getCharityOrganizations().then(charityOrganizations => {
+      return charityOrganizations.map((charityOrganization: any) =>        
+         <CharityOrganization> {
+          accountAddress: charityOrganization[0],
+          email: charityOrganization[1],
+          name: charityOrganization[2],
+          description: charityOrganization[3],
+          phoneNumber: charityOrganization[4]         
+        }
+      )
+    })
+  }
+
   getCharityOrganizationByAddressAsObject(address: string): Promise<CharityOrganization> {
     return this.getCharityOrganizationByAddress(address).then(charityOrganization => {
       return <CharityOrganization> {
-        email: charityOrganization[0],
-        name: charityOrganization[1],
-        description: charityOrganization[2],
-        phoneNumber: charityOrganization[3],
-        accountAddress: address
+        accountAddress: charityOrganization[0],
+        email: charityOrganization[1],
+        name: charityOrganization[2],
+        description: charityOrganization[3],
+        phoneNumber: charityOrganization[4]
       }    
     })
   }

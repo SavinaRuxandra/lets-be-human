@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { map, Observable, take } from 'rxjs';
 import { HeaderButtonEnum } from 'src/app/models/header-button.enum';
-    import { Post } from 'src/app/models/post.model';
+import { Post } from 'src/app/models/post.model';
 import { PostService } from 'src/app/services/post.service';
 import { SharedHeadlineButtonDataService } from 'src/app/services/shared-headline-button-data.service';
 import { SharedUserDataService } from 'src/app/services/shared-user-data.service';
@@ -26,7 +26,7 @@ export class MainPageComponent implements OnInit {
 
   constructor(private postService: PostService,
               private sharedUserDataService: SharedUserDataService,
-              private sharedHeadlineButtonDataService: SharedHeadlineButtonDataService) { }
+              private sharedHeadlineButtonDataService: SharedHeadlineButtonDataService) {}
 
   ngOnInit(): void {
 

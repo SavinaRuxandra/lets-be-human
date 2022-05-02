@@ -12,7 +12,7 @@
                     <mat-form-field class="d-block" appearance="outline">
                         <mat-label>Headline</mat-label>
                         <input matInput type="text" autocomplete="off" placeholder="Enter headline" formControlName="headline" required/>
-                        <mat-hint class="text-danger" *ngIf="createPostForm.get('headline')?.hasError('required') && createPostForm.get('name')?.dirty">
+                        <mat-hint class="text-danger" *ngIf="createPostForm.get('headline')?.hasError('required') && createPostForm.get('headline')?.dirty">
                             Please enter a headline
                         </mat-hint>
                     </mat-form-field>
@@ -23,11 +23,11 @@
                     <mat-form-field class="d-block" appearance="outline">
                         <mat-label>Description</mat-label>
                         <textarea matInput type="text" autocomplete="off" placeholder="Enter description" formControlName="description" required></textarea>
-                        <mat-hint class="text-danger" *ngIf="createPostForm.get('headline')?.hasError('required') && createPostForm.get('name')?.dirty">
+                        <mat-hint class="text-danger" *ngIf="createPostForm.get('description')?.hasError('required') && createPostForm.get('description')?.dirty">
                             Please enter a description
                         </mat-hint>
                     </mat-form-field>
-                    </div>
+                </div>
 
 
                 <div class="third-row">
@@ -36,7 +36,7 @@
                         <mat-label>Link</mat-label>
                         <input matInput type="text" autocomplete="off" placeholder="https://www.example.ro/charitable-cause" formControlName="readMoreUrl">
                     </mat-form-field>
-                    </div>
+                </div>
 
                 <div class="forth-row d-inline-block">
                     <p><b>Photos</b> - Add some photos</p>
@@ -49,8 +49,13 @@
                         (change)="onFileChanges($event)"
                         #fileInput>
                     </div>   
-                    <div >
-                        <ng-container *ngFor="let photo of photos">
+                    <div>
+                        <ng-container *ngFor="let photo of photos; let i = index">
+                            <div class="close-button-wrapper">
+                                <button mat-stroked-button (click)="removeImageAtIndex(i)">
+                                  <mat-icon class="close-icon">close</mat-icon>
+                                </button>
+                              </div>
                             <img [src]="photo" style="height: 100; width:70">
                         </ng-container>   
                     </div>

@@ -37,6 +37,8 @@ import { UserProfileComponent } from './views/user-profile/user-profile.componen
 import { RegisterDonorDialogComponent } from './views/register/register-donor-dialog/register-donor-dialog/register-donor-dialog.component';
 import { RegisterCharityOrganizationDialogComponent } from './views/register/register-charity-organization-dialog/register-charity-organization-dialog.component';
 import { SharedUserDataService } from './services/shared-user-data.service';
+import { MatDividerModule } from '@angular/material/divider';
+
 
 @NgModule({
   declarations: [
@@ -77,6 +79,7 @@ import { SharedUserDataService } from './services/shared-user-data.service';
     MatSnackBarModule,
     BrowserModule,
     ScrollingModule,
+    MatDividerModule,
     CarouselModule.forRoot(),
   ],
   providers: [

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { Post } from 'src/app/models/post.model';
@@ -16,7 +15,7 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 export class CreatePostComponent implements OnInit {
 
   createPostForm!: FormGroup;
-  photos: string[] = [];
+  photos: any[] = [];
   photosFile: File[] = [];
   currentAddress!: string;
 
@@ -34,9 +33,9 @@ export class CreatePostComponent implements OnInit {
 
   createFormGroup(): void {
     this.createPostForm = this.formBuilder.group({
-      headline: ['', [Validators.required]],
-      description: ['', [Validators.required]],
-      readMoreUrl: ['']
+      headline: ['', Validators.required],
+      description: ['',  Validators.required],
+      readMoreUrl: ''
     })
   }
 
@@ -48,7 +47,7 @@ export class CreatePostComponent implements OnInit {
       reader.readAsDataURL(file);
     
       reader.onload = () => {
-        this.photos.push(reader.result as string);
+        this.photos.push(reader.result);
         this.photosFile.push(file);
       };
     }
@@ -84,13 +83,17 @@ export class CreatePostComponent implements OnInit {
         })
   }
 
+  removeImageAtIndex(index: number) {
+    // this.photos.
+    // console.log(index);
+    
+  }
+
   cancel(): void {
     this.goBack();
   }
 
   goBack(): void {
-    this.router.navigateByUrl('/main-page', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['/main-page']); 
-    });
+    this.router.navigate(['/main-page']);
   }
 }

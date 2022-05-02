@@ -18,30 +18,43 @@ contract('CharityOrganizations', (accounts) => {
     assert.notEqual(address, undefined)
   })
 
-  it('should add and get charity organizations', async () => {
+  it('should add and get charity organization', async () => {
     await this.charityOrganizations.addCharityOrganization(currentAccount, "test@yahoo", "Name", "Description", "0745454545")
     const result = (await this.charityOrganizations.getCharityOrganizationByAddress(currentAccount));
-    assert.equal(result[0], "test@yahoo");
-    assert.equal(result[1], "Name");
-    assert.equal(result[2], "Description");
-    assert.equal(result[3], "0745454545");
+    assert.equal(result[0], currentAccount)
+    assert.equal(result[1], "test@yahoo");
+    assert.equal(result[2], "Name");
+    assert.equal(result[3], "Description");
+    assert.equal(result[4], "0745454545");
   })
 
-  it('should add and get charity organizations', async () => {
+  it('should update charity organization', async () => {
+    await this.charityOrganizations.updateCharityOrganization(currentAccount, "testUpdate@yahoo", "NameUpdate", "DescriptionUpdate", "07454545452")
+    const result = (await this.charityOrganizations.getCharityOrganizationByAddress(currentAccount));
+    assert.equal(result[0], currentAccount)
+    assert.equal(result[1], "testUpdate@yahoo");
+    assert.equal(result[2], "NameUpdate");
+    assert.equal(result[3], "DescriptionUpdate");
+    assert.equal(result[4], "07454545452");
+  })
+
+  it('should get all charity organizations', async () => {
     await this.charityOrganizations.addCharityOrganization(currentAccount, "test1@yahoo", "Name1", "Description1", "07454545451")
     await this.charityOrganizations.addCharityOrganization(secondAccount, "test2@yahoo", "Name2", "Description2", "07454545452")
 
     const result = (await this.charityOrganizations.getAllCharityOrganizations());
     const first = result[1];
     const second = result[2]
-    assert.equal(first[0], "test1@yahoo");
-    assert.equal(first[1], "Name1");
-    assert.equal(first[2], "Description1");
-    assert.equal(first[3], "07454545451");
-    assert.equal(second[0], "test2@yahoo");
-    assert.equal(second[1], "Name2");
-    assert.equal(second[2], "Description2");
-    assert.equal(second[3], "07454545452");
+    assert.equal(first[0], currentAccount);
+    assert.equal(first[1], "test1@yahoo");
+    assert.equal(first[2], "Name1");
+    assert.equal(first[3], "Description1");
+    assert.equal(first[4], "07454545451");
+    assert.equal(second[0], secondAccount);
+    assert.equal(second[1], "test2@yahoo");
+    assert.equal(second[2], "Name2");
+    assert.equal(second[3], "Description2");
+    assert.equal(second[4], "07454545452");
   })
   
 })

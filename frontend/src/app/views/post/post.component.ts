@@ -12,6 +12,8 @@ import { SharedHeadlineButtonDataService } from 'src/app/services/shared-headlin
 import { PostService } from 'src/app/services/post.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 
 @Component({
   selector: 'app-post',
@@ -20,53 +22,48 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
 })
 export class PostComponent implements OnInit {
 
-  @Input() post!: Post
-  photos: any
-  charityOrganization!: CharityOrganization
+  @Input() post!: Post;
+  photos!: any[];
+  charityOrganization!: CharityOrganization;
   activeButton$!: Observable<HeaderButtonEnum>;
+  editMode: boolean = false;
+  moneyRaised$!: Observable<string>;
+  editForm!: FormGroup;
 
   readonly CURRENT_USER_POSTS_BUTTON = HeaderButtonEnum.CURRENT_USER_POSTS
+  readonly ALL_POSTS_BUTTON = HeaderButtonEnum.ALL_POSTS
+
 
   constructor(private postService: PostService,
               private transferService: TransferService,
               private charityOrganizationService: CharityOrganizationService,
               private sharedHeadlineButtonDataService: SharedHeadlineButtonDataService,
               private dialog: MatDialog,
-              private snack: MatSnackBar,
+              private snackbar: SnackbarService,
+              private formBuilder: FormBuilder,
               private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {    
-    this.charityOrganizationService.getCharityOrganizationByAddress(this.post.charityOrganizationAddress)
-      .then(result => {
-          const charityOrganization = <CharityOrganization> {
-            email: result[0],
-            name: result[1],
-            description: result[2],
-            phoneNumber: result[3],
-            accountAddress: this.post.charityOrganizationAddress
-          } 
+    this.charityOrganizationService.getCharityOrganizationByAddressAsObject(this.post.charityOrganizationAddress).then(charityOrganization => {
         this.charityOrganization = charityOrganization
       })
     this.photos = this.post.photos.map((photo: string) => this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + photo));
     this.activeButton$ = this.sharedHeadlineButtonDataService.activeButton;
+    this.moneyRaised$ = this.transferService.getMoneyRaisedForPost(this.post.id);
   }
 
   deletePost(): void {
     this.postService.deletePostById(this.post.id)
         .pipe(take(1))
         .subscribe(() => {
-          this.snack.open("Post successfully deleted", "x", {duration: 4000});
+          window.location.reload();
+          this.snackbar.success("Post successfully deleted");
         },
         err => {
-          this.snack.open("Post could not be deleted", "x", {duration: 4000})
+          this.snackbar.error("Post could not be deleted")
         });
 
-    window.location.reload();
     this.sharedHeadlineButtonDataService.changeActiveButton(HeaderButtonEnum.CURRENT_USER_POSTS);
-  }
-
-  updatePost(): void {
-
   }
 
   openConfirmationDialog(amount: number): void {
@@ -96,5 +93,45 @@ export class PostComponent implements OnInit {
 
   makeTransfer(amount: number, message: string): void {
     this.transferService.tranferEthereum(this.charityOrganization.accountAddress, amount, this.post.id, message)
+  }
+
+  openEditMode(): void {
+    this.createEditForm();
+    this.editMode = true;
+  }
+
+  createEditForm(): void {
+    this.editForm = this.formBuilder.group({
+      headline: [this.post.headline, Validators.required],
+      description: [this.post.description, Validators.required],
+      readMoreUrl: this.post.readMoreUrl
+    })
+  }
+
+  updatePost(): void {        
+    const postToUpdate: Post = <Post> {
+      id: this.post.id,
+      headline: this.editForm.controls['headline'].value,
+      description: this.editForm.controls['description'].value,
+      readMoreUrl: this.editForm.controls['readMoreUrl'].value,
+    };
+    this.postService.updatePost(postToUpdate)
+    .pipe(take(1))
+    .subscribe(() => {
+      this.postService.getPostById(this.post.id).subscribe(post => this.post = post);
+      this.snackbar.success("Post successfully updated");
+    },
+    err => {
+      this.snackbar.error("The post could not be updated");
+    })
+    this.editMode = false;
+  }
+
+  cancelEdit(): void {
+    this.editMode = false;
+  }
+
+  ngOnDestroy() {
+    this.editMode = false;
   }
 }

@@ -2,7 +2,7 @@
 
 .wrapper {
     position: fixed;
-    top: 20%;
+    top: 30%;
     z-index: 100;
 
     padding: 1.5rem;
@@ -38,5 +38,16 @@
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
     font-size: 1.2em;
+  }
+
+  .edit-button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
   }
   

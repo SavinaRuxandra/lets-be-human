@@ -1,37 +1,165 @@
 <div class="wrapper">
 
-    <div *ngIf="(currentUserRole$ | async) === DONOR">
+    <div *ngIf="currentUserRole === DONOR">
         <div class="card">
+            <div *ngIf="editMode == false" class="edit-button-wrapper">
+                <button mat-button (click)="editMode = true; createUsernameFormControl()">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </div>
+            <div *ngIf="editMode == true" class="edit-button-wrapper">
+                <button mat-button (click)="editMode = false">
+                    <mat-icon>close</mat-icon>
+                </button>
+                <button mat-button
+                        [disabled]="username.hasError('required')" (click)="updateDonor()">
+                    <mat-icon>check</mat-icon>
+                </button>
+            </div>
             <img src="../../../assets/profile-donor.png" class="card-image">
-            <p class="card-title">{{(currentDonor$ | async)!.username}}</p>
+            <div *ngIf="editMode == false; else editModeDonor">
+                <p class="card-title">{{currentDonor.username}}</p>
+            </div>
+
+            <ng-template #editModeDonor>
+                <mat-form-field class="d-block">
+                    <input matInput 
+                           type="text" 
+                           placeholder="Username" 
+                           [formControl]="username" 
+                           autocomplete="off">
+                    <mat-hint *ngIf="username.hasError('required') && username.dirty"
+                              class="text-danger">
+                      The username is required
+                    </mat-hint>
+                </mat-form-field>
+            </ng-template>
+
             <i><small>DONOR</small></i>
-            <i><small>{{(currentDonor$ | async)!.accountAddress}}</small></i>
+                <i><small>{{currentDonor.accountAddress}}</small></i>
 
             <br><br>
+
+            <div>
+                Current Balance: {{(currentBalance$ | async)}} ETH
+            </div>
       
             <div>
                 Money Shared: {{(moneyShared$ | async)}} ETH
+            </div>
+
+            <div>
+                <!-- Causes helped: {{(helpedCauses$ | async)}} -->
             </div>
         </div>
-      
     </div>
 
-    <div *ngIf="(currentUserRole$ | async) === CHARITY_ORGANIZATION">
+    <div *ngIf="currentUserRole === CHARITY_ORGANIZATION">
         <div class="card">
-            <img src="../../../assets/profile-organization.png" class="card-image">
-            <p class="card-title">{{(currentCharityOrganization$ | async)!.name}}</p>
-            <small>{{(currentCharityOrganization$ | async)!.accountAddress}}</small>
-
-            <small>CHARITY_ORGANIZATION</small>
-
-            <br><br>
-      
-            <div>
-                Money Shared: {{(moneyShared$ | async)}} ETH
+            <div *ngIf="editMode == false" class="edit-button-wrapper">
+                <button mat-button (click)="editMode = true; createCharityOrganizationFormBuilder()">
+                    <mat-icon>edit</mat-icon>
+                </button>
             </div>
 
-            <div>
+            <div *ngIf="editMode == true" class="edit-button-wrapper">
+                <button mat-button (click)="editMode = false">
+                    <mat-icon>close</mat-icon>
+                </button>
+                <button mat-button
+                        [disabled]="editCharityOrganizationForm.invalid" (click)="updateCharityOrganization()">
+                    <mat-icon>check</mat-icon>
+                </button>
+            </div>
+            <img src="../../../assets/profile-organization.png" class="card-image">
+
+            <ng-container *ngIf="editMode == false; else editModeCharityOrganization">
+                <p class="card-title">{{currentCharityOrganization.name}}</p>
+
+                <small>{{currentCharityOrganization.accountAddress}}</small>
+                <small>CHARITY_ORGANIZATION</small>
+
+                <div>
+                    Email: {{currentCharityOrganization.email}}
+                </div>
+                
+                <div *ngIf="currentCharityOrganization.phoneNumber">
+                    Phone number: {{currentCharityOrganization.phoneNumber}}
+                </div>
+                <div>
+                    Description: {{currentCharityOrganization.description}}
+                </div>
+            </ng-container>
+
+            <ng-template #editModeCharityOrganization>
+                <br>
+                <small>{{currentCharityOrganization.accountAddress}}</small>
+                <small>CHARITY_ORGANIZATION</small>
+                <br>
+
+                <form [formGroup]="editCharityOrganizationForm" class="form-container">
+                    <mat-form-field class="d-block">
+                        <input matInput
+                                type="text" 
+                                placeholder="Name"  
+                                formControlName="name" 
+                                autocomplete="off">
+                        <mat-hint *ngIf="editCharityOrganizationForm.get('name')?.hasError('required') && editCharityOrganizationForm.get('name')?.dirty"
+                                    class="text-danger">
+                            The name is required
+                        </mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field class="d-block">
+                        <input matInput 
+                               type="text" 
+                               placeholder="Email"  
+                               formControlName="email" 
+                               autocomplete="off"
+                               >
+                        <mat-hint *ngIf="editCharityOrganizationForm.get('email')?.hasError('required') && editCharityOrganizationForm.get('email')?.dirty"
+                                  class="text-danger">
+                            The email is required
+                        </mat-hint>
+                        <mat-hint *ngIf="editCharityOrganizationForm.get('email')?.hasError('email') && editCharityOrganizationForm.get('email')?.dirty"
+                                   class="text-danger">
+                            Please enter a valid email
+                        </mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field class="d-block">
+                        <textarea matInput 
+                               type="text" 
+                               placeholder="Description"  
+                               formControlName="description" 
+                               autocomplete="off"></textarea>
+                        <mat-hint *ngIf="editCharityOrganizationForm.get('description')?.hasError('required') && editCharityOrganizationForm.get('description')?.dirty"
+                                  class="text-danger">
+                            The description is required
+                        </mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field class="d-block">
+                        <input matInput 
+                               type="number" 
+                               placeholder="Phone Number"  
+                               formControlName="phoneNumber" 
+                               autocomplete="off">
+                    </mat-form-field>
+                    
+                </form>
+            </ng-template>
+
+            <br><br>
+
+            <div *ngIf="editMode == false">
+                Current Balance: {{(currentBalance$ | async)}} ETH
+                <br>
+                Money Shared: {{(moneyShared$ | async)}} ETH
+                <br>
                 Money Received: {{(moneyReceived$ | async)}} ETH
+                <br>
+                Number of Posts: {{(numberOfPosts$ | async)}}
             </div>
     
         </div>

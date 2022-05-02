@@ -59,12 +59,23 @@ export class AuthentificationService {
 
   onChangeAddress(): void {
     window.ethereum.on('accountsChanged', () => this.ngZone.run(() => {
-      if(this.router.url != "/home") {        
+      if(this.router.url != '/home') {        
         this.logOut();
         this.snack.info("Uups! Looks like you changed your current address. Login again with the new address");
       }
     }));
   }
+
+  // onChangeAddress(): void {
+  //   window.ethereum.on('accountsChanged', () => this.ngZone.run(() => {
+  //     let currentRole;
+  //     this.sharedUserDataService.getCurrentUserRole().pipe(take(1)).subscribe(role => currentRole = role)
+  //     if(currentRole != UserRole.LOGGED_OUT) {        
+  //       this.logOut();
+  //       this.snack.info("Uups! Looks like you changed your current address. Login again with the new address");
+  //     }
+  //   }));
+  // }
 }
 
 

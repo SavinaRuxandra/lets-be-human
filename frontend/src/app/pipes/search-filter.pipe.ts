@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { take } from 'rxjs';
 import { CharityOrganization } from '../models/charity-organization.model';
 import { Post } from '../models/post.model';
 import { CharityOrganizationService } from '../services/charity-organization.service';
@@ -9,11 +8,12 @@ import { CharityOrganizationService } from '../services/charity-organization.ser
 })
 export class SearchFilterPipe implements PipeTransform {
 
-  charityOrganizations!: CharityOrganization[]
+  charityOrganizations: CharityOrganization[] = []
 
   constructor(private charityOrganizationService: CharityOrganizationService) {
-    this.charityOrganizationService.getCharityOrganizations()
-      .then((charityOrganizations) => this.charityOrganizations = charityOrganizations)
+    this.charityOrganizationService.getCharityOrganizationsAsObjects().then((charityOrganizations) => {
+      this.charityOrganizations = charityOrganizations
+    })
   }
 
   transform(posts: Post[] | null, searchInput: string): Post[] | null {
@@ -29,6 +29,7 @@ export class SearchFilterPipe implements PipeTransform {
     return posts!.filter( post => {
         const charityOrganization: CharityOrganization = this.charityOrganizations.filter(charityOrganization => charityOrganization.accountAddress === post.charityOrganizationAddress)[0];        
         return charityOrganization.name.trim().toLowerCase().indexOf(searchInput.trim().toLowerCase()) == 0;
+              //  post.description.trim().toLowerCase().indexOf(searchInput.trim().toLowerCase()) == 0; ?? should I
       });
   }
 }

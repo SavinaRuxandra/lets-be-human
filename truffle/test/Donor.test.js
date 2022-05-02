@@ -18,13 +18,13 @@ contract('Donor', (accounts) => {
   })
 
   it('should get name', async () => {
-    const result = (await this.donor.getDonorName(currentAccount));
+    const result = (await this.donor.getDonorUsername(currentAccount));
     assert.equal(result, "");
   })
 
   it('should set name', async () => {
-    await this.donor.setDonorName(currentAccount, "New Name");
-    const result = await this.donor.getDonorName(currentAccount)
+    await this.donor.setDonorUsername(currentAccount, "New Name");
+    const result = await this.donor.getDonorUsername(currentAccount)
     assert.equal(result, "New Name");
   })
 })

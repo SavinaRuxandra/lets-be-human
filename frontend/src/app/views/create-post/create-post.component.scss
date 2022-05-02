@@ -45,3 +45,12 @@ button {
     width: 100px;
     padding: 3px 20px 3px 20px;
 }
+
+.close-button-wrapper {
+    position: relative;
+    background-color: transparent;
+}
+
+.close-icon {
+    color: red;
+}

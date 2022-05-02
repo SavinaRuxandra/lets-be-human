@@ -5,15 +5,33 @@
     margin-bottom: 30px;
     box-shadow: 0px 0px 7px black;
     z-index: 101;
-    // border: 1px solid black;
-}
-
-.button-list {
-    display: flex;
-    justify-content: space-around;
 }
 
 .modification-buttons {
     display: block;
     margin-left: auto;
+    box-sizing: border-box
+}
+
+.money-raised-wrapper {
+    display: block;
+    margin-left: auto;
+    box-sizing: border-box
+}
+
+.donate-button {
+    display: block;
+    padding: 10px;
+    width: 100%;
+    background-color: style.$header-color;
+}
+
+.button-wrapper-edit {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.edit-button {
+    padding: 10px;
+    margin-left: 5px;
 }

@@ -1,15 +1,22 @@
-<mat-card class="post-wrapper">
+<div *ngIf="editMode == false; else editModeTemplate">
+  <mat-card class="post-wrapper">
     <mat-card-header>
-      <div mat-card-avatar></div>
       <mat-card-title *ngIf="charityOrganization">{{ charityOrganization.name }}</mat-card-title>
       <mat-card-subtitle> {{ post.headline }} </mat-card-subtitle>
       <div *ngIf="(activeButton$ | async) === CURRENT_USER_POSTS_BUTTON" class="modification-buttons">
-        <button mat-button (click)="updatePost()"><mat-icon>edit</mat-icon></button>
+        <button mat-button (click)="openEditMode()"><mat-icon>edit</mat-icon></button>
         <button mat-button (click)="deletePost()"><mat-icon>delete</mat-icon></button>
+      </div>
+      <div *ngIf="(activeButton$ | async) === ALL_POSTS_BUTTON" class="money-raised-wrapper">
+        Money raised: {{(moneyRaised$ | async)}} ETH
       </div>
     </mat-card-header>
 
     <mat-card-content> 
+      <p>
+        {{ post.description }}
+      </p>
+
       <carousel [isAnimated]="true"  [interval]='0'>
         <slide *ngFor="let photo of photos">
           <img [src]="photo" style="display: block; width: 100%;">   
@@ -17,24 +24,86 @@
       </carousel>
 
       <a href= "{{ post.readMoreUrl }}" target="_blank">
-        <div class="d-flex justify-content-end align-items-center">
+        <div *ngIf="post.readMoreUrl" class="d-flex justify-content-end align-items-center">
           <div>Read more</div>
           <mat-icon>arrow_right_alt</mat-icon>
         </div>
       </a>
 
-      <p>
-        {{ post.description }}
-      </p>
-
     </mat-card-content>
-    <mat-card-actions class="button-list">
-      <button mat-button matTooltip="Donate 1ETH" (click)="openConfirmationDialog(1)">LIKE</button>
-      <button mat-button matTooltip="Donate 5ETH" (click)="openConfirmationDialog(5)">ADOR</button>
-      <button mat-button matTooltip="Donate 10ETH" (click)="openConfirmationDialog(10)"><3<3<3</button>
-      <button mat-button matTooltip="Customize donation" (click)="openCustomDonationDialog()">Custom</button>
+    <mat-card-actions>
+      <button mat-raised-button
+              class="mat-primary donate-button" 
+              matTooltip="Customize donation" 
+              (click)="openCustomDonationDialog()">
+              DONATE
+      </button>
     </mat-card-actions>
   </mat-card>
+</div>
+
+<ng-template #editModeTemplate>
+  <mat-card class="post-wrapper">
+    <form [formGroup]="editForm">
+
+      <mat-card-header>
+        <mat-card-title>Edit post</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content> 
+        <mat-form-field class="d-block" appearance="outline">
+          <mat-label>Headline</mat-label>
+          <input matInput type="text" placeholder="Headline" formControlName="headline" autocomplete="off">
+          <mat-hint class="text-danger" *ngIf="editForm.get('headline')?.hasError('required') && editForm.get('headline')?.dirty">
+            The headline is required
+        </mat-hint>
+          </mat-form-field>
+
+        <mat-form-field class="d-block" appearance="outline">
+          <mat-label>Description</mat-label>
+          <textarea matInput type="text" placeholder="Description" formControlName="description" autocomplete="off"></textarea>
+          <mat-hint class="text-danger" *ngIf="editForm.get('description')?.hasError('required') && editForm.get('description')?.dirty">
+            The description is required
+          </mat-hint>
+        </mat-form-field>
+
+        <carousel [isAnimated]="true"  [interval]='0'>
+          <slide *ngFor="let photo of photos; let i=index">
+            <img [src]="photo" style="display: block; width: 100%;">   
+          </slide>   
+        </carousel>
+
+        <br>
+        <mat-form-field class="d-block" appearance="outline">
+          <mat-label>Useful link</mat-label>
+          <input matInput 
+                 type="text" 
+                 placeholder="Useful link"
+                 formControlName="readMoreUrl" 
+                 autocomplete="off">
+        </mat-form-field>
+      </mat-card-content>
+
+      <mat-card-actions class="button-wrapper-edit">
+        <button mat-raised-button 
+                type="reset" 
+                class="edit-button"
+                (click)="cancelEdit()">
+          Cancel
+        </button>
+        <button mat-raised-button
+                type="submit" 
+                class="mat-primary edit-button" 
+                mat-dialog-close 
+                [disabled]="editForm.invalid"
+                (click)="updatePost()">
+          Save changes
+        </button>
+      </mat-card-actions>
+
+  </form>
+  </mat-card>
+</ng-template>
 
   
   
