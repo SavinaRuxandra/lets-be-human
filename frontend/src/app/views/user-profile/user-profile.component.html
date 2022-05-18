@@ -2,28 +2,49 @@
 
     <div *ngIf="currentUserRole === DONOR">
         <div class="card">
-            <div *ngIf="editMode == false" class="edit-button-wrapper">
-                <button mat-button (click)="editMode = true; createUsernameFormControl()">
-                    <mat-icon>edit</mat-icon>
+            <div class="edit-button-wrapper"
+                *ngIf="editMode == false">
+                <button mat-icon-button  
+                        (click)="editMode = true; 
+                        createUsernameFormControl()"
+                        >
+                    <mat-icon class="edit-icon">
+                        edit
+                    </mat-icon>
                 </button>
             </div>
-            <div *ngIf="editMode == true" class="edit-button-wrapper">
-                <button mat-button (click)="editMode = false">
-                    <mat-icon>close</mat-icon>
+            
+            <div *ngIf="editMode == true" 
+                 class="edit-button-wrapper"
+                 >
+                <button mat-icon-button
+                        class="check-button"
+                        [disabled]="username.hasError('required')" 
+                        (click)="updateDonor()">
+                    <mat-icon>
+                        check
+                    </mat-icon>
                 </button>
-                <button mat-button
-                        [disabled]="username.hasError('required')" (click)="updateDonor()">
-                    <mat-icon>check</mat-icon>
+                <button mat-icon-button 
+                        (click)="editMode = false"
+                        >
+                    <mat-icon class="close-icon">
+                        close
+                    </mat-icon>
                 </button>
             </div>
-            <img src="../../../assets/profile-donor.png" class="card-image">
-            <div *ngIf="editMode == false; else editModeDonor">
-                <p class="card-title">{{currentDonor.username}}</p>
-            </div>
+            <mat-icon class="profile-icon">person</mat-icon>
+
+            <ng-container *ngIf="editMode == false; else editModeDonor">
+                <p class="card-title">
+                    {{currentDonor.username}}
+                </p>
+            </ng-container>
 
             <ng-template #editModeDonor>
-                <mat-form-field class="d-block">
+                <mat-form-field appearance="standard">
                     <input matInput 
+                           class="input"
                            type="text" 
                            placeholder="Username" 
                            [formControl]="username" 
@@ -35,70 +56,89 @@
                 </mat-form-field>
             </ng-template>
 
-            <i><small>DONOR</small></i>
-                <i><small>{{currentDonor.accountAddress}}</small></i>
+            <p class="user-type-text">DONOR</p>
+            <p class="address-text">
+                {{currentDonor.accountAddress}}
+            </p>
 
-            <br><br>
+            <hr class="divider">    
 
-            <div>
-                Current Balance: {{(currentBalance$ | async)}} ETH
-            </div>
-      
-            <div>
-                Money Shared: {{(moneyShared$ | async)}} ETH
-            </div>
-
-            <div>
-                <!-- Causes helped: {{(helpedCauses$ | async)}} -->
+            <div class="statictics-wrapper">
+                    <div class="statistic">Current Balance {{(currentBalance$ | async)}} ETH</div>
+                    <div class="statistic">Money Shared {{(moneyShared$ | async)}} ETH</div>
+                    <!-- Causes helped: {{(helpedCauses$ | async)}} -->
             </div>
         </div>
     </div>
 
     <div *ngIf="currentUserRole === CHARITY_ORGANIZATION">
         <div class="card">
-            <div *ngIf="editMode == false" class="edit-button-wrapper">
-                <button mat-button (click)="editMode = true; createCharityOrganizationFormBuilder()">
-                    <mat-icon>edit</mat-icon>
+            <div class="edit-button-wrapper"
+                *ngIf="editMode == false">
+                <button mat-icon-button
+                        (click)="editMode = true;
+                        createCharityOrganizationFormBuilder()"
+                        >
+                    <mat-icon class="edit-icon">
+                        edit
+                    </mat-icon>
                 </button>
             </div>
 
-            <div *ngIf="editMode == true" class="edit-button-wrapper">
-                <button mat-button (click)="editMode = false">
-                    <mat-icon>close</mat-icon>
+            <div *ngIf="editMode == true" 
+                 class="edit-button-wrapper"
+                 >
+                <button mat-icon-button
+                        class="check-button"
+                        [disabled]="editCharityOrganizationForm.invalid" 
+                        (click)="updateCharityOrganization()">
+                    <mat-icon>
+                        check
+                    </mat-icon>
                 </button>
-                <button mat-button
-                        [disabled]="editCharityOrganizationForm.invalid" (click)="updateCharityOrganization()">
-                    <mat-icon>check</mat-icon>
+                <button mat-icon-button 
+                        (click)="editMode = false"
+                        >
+                    <mat-icon class="close-icon">
+                        close
+                    </mat-icon>
                 </button>
             </div>
-            <img src="../../../assets/profile-organization.png" class="card-image">
+            <mat-icon class="profile-icon">people</mat-icon>
+                
 
             <ng-container *ngIf="editMode == false; else editModeCharityOrganization">
-                <p class="card-title">{{currentCharityOrganization.name}}</p>
+                <p class="card-title">
+                    {{currentCharityOrganization.name}}
+                </p>
+                <div class="user-type-text">CHARITY ORGANIZATION</div>
+                <div class="address-text">
+                    {{currentCharityOrganization.accountAddress}}
+                </div>
 
-                <small>{{currentCharityOrganization.accountAddress}}</small>
-                <small>CHARITY_ORGANIZATION</small>
+                <hr class="divider">
 
                 <div>
-                    Email: {{currentCharityOrganization.email}}
-                </div>
-                
-                <div *ngIf="currentCharityOrganization.phoneNumber">
-                    Phone number: {{currentCharityOrganization.phoneNumber}}
-                </div>
-                <div>
-                    Description: {{currentCharityOrganization.description}}
+                    <div><span class="headline">Email:</span> {{currentCharityOrganization.email}}</div>
+                    <div><span class="headline">Description:</span> {{currentCharityOrganization.description}}</div>
+                    <div *ngIf="currentCharityOrganization.phoneNumber">
+                        <span class="headline">Phone number:</span> {{currentCharityOrganization.phoneNumber}}
+                    </div>
                 </div>
             </ng-container>
 
             <ng-template #editModeCharityOrganization>
                 <br>
-                <small>{{currentCharityOrganization.accountAddress}}</small>
-                <small>CHARITY_ORGANIZATION</small>
-                <br>
+                <div class="user-type-text">CHARITY ORGANIZATION</div>
+                <div class="address-text">
+                    {{currentCharityOrganization.accountAddress}}
+                </div>
 
-                <form [formGroup]="editCharityOrganizationForm" class="form-container">
-                    <mat-form-field class="d-block">
+                <hr class="divider">
+
+                <form [formGroup]="editCharityOrganizationForm" 
+                      class="form-container">
+                    <mat-form-field class="d-block" appearance="outline">
                         <input matInput
                                 type="text" 
                                 placeholder="Name"  
@@ -110,7 +150,7 @@
                         </mat-hint>
                     </mat-form-field>
 
-                    <mat-form-field class="d-block">
+                    <mat-form-field appearance="outline">
                         <input matInput 
                                type="text" 
                                placeholder="Email"  
@@ -127,7 +167,7 @@
                         </mat-hint>
                     </mat-form-field>
 
-                    <mat-form-field class="d-block">
+                    <mat-form-field appearance="outline">
                         <textarea matInput 
                                type="text" 
                                placeholder="Description"  
@@ -139,30 +179,33 @@
                         </mat-hint>
                     </mat-form-field>
 
-                    <mat-form-field class="d-block">
+                    <mat-form-field appearance="outline">
                         <input matInput 
                                type="number" 
                                placeholder="Phone Number"  
                                formControlName="phoneNumber" 
                                autocomplete="off">
                     </mat-form-field>
-                    
                 </form>
             </ng-template>
 
-            <br><br>
+            <hr class="divider">    
 
-            <div *ngIf="editMode == false">
-                Current Balance: {{(currentBalance$ | async)}} ETH
-                <br>
-                Money Shared: {{(moneyShared$ | async)}} ETH
-                <br>
-                Money Received: {{(moneyReceived$ | async)}} ETH
-                <br>
-                Number of Posts: {{(numberOfPosts$ | async)}}
+            <div class="statistics-wrapper">
+                <div class="statistic-headline">
+                    <div class="headline">Current Balance:</div>
+                    <div class="headline">Money Shared:</div>
+                    <div class="headline">Money Received:</div>
+                    <div class="headline">Number of Posts:</div>
+                </div>
+                
+                <div class="statistic-result">
+                    <div>{{(currentBalance$ | async)}} ETH</div>
+                    <div>{{(moneyShared$ | async)}} ETH</div>
+                    <div>{{(moneyReceived$ | async)}} ETH</div>
+                    <div>{{(numberOfPosts$ | async)}} ETH</div>
+                </div>
             </div>
-    
-        </div>
       
     </div>
 

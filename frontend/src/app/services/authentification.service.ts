@@ -8,6 +8,8 @@ import { SharedUserDataService } from './shared-user-data.service';
 import { Router } from '@angular/router';
 import { WEB3_MODAL_OPTIONS } from 'src/environments/environment';
 import { SnackbarService } from './snackbar.service';
+import { SharedHeadlineButtonDataService } from './shared-headline-button-data.service';
+import { HeaderButtonEnum } from '../models/header-button.enum';
 
 
 @Injectable({
@@ -21,6 +23,7 @@ export class AuthentificationService {
   web3Modal: any
 
   constructor(private sharedUserDataService: SharedUserDataService,
+              private sharedHeadlineButtonDataService: SharedHeadlineButtonDataService,
               private router: Router,
               private snack: SnackbarService,
               private ngZone: NgZone) { 
@@ -49,11 +52,11 @@ export class AuthentificationService {
     this.sharedUserDataService.setCurrentCharityOrganization(charityOrganization);
     this.sharedUserDataService.setCurrentUserRole(UserRole.CHARITY_ORGANIZATION);
     this.sharedUserDataService.setCurrentAddress(charityOrganization.accountAddress);    
-
   }
 
   logOut(): void {
     this.router.navigate(['/home']);
+    this.sharedHeadlineButtonDataService.setActiveButton(HeaderButtonEnum.ALL_POSTS)
     this.sharedUserDataService.cleanSessionStorage();
   }
 

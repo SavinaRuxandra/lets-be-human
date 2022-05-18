@@ -1,12 +1,20 @@
 <div class="wrapper">
     <fieldset class="wrapper-container rounded-3 ">
-        <legend class="heading float-none w-auto px-3"><span class="title">Live Donations</span></legend>
+        <legend class="float-none w-auto px-3 heading"><span class="title">Live Donations</span></legend>
         
-        <div *ngFor="let donation of (donations$ | async)!">
-            <div class="donation">
-                {{donation.message}}
-                <hr class="divider">    
+        <div *ngFor="let donation of donations$">
+            <div class="donation-wrapper">
+                <div class="donation">
+                    <app-donation-details [donation] = "donation"></app-donation-details>  
+                </div>
+                <div class="arrow-wrapper">
+                    <button mat-icon-button
+                            (click)="goToPost(donation.postId)">
+                        <mat-icon class="arrow-icon">arrow_right_alt</mat-icon>
+                    </button>
+                </div>
             </div>
+            <hr class="divider">  
         </div>
     </fieldset>
 </div>

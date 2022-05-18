@@ -1,29 +1,61 @@
-<form [formGroup]="createPostForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="createPostForm">
     <div class="container">
 
+        <button mat-icon-button
+                class="back-button"
+                (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
         <div class="header">
-            <h1 class="title"><p><b>Share a story</b></p></h1>
+            <h1 class="title">
+                Share a story
+            </h1>
         </div>
-        <hr color="#4CAF50">
+        <hr class="divider">
 
         <div class="content">
                 <div class="first-row">
-                    <p><b>Headline</b> - Summarize the post in a few words</p>
-                    <mat-form-field class="d-block" appearance="outline">
+                    <p>
+                        <span class="subtitle">
+                            Headline
+                        </span> 
+                        - Summarize the post in a few words
+                    </p>
+                    <mat-form-field class="d-block" 
+                                    appearance="outline">
                         <mat-label>Headline</mat-label>
-                        <input matInput type="text" autocomplete="off" placeholder="Enter headline" formControlName="headline" required/>
-                        <mat-hint class="text-danger" *ngIf="createPostForm.get('headline')?.hasError('required') && createPostForm.get('headline')?.dirty">
+                        <input matInput
+                               type="text" 
+                               autocomplete="off" 
+                               placeholder="Enter headline" 
+                               formControlName="headline" 
+                               required/>
+                        <mat-hint class="text-danger" 
+                                  *ngIf="createPostForm.get('headline')?.hasError('required') && createPostForm.get('headline')?.touched">
                             Please enter a headline
                         </mat-hint>
                     </mat-form-field>
                 </div>
 
                 <div class="second-row">
-                    <p><b>Description</b> - Add a detailed description about the charitable cause</p>
-                    <mat-form-field class="d-block" appearance="outline">
+                    <p>
+                        <span class="subtitle">
+                            Description
+                        </span> 
+                        - Add a detailed description about the charitable cause
+                    </p>
+                    <mat-form-field class="d-block" 
+                                    appearance="outline">
                         <mat-label>Description</mat-label>
-                        <textarea matInput type="text" autocomplete="off" placeholder="Enter description" formControlName="description" required></textarea>
-                        <mat-hint class="text-danger" *ngIf="createPostForm.get('description')?.hasError('required') && createPostForm.get('description')?.dirty">
+                        <textarea matInput 
+                                  type="text" 
+                                  autocomplete="off" 
+                                  placeholder="Enter description" 
+                                  formControlName="description" 
+                                  required>
+                        </textarea>
+                        <mat-hint class="text-danger" 
+                                  *ngIf="createPostForm.get('description')?.hasError('required') && createPostForm.get('description')?.touched">
                             Please enter a description
                         </mat-hint>
                     </mat-form-field>
@@ -31,40 +63,77 @@
 
 
                 <div class="third-row">
-                    <p><b>Link to extra information</b> - Add a link to a site for exta information</p>
-                    <mat-form-field class="d-block" appearance="outline">
+                    <p>
+                        <span class="subtitle">
+                            Link to extra information
+                        </span> 
+                        - Add a link to a site for exta information
+                    </p>
+                    <mat-form-field class="d-block" 
+                                    appearance="outline">
                         <mat-label>Link</mat-label>
-                        <input matInput type="text" autocomplete="off" placeholder="https://www.example.ro/charitable-cause" formControlName="readMoreUrl">
+                        <input matInput 
+                               type="text" 
+                               autocomplete="off" 
+                               placeholder="https://www.example.ro/charitable-cause" 
+                               formControlName="readMoreUrl">
                     </mat-form-field>
                 </div>
 
-                <div class="forth-row d-inline-block">
-                    <p><b>Photos</b> - Add some photos</p>
+                <div class="forth-row 
+                     d-inline-block">
+                    <p>
+                        <span class="subtitle">
+                            Photos
+                        </span>
+                         - Add some photos
+                    </p>
                     
-                    <div class="add-photo-button" (click)="fileInput.click()">
-                        <img class="add-photo-button" src='assets/add-photo-icon.jpg'>
+                    <div class="add-photo-button">
+                        <mat-icon class="add-photo-icon"
+                                  (click)="fileInput.click()">save_alt</mat-icon>
                         <input
                         style="display: none"
                         type="file"
+                        accept="image/*"
                         (change)="onFileChanges($event)"
                         #fileInput>
                     </div>   
-                    <div>
+                    <div class="photo-list">
                         <ng-container *ngFor="let photo of photos; let i = index">
-                            <div class="close-button-wrapper">
-                                <button mat-stroked-button (click)="removeImageAtIndex(i)">
-                                  <mat-icon class="close-icon">close</mat-icon>
+                            <div class="photo-wrapper">  
+                                <img class="photo" 
+                                    [src]="photo">
+                                <button mat-icon-button
+                                        class="close-button"
+                                        (click)="removeImageAtIndex(i)">
+                                    <mat-icon class="close-icon">
+                                        close
+                                    </mat-icon>
                                 </button>
-                              </div>
-                            <img [src]="photo" style="height: 100; width:70">
+                            </div>
+                            
                         </ng-container>   
                     </div>
                 </div>
             </div>
 
         <div class="form-buttons-wrapper">
-            <button mat-raised-button type="reset" (click)="cancel()">Cancel</button>
-            <button mat-raised-button class="mat-primary" type="submit" [disabled]="createPostForm.invalid">Post</button>
+            <button mat-raised-button 
+                    class="action-button"
+                    type="reset" 
+                    (click)="cancel()">
+                Cancel
+            </button>
+            <button mat-raised-button 
+                    class="mat-primary action-button post-button" 
+                    type="submit" 
+                    [disabled]="createPostForm.invalid" 
+                    (click)="addPost()">
+                <span class="post-button-text">
+                    Post
+                </span>
+            </button>
         </div>
     </div>
 </form>

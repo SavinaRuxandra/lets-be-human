@@ -1,0 +1,14 @@
+
+<div class="wrapper">
+
+    <div *ngIf="post">
+        <div class="post-wrapper">
+            <button mat-icon-button
+            class="back-button"
+            (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+            <app-post class="post" [post]="post"></app-post>
+        </div>
+    </div>    
+</div>

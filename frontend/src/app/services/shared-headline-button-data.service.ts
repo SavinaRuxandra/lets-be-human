@@ -7,28 +7,28 @@ import { HeaderButtonEnum } from '../models/header-button.enum';
 })
 export class SharedHeadlineButtonDataService {
 
-  // @HostListener('window:unload', [ '$event' ])
-  // unloadHandler() {
-  //   this.changeActiveButton(HeaderButtonEnum.ALL_POSTS)
-  // }
-
   private buttonSource = new BehaviorSubject<HeaderButtonEnum>(HeaderButtonEnum.ALL_POSTS);
-  activeButton = this.buttonSource.asObservable();  
   
   mapStringToEnum = new Map([
     [HeaderButtonEnum.ALL_POSTS.toString(), HeaderButtonEnum.ALL_POSTS],
     [HeaderButtonEnum.WISHLIST_POSTS.toString(), HeaderButtonEnum.WISHLIST_POSTS],
     [HeaderButtonEnum.CURRENT_USER_POSTS.toString(), HeaderButtonEnum.CURRENT_USER_POSTS],
+    [HeaderButtonEnum.CREATE_POST.toString(), HeaderButtonEnum.CREATE_POST],
+    [HeaderButtonEnum.NONE.toString(), HeaderButtonEnum.NONE]
  ]);
     
   constructor() { 
     if(sessionStorage.getItem('activeButton')) {
-      this.changeActiveButton(this.mapStringToEnum.get(sessionStorage.getItem('activeButton')!)!);
+      this.setActiveButton(this.mapStringToEnum.get(sessionStorage.getItem('activeButton')!)!);
     }
   }    
     
-  changeActiveButton(button: HeaderButtonEnum) {
+  setActiveButton(button: HeaderButtonEnum) {
     this.buttonSource.next(button)
     sessionStorage.setItem('activeButton', button.toString())
   }   
+
+  getActiveButton() {
+    return this.buttonSource.asObservable();
+  }
 }

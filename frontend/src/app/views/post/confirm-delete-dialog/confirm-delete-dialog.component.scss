@@ -1,0 +1,12 @@
+@use  "../../../../constants.scss" as style;
+
+.delete-button {
+    background: -webkit-linear-gradient(top left, style.$primary-color, style.$secondary-color);
+    background: -moz-linear-gradient(top left, style.$primary-color, style.$secondary-color);
+    background: linear-gradient(to bottom right, style.$primary-color, style.$secondary-color);
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+}

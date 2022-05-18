@@ -1,7 +1,15 @@
+@use  "../../../constants.scss" as style;
+
 .container {
     padding-left: 7%;
     padding-right: 7%;
     padding-top: 100px;
+    color: black;
+}
+
+.back-button {
+    position: absolute;
+    margin-top: -7px;
 }
 
 .header {
@@ -11,11 +19,25 @@
     margin-bottom: -30px;
 }
 
+.title {
+    font-size: 30px;
+    font-weight: 400px;
+}
+
+.divider {
+    color: style.$primary-color;
+}
+
+.subtitle {
+    font-size: 20px;
+    font-weight: 350px;
+    color: style.$accent-color;
+}
+ 
 .content {
     display: flex;
     flex-direction: column;
     padding-left: 40px;
-    flex-wrap: wrap;
 }
 
 textarea {
@@ -23,16 +45,42 @@ textarea {
 }
 
 .add-photo-button {
-    width: 170px;
     margin-bottom: 15px;
+    color: style.$primary-color;
 }
 
-img {
-    width: 300px;
+.add-photo-icon {
+    transform: scale(1.4);
+}
+
+.photo-list {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.photo {
+    max-width: 300px;
+    max-height: 200px;
     border-radius: 10%;
-    align-self: center;
-    margin-right: 15px;
-    margin-bottom: 15px;
+}
+
+.photo-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 30px;
+}
+
+.close-button {
+    color: red;
+    margin-left: -50px;
+}
+
+.close-icon:hover {
+    background-color: rgb(255, 0, 0, 0.3);
+    color: red;
+    border-radius: 100%;
 }
 
 .form-buttons-wrapper {
@@ -40,17 +88,22 @@ img {
     justify-content: flex-end;
 }
 
-button {
+.action-button {
     margin: 10px;
     width: 100px;
     padding: 3px 20px 3px 20px;
 }
 
-.close-button-wrapper {
-    position: relative;
-    background-color: transparent;
+.post-button {
+    background: -webkit-linear-gradient(top left, style.$primary-color, style.$secondary-color);
+    background: -moz-linear-gradient(top left, style.$primary-color, style.$secondary-color);
+    background: linear-gradient(to bottom right, style.$primary-color, style.$secondary-color);
 }
 
-.close-icon {
-    color: red;
+.post-button-text {
+    color: style.$tertiary-color;
+}
+
+.post-button:disabled {
+    opacity: 0.4;
 }

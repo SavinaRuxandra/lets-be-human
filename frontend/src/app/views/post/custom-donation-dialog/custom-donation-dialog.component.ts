@@ -9,20 +9,28 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class CustomDonationDialogComponent implements OnInit {
 
-  amount: number = 0
-  message: string = ""
+  donationForm!: FormGroup;
 
-  constructor(private dialogRef: MatDialogRef<CustomDonationDialogComponent>) {}
+  constructor(private dialogRef: MatDialogRef<CustomDonationDialogComponent>,
+              private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
+    this.createFormGroup();
+  }
+
+  createFormGroup(): void {
+    this.donationForm = this.formBuilder.group({
+      amount: [0, [Validators.required, Validators.min(0.000000000000000000001)]],
+      message: ['']
+    })
   }
 
   confirm(response: boolean): void {
     this.dialogRef.close(
     {
       response: response,
-      amount: this.amount,
-      message: this.message
+      amount: this.donationForm.controls['amount'].value,
+      message: this.donationForm.controls['message'].value
     })
 }
 

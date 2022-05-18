@@ -1,25 +1,57 @@
 <div class="header-wrapper">
-  <mat-toolbar class="toolbar" [ngClass]="{'mat-elevation-z5' : true}">
+  <mat-toolbar class="toolbar" 
+              [ngClass]="{'mat-elevation-z5' : true}"
+              >
 
     <div class="first-column">
-      <button class="d-flex title" (click)="goToMainPage()">
-        <mat-icon class="logo big-icon">face</mat-icon>
-        <h1 class="title-text">Let's be human</h1>
+      <button class="d-flex title" 
+              (click)="goToMainPage()"
+              >
+        <mat-icon class="logo">
+          face
+        </mat-icon>
+        <span class="title-text">
+          Let's be human
+        </span>
       </button>
     </div>
 
     <ng-container *ngIf="!isOnHomePage()">
       <div class="second-column">
-        <button mat-icon-button [ngClass]="{'active': (getActiveButton() | async) === ALL_POSTS_BUTTON}" (click)="changeMainPageView(ALL_POSTS_BUTTON)">
-          <mat-icon class="big-icon">home</mat-icon>
-        </button>
-        <button mat-icon-button [ngClass]="{'active': (getActiveButton() | async) === WISHLIST_POSTS_BUTTON}" (click)="changeMainPageView(WISHLIST_POSTS_BUTTON)">
-          <mat-icon class="big-icon">favorite</mat-icon>
-        </button>
 
-        <div *ngIf="(currentUserRole |async) === CHARITY_ORGANIZATION">
-          <button mat-icon-button [ngClass]="{'active': (getActiveButton() | async) === CURRENT_USER_POSTS_BUTTON}" (click)="changeMainPageView(CURRENT_USER_POSTS_BUTTON)">
-            <mat-icon class="big-icon">person_pin_circle</mat-icon>
+        <ng-container *ngIf="(currentUserRole$ | async) != GUEST">
+          <button mat-icon-button 
+                  [ngClass]="{'active-button': (activeButton$ | async) === ALL_POSTS_BUTTON}" 
+                  (click)="changeMainPageView(ALL_POSTS_BUTTON)"
+                  matTooltip="All Posts"
+                  [matTooltipShowDelay]="1000"
+                  >
+            <mat-icon class="big-icon">home</mat-icon>
+          </button>
+
+          <button mat-icon-button 
+                  [ngClass]="{'active-button': (activeButton$ | async) === WISHLIST_POSTS_BUTTON}" 
+                  (click)="changeMainPageView(WISHLIST_POSTS_BUTTON)"
+                  matTooltip="Helped Causes"
+                  [matTooltipShowDelay]="1000"
+                  >
+            <mat-icon class="big-icon">
+              favorite
+            </mat-icon>
+          </button>
+        </ng-container>
+
+
+        <div *ngIf="(currentUserRole$ | async) === CHARITY_ORGANIZATION">
+          <button mat-icon-button 
+                  [ngClass]="{'active-button': (activeButton$ | async) === CURRENT_USER_POSTS_BUTTON}" 
+                  (click)="changeMainPageView(CURRENT_USER_POSTS_BUTTON)"
+                  matTooltip="My Posts"
+                  [matTooltipShowDelay]="1000"
+                  >
+            <mat-icon class="big-icon">
+              person_pin_circle
+            </mat-icon>
           </button>
         </div>
 
@@ -27,23 +59,33 @@
 
       <div class="third-column" >
         
-        <div *ngIf="(currentUserRole | async) === CHARITY_ORGANIZATION">
-          <button mat-button>
-              <a [routerLink]="['/create-post']">
-                <mat-icon class="big-icon">add_comment</mat-icon>
-              </a>
+        <div *ngIf="(currentUserRole$ | async) === CHARITY_ORGANIZATION">
+          <button mat-icon-button 
+                  [ngClass]="{'active-button': (activeButton$ | async) === CREATE_POST}" 
+                  (click)="changeMainPageView(CREATE_POST)"
+                  matTooltip="Create Post"
+                  [matTooltipShowDelay]="1000"
+                  >
+                <mat-icon class="big-icon">
+                  library_add
+                </mat-icon>
           </button> 
         </div>
 
-        <button mat-button (click)="logOut()">
-          <mat-icon class="big-icon">exit_to_app</mat-icon>
+        <button mat-icon-button  
+                class="sign-out-button"
+                (click)="logOut()"
+                matTooltip="Sign Out"
+                [matTooltipShowDelay]="1000"
+                >
+          <mat-icon class="big-icon">
+            exit_to_app
+          </mat-icon>
         </button>
 
-        
       </div>
     </ng-container>
 
   </mat-toolbar>
-  <!-- <hr class="rounded"> -->
 </div>
 

@@ -1,26 +1,28 @@
-@use  "../../../styles.scss" as style;
+@use  "../../../constants.scss" as style;
 
 .header-wrapper {
-  display: block;
   position: fixed;
   width: 100%;
   z-index: 1000;
   border-bottom: 1px solid black;
-
 }
 
 .toolbar {
-  background-color: transparent;       
   flex-direction: row;         
-  flex-wrap: nowrap;              
   justify-content: space-between;
-  align-items: center;
   height: 80px;
-  background-color: style.$header-color;
+  background: -webkit-linear-gradient(top left, style.$primary-color, style.$secondary-color);
+  background: -moz-linear-gradient(top left, style.$primary-color, style.$secondary-color);
+  background: linear-gradient(to bottom right, style.$primary-color, style.$secondary-color);
 }
 
 .toolbar > div {
-  width: 300px;
+  width: 350px;
+}
+
+.first-column {
+  display: flex;
+  align-items: center;
 }
 
 .title {
@@ -29,22 +31,35 @@
 }
 
 .title-text {
-  font-size: 40;
-  font-weight: 300;
-}
-
-.first-column {
-  display: flex;
-  align-items: center;
+  color: black;
+  font-size: 180%;
+  font-weight: 200px;
 }
 
 .logo {
-  margin: 0px 20px 0px 30px 
+  transform: scale(1.7);
+  margin: 0px 20px 0px 30px;
+  color: black;
+  align-self: center;
 }
 
 .second-column {
   display: flex;
   justify-content: space-around;
+  align-items: center;
+}
+
+.big-icon {
+  transform: scale(1.4);
+  align-self: center;
+  color: style.$tertiary-color;
+  border-radius: 45%;
+}
+
+.big-icon:hover {
+  background-color: style.$primary-color;
+  border-radius: 100%;
+  opacity: 0.5;
 }
 
 .third-column {
@@ -52,18 +67,12 @@
   justify-content: flex-end;
   margin-right: 15px;
 }
- 
-.big-icon {
-  transform: scale(1.4);
-  align-self: center;
+
+.sign-out-button {
+  margin-left: 20px;
 }
 
-hr.rounded {
-  border-top: 8px solid #bbb;
-  border-radius: 5px;
-  margin-top: -10px;
-}
-
-.active {
-  color: white;
+.active-button {
+  border-top: solid 2px style.$accent-color;
+  border-bottom: solid 2px style.$accent-color;
 }

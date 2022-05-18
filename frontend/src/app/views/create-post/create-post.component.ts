@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
+import { HeaderButtonEnum } from 'src/app/models/header-button.enum';
 import { Post } from 'src/app/models/post.model';
 import { PostService } from 'src/app/services/post.service';
+import { SharedHeadlineButtonDataService } from 'src/app/services/shared-headline-button-data.service';
 import { SharedUserDataService } from 'src/app/services/shared-user-data.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 
@@ -21,6 +23,7 @@ export class CreatePostComponent implements OnInit {
 
   constructor(private postService: PostService,
               private sharedUserDataService: SharedUserDataService,
+              private sharedHeadlineButtonDataService: SharedHeadlineButtonDataService,
               private formBuilder: FormBuilder,
               private router: Router,
               private snackbar: SnackbarService
@@ -47,18 +50,13 @@ export class CreatePostComponent implements OnInit {
       reader.readAsDataURL(file);
     
       reader.onload = () => {
-        this.photos.push(reader.result);
+        this.photos.push(reader.result?.toString());
         this.photosFile.push(file);
       };
     }
   }
 
-  onSubmit(): void {
-    this.addPost();
-    this.goBack();
-  }
-
-  async addPost() {
+  addPost(): void {
     const postToAdd: Post = <Post> {
       charityOrganizationAddress: this.currentAddress,
       headline: this.createPostForm.controls['headline'].value,
@@ -77,16 +75,16 @@ export class CreatePostComponent implements OnInit {
         .pipe(take(1))
         .subscribe(() => {
           this.snackbar.success("Post successfully added");
+          this.goBack();
         },
         err => {
           this.snackbar.error("The post could not be added");
         })
   }
 
-  removeImageAtIndex(index: number) {
-    // this.photos.
-    // console.log(index);
-    
+  removeImageAtIndex(index: number): void {
+    this.photos.splice(index, 1);
+    this.photosFile.splice(index, 1);
   }
 
   cancel(): void {
@@ -94,6 +92,7 @@ export class CreatePostComponent implements OnInit {
   }
 
   goBack(): void {
+    this.sharedHeadlineButtonDataService.setActiveButton(HeaderButtonEnum.ALL_POSTS);
     this.router.navigate(['/main-page']);
   }
 }

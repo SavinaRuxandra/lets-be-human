@@ -1,34 +1,60 @@
-<div clas="dialog-wrapper">
-  <h2 mat-dialog-title>Customize Donation</h2>
+<div class="dialog-wrapper">
+  <div class="title-wrapper">
+    <p mat-dialog-title>Customize Donation</p>
+  </div>
+  <hr class="divider">
+
   <mat-dialog-content>
-    <h3>Choose the amount you want to donate:</h3>
+    <div class="d-flex flex-column">
+        <form [formGroup]="donationForm">
+          <mat-form-field class="d-block"
+                          appearance="outline"
+                          >
+            <mat-label>How much do you want to donate?</mat-label>
+            <input
+            matInput
+            type="number"
+            autocomplete="off" 
+            formControlName="amount"
+            >
+          <mat-icon matSuffix>phone</mat-icon>
+          <mat-hint class="text-danger" 
+                    *ngIf="donationForm.get('amount')?.hasError('required') && donationForm.get('amount')?.dirty">
+            Please enter the amount you are willing to donate
+          </mat-hint>
+          <mat-hint class="text-danger" 
+                    *ngIf="donationForm.get('amount')?.hasError('min') && donationForm.get('amount')?.dirty">
+                    The amount has to be bigger than 0
+          </mat-hint>
+          </mat-form-field>
+        
 
-    <div class="d-flex flex-row justify-content-end">
-
-      <mat-slider
-        class="d-block"
-        [max]="100"
-        [min]="0"
-        thumbLabel
-        [(ngModel)]="amount">
-      </mat-slider>
-    
-      <input
-        type="number"
-        matInput
-        autocomplete="off" 
-        maxlength="50"
-        [(ngModel)]="amount">
-    </div>
-
-      <mat-form-field class="d-block">
-        <mat-label>Share a thought</mat-label>
-        <input matInput autocomplete="off" [(ngModel)]="message" >
-    </mat-form-field>
-
+          <mat-form-field class="d-block" 
+                          appearance="outline"
+                          >
+            <mat-label>Share a thought</mat-label>
+            <input matInput
+                  type="text"
+                  autocomplete="off" 
+                  formControlName="message"
+                  >
+          </mat-form-field>
+        </form>
+      </div>
   </mat-dialog-content>
-    <mat-dialog-actions class="action-buttons">
-      <button mat-raised-button (click)="confirm(false)">Cancel</button>
-      <button mat-raised-button class="mat-primary" (click)="confirm(true)">Donate</button>
+
+  <mat-dialog-actions class="action-buttons">
+    <button mat-raised-button
+            (click)="confirm(false)"
+            >
+      Cancel
+    </button>
+    <button mat-raised-button 
+            class="mat-primary confirm-button" 
+            (click)="confirm(true)"
+            [disabled]="donationForm.invalid" 
+            >
+      Confirm donation
+    </button>
     </mat-dialog-actions>
 </div>

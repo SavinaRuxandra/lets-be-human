@@ -41,7 +41,6 @@ export class UserProfileComponent implements OnInit {
               private transferService: TransferService,
               private donorService: DonorService,
               private charityOrganizationService: CharityOrganizationService,
-              private postService: PostService,
               private snackbar: SnackbarService,
               private formBuilder: FormBuilder) {
 

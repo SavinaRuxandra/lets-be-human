@@ -1,0 +1,26 @@
+@use  "../../../../constants.scss" as style;
+
+.amount-wrapper {
+    margin-left: 5px;
+    margin-right: 5px;
+    border: solid 1px style.$primary-color;
+}
+
+.name {
+    color: style.$primary-color;
+    align-self: center;
+}
+
+.amount {
+    font-size: small;
+    color: style.$tertiary-color;
+    padding: 7px;
+    align-self: center;
+    border-radius: 30%;
+    background-color: style.$secondary-color;
+    opacity: 0.9;
+}
+
+.message {
+    font-style: italic;
+}

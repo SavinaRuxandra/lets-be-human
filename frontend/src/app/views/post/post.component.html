@@ -1,14 +1,42 @@
 <div *ngIf="editMode == false; else editModeTemplate">
   <mat-card class="post-wrapper">
-    <mat-card-header>
-      <mat-card-title *ngIf="charityOrganization">{{ charityOrganization.name }}</mat-card-title>
-      <mat-card-subtitle> {{ post.headline }} </mat-card-subtitle>
-      <div *ngIf="(activeButton$ | async) === CURRENT_USER_POSTS_BUTTON" class="modification-buttons">
-        <button mat-button (click)="openEditMode()"><mat-icon>edit</mat-icon></button>
-        <button mat-button (click)="deletePost()"><mat-icon>delete</mat-icon></button>
+    <mat-card-header class="header">
+      <div>
+        <mat-card-title *ngIf="charityOrganization">
+          {{ charityOrganization.name }}
+        </mat-card-title>
+        <mat-card-subtitle> 
+          {{ post.headline }} 
+        </mat-card-subtitle>
       </div>
-      <div *ngIf="(activeButton$ | async) === ALL_POSTS_BUTTON" class="money-raised-wrapper">
-        Money raised: {{(moneyRaised$ | async)}} ETH
+      <div class="info-icon-wrapper"
+          *ngIf="(activeButton$ | async) != CURRENT_USER_POSTS_BUTTON && charityOrganization"
+          >
+          <span [matTooltip] = "getTooltipInfo()"
+                matTooltipShowDelay="300"
+                matTooltipPosition="left"
+                matTooltipClass="multiline-tooltip"
+                >
+            <mat-icon>info</mat-icon>
+          </span>
+      </div>
+
+      <div *ngIf="(activeButton$ | async) === CURRENT_USER_POSTS_BUTTON" 
+           class="modification-buttons"
+           >
+        <button mat-icon-button 
+                (click)="openEditMode()"
+                >
+          <mat-icon class="modification-icon edit-icon">
+            edit
+          </mat-icon>
+        </button>
+        <button mat-icon-button 
+                (click)="openConfirmDeteleDialog()">
+          <mat-icon class="modification-icon delete-icon">
+            delete
+          </mat-icon>
+        </button>
       </div>
     </mat-card-header>
 
@@ -17,28 +45,37 @@
         {{ post.description }}
       </p>
 
-      <carousel [isAnimated]="true"  [interval]='0'>
+      <carousel [isAnimated]="true"  
+                [interval]='0'
+                >
         <slide *ngFor="let photo of photos">
-          <img [src]="photo" style="display: block; width: 100%;">   
+          <img [src]="photo" 
+               class = "photo"
+               >   
         </slide>   
       </carousel>
 
       <a href= "{{ post.readMoreUrl }}" target="_blank">
-        <div *ngIf="post.readMoreUrl" class="d-flex justify-content-end align-items-center">
+        <div *ngIf="post.readMoreUrl" 
+              class="d-flex justify-content-end align-items-center read-more"
+              
+              >
           <div>Read more</div>
           <mat-icon>arrow_right_alt</mat-icon>
         </div>
       </a>
 
-    </mat-card-content>
-    <mat-card-actions>
       <button mat-raised-button
               class="mat-primary donate-button" 
-              matTooltip="Customize donation" 
+              *ngIf="(activeButton$ | async) != CURRENT_USER_POSTS_BUTTON" 
               (click)="openCustomDonationDialog()">
               DONATE
       </button>
-    </mat-card-actions>
+  </mat-card-content>
+    
+    <div class="money-raised-wrapper">
+      <p class="money-raised-text">Money raised: {{(moneyRaised$ | async)}} ETH</p>
+    </div>
   </mat-card>
 </div>
 
@@ -51,52 +88,78 @@
       </mat-card-header>
 
       <mat-card-content> 
-        <mat-form-field class="d-block" appearance="outline">
+        <mat-form-field class="d-block" 
+                        appearance="outline"
+                        >
           <mat-label>Headline</mat-label>
-          <input matInput type="text" placeholder="Headline" formControlName="headline" autocomplete="off">
-          <mat-hint class="text-danger" *ngIf="editForm.get('headline')?.hasError('required') && editForm.get('headline')?.dirty">
+          <input matInput
+                 type="text" 
+                 placeholder="Headline" 
+                 formControlName="headline" 
+                 autocomplete="off">
+          <mat-hint *ngIf="editForm.get('headline')?.hasError('required') && editForm.get('headline')?.dirty"
+                    class="text-danger" 
+                    >
             The headline is required
-        </mat-hint>
-          </mat-form-field>
+          </mat-hint>
+        </mat-form-field>
 
-        <mat-form-field class="d-block" appearance="outline">
+        <mat-form-field class="d-block" 
+                        appearance="outline"
+                        >
           <mat-label>Description</mat-label>
-          <textarea matInput type="text" placeholder="Description" formControlName="description" autocomplete="off"></textarea>
-          <mat-hint class="text-danger" *ngIf="editForm.get('description')?.hasError('required') && editForm.get('description')?.dirty">
+          <textarea matInput 
+                    type="text" 
+                    placeholder="Description" 
+                    formControlName="description" 
+                    autocomplete="off"
+                    >
+          </textarea>
+          <mat-hint *ngIf="editForm.get('description')?.hasError('required') && editForm.get('description')?.dirty"
+                    class="text-danger"
+                    >
             The description is required
           </mat-hint>
         </mat-form-field>
 
-        <carousel [isAnimated]="true"  [interval]='0'>
+        <carousel [isAnimated]="true"  
+                  [interval]='0'
+                  >
           <slide *ngFor="let photo of photos; let i=index">
-            <img [src]="photo" style="display: block; width: 100%;">   
+            <img [src]="photo"
+                 class="photo"
+                 >   
           </slide>   
         </carousel>
 
         <br>
-        <mat-form-field class="d-block" appearance="outline">
+        <mat-form-field class="d-block" 
+                        appearance="outline"
+                        >
           <mat-label>Useful link</mat-label>
           <input matInput 
                  type="text" 
                  placeholder="Useful link"
                  formControlName="readMoreUrl" 
-                 autocomplete="off">
+                 autocomplete="off"
+                 >
         </mat-form-field>
       </mat-card-content>
 
       <mat-card-actions class="button-wrapper-edit">
         <button mat-raised-button 
                 type="reset" 
-                class="edit-button"
-                (click)="cancelEdit()">
+                (click)="cancelEdit()"
+                >
           Cancel
         </button>
         <button mat-raised-button
                 type="submit" 
-                class="mat-primary edit-button" 
+                class="mat-primary save-button" 
                 mat-dialog-close 
                 [disabled]="editForm.invalid"
-                (click)="updatePost()">
+                (click)="updatePost()"
+                >
           Save changes
         </button>
       </mat-card-actions>

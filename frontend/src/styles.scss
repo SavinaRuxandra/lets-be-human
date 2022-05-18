@@ -1,21 +1,16 @@
 @use '@angular/material' as mat;
+@use  "./constants.scss" as style;
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~bootstrap/scss/bootstrap";
 @import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
-
-$background-color: #E6E6FA;
-$post-color: #ebebf7;
-
-$accent-color: #673AB7;
-$header-color: #877BAE;
-
-$primary-color: white ;
+// $fa-font-path: "../node_modules/font-awesome/fonts";
+@import '~font-awesome/scss/font-awesome.scss';
 
 html, body { height: 100%; }
 body {
   margin: 0; 
   font-family: Roboto, "Helvetica Neue", sans-serif; 
-  background-color: $background-color;
+  background-color: style.$background-color;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

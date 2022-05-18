@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Observable, Subscription, take } from 'rxjs';
+import { UserRole } from 'src/app/models/user-role.model';
 import { AuthentificationService } from 'src/app/services/authentification.service';
 import { CharityOrganizationService } from 'src/app/services/charity-organization.service';
 import { DonorService } from 'src/app/services/donor.service';
@@ -71,6 +72,11 @@ export class HomeComponent implements OnInit {
         })
       })
     })
+  }
+
+  loginAsGuest(): void {
+    this.sharedUserDataService.setCurrentUserRole(UserRole.GUEST);
+    this.router.navigate(["main-page"]);
   }
 
   openDonorRegisterDialog(address: string): void {

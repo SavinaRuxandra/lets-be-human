@@ -1,0 +1,28 @@
+@use  "../../../constants.scss" as style;
+
+.wrapper {
+    padding-top: 120px;
+    display: flex;
+    justify-content: center;
+}
+
+.post-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.back-button {
+    color: style.$accent-color;
+    margin-bottom: 20px;
+    border: 1px solid black;
+    border-radius: 100%;
+}
+
+.back-button:hover {
+    background-color: rgba(0, 0, 0, 0.144);
+}
+
+.post {
+    width: 650px;
+}

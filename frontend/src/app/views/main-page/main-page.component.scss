@@ -1,17 +1,24 @@
+@use  "../../../constants.scss" as style;
+
 .flex-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
   gap: 1em;
+  padding: 100px 50px 0 50px;
 }
 
 .search-bar {
-  margin-top: 100px;
   display: block;
 }
 
+.first-row {
+  display: flex;
+  justify-content: flex-start;
+}
+
 .second-row {
-  flex-basis: 700px;
+  flex-basis: 650px;
 }
 
 .first-row, .third-row {
@@ -20,6 +27,18 @@
 }
 
 .third-row {
-  display: block;
-  float: right;
+  display: flex;
+  justify-content: flex-start;
+}
+
+@media only screen and (max-width: 1470px) {
+  .third-row {
+      display: none;
+  }
+}
+
+@media only screen and (max-width: 1120px) {
+  .first-row {
+      display: none;
+  }
 }

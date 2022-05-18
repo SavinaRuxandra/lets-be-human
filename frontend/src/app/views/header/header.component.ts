@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { HeaderButtonEnum } from 'src/app/models/header-button.enum';;
 import { AuthentificationService } from 'src/app/services/authentification.service';
 import { SharedHeadlineButtonDataService } from 'src/app/services/shared-headline-button-data.service';
@@ -15,15 +14,18 @@ import { SharedUserDataService } from 'src/app/services/shared-user-data.service
 })
 export class HeaderComponent {
 
-  currentUserRole: Observable<UserRole> = this.sharedUserDataService.getCurrentUserRole();
+  currentUserRole$: Observable<UserRole> = this.sharedUserDataService.getCurrentUserRole();
+  activeButton$: Observable<HeaderButtonEnum> = this.sharedHeadlineButtonDataService.getActiveButton();
 
-  readonly ALL_POSTS_BUTTON = HeaderButtonEnum.ALL_POSTS
-  readonly WISHLIST_POSTS_BUTTON = HeaderButtonEnum.WISHLIST_POSTS
-  readonly CURRENT_USER_POSTS_BUTTON = HeaderButtonEnum.CURRENT_USER_POSTS
+  readonly ALL_POSTS_BUTTON = HeaderButtonEnum.ALL_POSTS;
+  readonly WISHLIST_POSTS_BUTTON = HeaderButtonEnum.WISHLIST_POSTS;
+  readonly CURRENT_USER_POSTS_BUTTON = HeaderButtonEnum.CURRENT_USER_POSTS;
+  readonly CREATE_POST = HeaderButtonEnum.CREATE_POST;
 
-  readonly DONOR = UserRole.DONOR
-  readonly CHARITY_ORGANIZATION = UserRole.CHARITY_ORGANIZATION
-  readonly LOGGED_OUT = UserRole.LOGGED_OUT
+  readonly DONOR = UserRole.DONOR;
+  readonly CHARITY_ORGANIZATION = UserRole.CHARITY_ORGANIZATION;
+  readonly GUEST = UserRole.GUEST;
+  readonly LOGGED_OUT = UserRole.LOGGED_OUT;
 
   constructor(private sharedUserDataService: SharedUserDataService,
               private sharedHeadlineButtonDataService: SharedHeadlineButtonDataService,
@@ -39,19 +41,29 @@ export class HeaderComponent {
   }
 
   changeMainPageView(button: HeaderButtonEnum): void {
-    this.sharedHeadlineButtonDataService.changeActiveButton(button);
-  }
+    if(this.router.url != "/home")
+      this.router.navigate(['/main-page']);
 
-  getActiveButton(): Observable<HeaderButtonEnum> {
-    return this.sharedHeadlineButtonDataService.activeButton;
+    if(button === HeaderButtonEnum.CREATE_POST)
+      this.router.navigate(['create-post'])
+    this.sharedHeadlineButtonDataService.setActiveButton(button);
   }
 
   goToMainPage(): void {
-    if(this.router.url != "/home")
+    if(this.router.url != "/home") {
       if(this.router.url == "/main-page") {
-        this.sharedHeadlineButtonDataService.changeActiveButton(HeaderButtonEnum.ALL_POSTS);
+        this.activeButton$.pipe(take(1)).subscribe(button => {
+          if(button == HeaderButtonEnum.ALL_POSTS)
+            window.location.reload();
+        })
+
+        this.router.navigateByUrl('/main-page', {skipLocationChange: true}).then(() => {
+          this.router.navigate(["/main-page"]);
+        });
       }
       else 
-        this.router.navigate(['/main-page'])
-  }
+        this.router.navigate(['/main-page']);
+      this.sharedHeadlineButtonDataService.setActiveButton(HeaderButtonEnum.ALL_POSTS);
+    }
+  } 
 }

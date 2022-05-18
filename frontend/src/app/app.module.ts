@@ -32,12 +32,14 @@ import { SharedHeadlineButtonDataService } from './services/shared-headline-butt
 import { LiveTransactionsComponent } from './views/live-transactions/live-transactions.component';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { ConfirmationDialogComponent } from './views/post/confirmation-dialog/confirmation-dialog.component';
 import { UserProfileComponent } from './views/user-profile/user-profile.component';
 import { RegisterDonorDialogComponent } from './views/register/register-donor-dialog/register-donor-dialog/register-donor-dialog.component';
 import { RegisterCharityOrganizationDialogComponent } from './views/register/register-charity-organization-dialog/register-charity-organization-dialog.component';
 import { SharedUserDataService } from './services/shared-user-data.service';
 import { MatDividerModule } from '@angular/material/divider';
+import { DonationDetailsComponent } from './views/live-transactions/donation-details/donation-details.component';
+import { SinglePostComponent } from './views/single-post/single-post.component';
+import { ConfirmDeleteDialogComponent } from './views/post/confirm-delete-dialog/confirm-delete-dialog.component';
 
 
 @NgModule({
@@ -51,10 +53,12 @@ import { MatDividerModule } from '@angular/material/divider';
     HomeComponent,
     SearchFilterPipe,
     LiveTransactionsComponent,
-    ConfirmationDialogComponent,
     UserProfileComponent,
     RegisterDonorDialogComponent,
-    RegisterCharityOrganizationDialogComponent
+    RegisterCharityOrganizationDialogComponent,
+    DonationDetailsComponent,
+    SinglePostComponent,
+    ConfirmDeleteDialogComponent
   ],
   imports: [
     BrowserModule,

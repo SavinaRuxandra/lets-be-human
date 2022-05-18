@@ -8,7 +8,7 @@
             </mat-form-field>
         </form>
 
-        <ng-container>
+        <ng-container class="posts-wrapper">
             <div *ngIf="(activeButton$ | async) === ALL_POSTS_BUTTON">
                 <div *ngFor="let post of (posts$ | async) | searchFilter: searchInput">
                     <app-post class="post" [post]="post!"></app-post>
@@ -16,7 +16,7 @@
             </div>
 
             <div *ngIf="(activeButton$ | async) === WISHLIST_POSTS_BUTTON">
-                <div *ngFor="let post of (posts$ | async) | searchFilter: searchInput">
+                <div *ngFor="let post of helpedCauses  | searchFilter: searchInput">
                     <app-post class="post" [post]="post!"></app-post>
                 </div>
             </div>
