@@ -35,7 +35,6 @@ export class RegisterCharityOrganizationDialogComponent implements OnInit {
           description: ['', Validators.required],
           phoneNumber: [''],
         })
-        // {validators: uniqueEmailValidator('email', this.userService)]});
   }
 
   getEmailFormControl(): string {

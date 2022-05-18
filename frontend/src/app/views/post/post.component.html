@@ -1,14 +1,13 @@
 <div *ngIf="editMode == false; else editModeTemplate">
   <mat-card class="post-wrapper">
-    <mat-card-header class="header">
-      <div>
+    <mat-card-header class="d-flex">
+        <div mat-card-avatar class="header-image"><mat-icon class="header-icon">people</mat-icon></div>
         <mat-card-title *ngIf="charityOrganization">
           {{ charityOrganization.name }}
         </mat-card-title>
         <mat-card-subtitle> 
           {{ post.headline }} 
         </mat-card-subtitle>
-      </div>
       <div class="info-icon-wrapper"
           *ngIf="(activeButton$ | async) != CURRENT_USER_POSTS_BUTTON && charityOrganization"
           >
@@ -74,7 +73,7 @@
   </mat-card-content>
     
     <div class="money-raised-wrapper">
-      <p class="money-raised-text">Money raised: {{(moneyRaised$ | async)}} ETH</p>
+      <p class="money-raised-text">Money raised: <i class='fab fa-ethereum eth-icon'></i>{{(moneyRaised$ | async)}}</p>
     </div>
   </mat-card>
 </div>

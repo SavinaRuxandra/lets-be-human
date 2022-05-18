@@ -1,12 +1,76 @@
+@use  "../../../constants.scss" as style;
+
 .wrapper {
+    // height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 100px;
+    align-content: center;
+    padding-top: 250px;
 }
 
-.login-metamask-button {
-    display: flex;
+.login-text {
+    font-weight: 550;
+    font-size: 37px;
+    color: style.$accent-color;
+    margin-bottom: 30px;
+}
+
+.button-container {
+    width: 80px;
+    height: 50px;
+    border-radius: 100%;
+    background-color: style.$primary-color;
+}
+
+.login-button {
+    width: 200px;
+    height: 100px;
+    padding: 30px;
+    border-radius: 100%;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 50px;
+}
+
+.donor-button {
+    background: -webkit-linear-gradient(top left, style.$primary-color, style.$secondary-color);
+    background: -moz-linear-gradient(top left, style.$primary-color, style.$secondary-color);
+    background: linear-gradient(to bottom right, style.$primary-color, style.$secondary-color);
+    color: style.$tertiary-color;
+    opacity: 0.8;
+} 
+
+.charity-organization-button {
+    background: -webkit-linear-gradient(top left, style.$primary-color, style.$secondary-color);
+    background: -moz-linear-gradient(top left, style.$primary-color, style.$secondary-color);
+    background: linear-gradient(to bottom right, style.$primary-color, style.$secondary-color);
+    color: style.$tertiary-color;
+    opacity: 0.8;
+}
+
+.guest-button {
+    background-color: style.$tertiary-color;
+    color: style.$accent-color;
+    opacity: 0.9;
+}
+
+.donor-text {
+    font-size: 25px;
+}
+
+.charity-organization-text {
     align-self: center;
+    font-size: 17px;
 }
 
+.guest-text {
+    font-size: 25px;
+}
+
+.login-button:hover {
+    width: 220px;
+    height: 120px;
+    opacity: 1;
+} 

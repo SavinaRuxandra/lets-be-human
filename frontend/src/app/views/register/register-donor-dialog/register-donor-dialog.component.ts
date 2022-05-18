@@ -24,7 +24,7 @@ export class RegisterDonorDialogComponent {
     this.address = address;
   }
 
-  continue(): void {    
+  register(): void {    
     if(this.username.trim() == "")
       this.username = "New Donor"
     this.donorService.setDonorUsername(this.address, this.username).then(() => {

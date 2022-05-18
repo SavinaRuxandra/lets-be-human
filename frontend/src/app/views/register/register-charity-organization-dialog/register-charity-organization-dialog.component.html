@@ -1,32 +1,33 @@
 <div class="dialog-wrapper">
-    <h2 mat-dialog-title>Hello! Welcome to our comunity</h2>
-    <h2 mat-dialog-title>Please fill out the form to register</h2>
-
+    <p mat-dialog-title>Hello! Welcome to our comunity</p>
+    <p mat-dialog-title class="subtitle">Please fill out the form to register
+        <mat-icon class="face-icon">tag_faces</mat-icon>
+    </p>
+    <hr class="divider">
 
     <mat-dialog-content>
     
         <form [formGroup]="registerForm">
-            <mat-form-field class="d-block">
+            <mat-form-field class="d-block" appearance="outline">
                 <mat-label>Email</mat-label>
                 <input matInput type="text" placeholder="Email" formControlName="email" autocomplete="off">
                 <mat-error *ngIf="registerForm.controls['email'].hasError('required')">Please enter an email</mat-error>
                 <mat-error *ngIf="registerForm.controls['email'].hasError('email')">Please enter a valid email</mat-error>
-                <!-- <mat-error *ngIf="registerForm.controls['email'].hasError('uniqueEmail')">This email is already used</mat-error> -->
             </mat-form-field>
 
-            <mat-form-field class="d-block">
+            <mat-form-field class="d-block" appearance="outline">
                 <mat-label>Name</mat-label>
                 <input matInput type="text" placeholder="Name" formControlName="name" autocomplete="off">
                 <mat-error *ngIf="registerForm.controls['name'].hasError('required')">Please enter the name of the organization</mat-error>
             </mat-form-field>
 
-            <mat-form-field class="d-block">
+            <mat-form-field class="d-block" appearance="outline">
                 <mat-label>Description</mat-label>
-                <input matInput type="text" placeholder="Description" formControlName="description" autocomplete="off">
+                <textarea matInput type="text" placeholder="Description" formControlName="description" autocomplete="off"></textarea>
                 <mat-error *ngIf="registerForm.controls['description'].hasError('required')">Please enter a descrition of your organization</mat-error>
             </mat-form-field>
 
-            <mat-form-field class="d-block">
+            <mat-form-field class="d-block" appearance="outline">
                 <mat-label>Phone Number</mat-label>
                 <input matInput type="number" placeholder="Phone Number" formControlName="phoneNumber" autocomplete="off">
             </mat-form-field>
@@ -36,7 +37,23 @@
     </mat-dialog-content>
 
     <mat-dialog-actions class="action-buttons">
-        <button mat-raised-button type="reset" mat-dialog-close>Cancel</button>
-        <button mat-raised-button type="submit" class="mat-primary" mat-dialog-close [disabled]="registerForm.invalid" (click)="register()">Register</button>
+        <button mat-raised-button
+                class="action-button"
+                type="reset" 
+                mat-dialog-close
+                >
+            Cancel
+        </button>
+        <button mat-raised-button
+                type="submit" 
+                class="mat-primary action-button register-button" 
+                mat-dialog-close 
+                [disabled]="registerForm.invalid" 
+                (click)="register()"
+                >
+            <span class="register-button-text">
+                Register
+            </span>
+        </button>
     </mat-dialog-actions>
 </div>

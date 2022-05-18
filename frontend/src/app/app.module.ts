@@ -33,7 +33,7 @@ import { LiveTransactionsComponent } from './views/live-transactions/live-transa
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { UserProfileComponent } from './views/user-profile/user-profile.component';
-import { RegisterDonorDialogComponent } from './views/register/register-donor-dialog/register-donor-dialog/register-donor-dialog.component';
+import { RegisterDonorDialogComponent } from './views/register/register-donor-dialog/register-donor-dialog.component';
 import { RegisterCharityOrganizationDialogComponent } from './views/register/register-charity-organization-dialog/register-charity-organization-dialog.component';
 import { SharedUserDataService } from './services/shared-user-data.service';
 import { MatDividerModule } from '@angular/material/divider';

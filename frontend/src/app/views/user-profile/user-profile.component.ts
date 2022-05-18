@@ -25,9 +25,9 @@ export class UserProfileComponent implements OnInit {
 
   moneyShared$!: Observable<string>;
   moneyReceived$!: Observable<string>; 
-  currentBalance$: Observable<number>= this.transferService.getCurrentBalance();
+  currentBalance$: Observable<number> = this.transferService.getCurrentBalance();
   numberOfPosts$!: Observable<number>;
-  numberOfPostsHelped$!: Observable<number>;
+  numberHelpedCauses$!: Observable<number>;
 
   username!: FormControl;
   editCharityOrganizationForm!: FormGroup;
@@ -41,6 +41,7 @@ export class UserProfileComponent implements OnInit {
               private transferService: TransferService,
               private donorService: DonorService,
               private charityOrganizationService: CharityOrganizationService,
+              private postService: PostService,
               private snackbar: SnackbarService,
               private formBuilder: FormBuilder) {
 
@@ -56,6 +57,8 @@ export class UserProfileComponent implements OnInit {
     this.moneyShared$=  this.transferService.getMoneyShared(this.currentAddress);
     this.moneyReceived$ = this.transferService.getMoneyReceived(this.currentAddress);
     this.currentBalance$ = this.transferService.getCurrentBalance();
+    this.numberOfPosts$ = this.postService.getNoPostsOfCharityOrganization(this.currentAddress);
+    this.numberHelpedCauses$ = this.transferService.getNoHelpedCauses(this.currentAddress);
   }
 
   createUsernameFormControl(): void {

@@ -1,7 +1,27 @@
+<div class="test">
 <div class="wrapper">
-    <button mat-raised-button class="mat-primary login-metamask-button"(click)="loginAsDoner()">Login as donor</button>
-    <button mat-raised-button (click)="loginAsCharityOrganization()">Login as charity organization</button>
-    <button mat-raised-button (click)="loginAsGuest()">Login as guest</button>
+    <p class="login-text">Login as:</p>
+    <div>
+        <button mat-raised-button 
+                class="mat-primary login-button donor-button"
+                (click)="loginAsDoner()">
+            <p class="donor-text">Donor</p>
+        </button>
+
+        <button mat-raised-button 
+                class="mat-primary login-button charity-organization-button"
+                (click)="loginAsCharityOrganization()">
+            <p class="charity-organization-text">Charity Organization</p>
+        </button>
+        
+    </div>
+    <div>
+        <button mat-raised-button
+                class="login-button guest-button"
+                (click)="loginAsGuest()">
+            <p class="guest-text">Guest</p>
+        </button>
+    </div>
+</div>  
+
 </div>
-
-

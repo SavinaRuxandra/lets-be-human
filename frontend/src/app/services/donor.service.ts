@@ -10,21 +10,23 @@ import { Donor } from '../models/donor.model';
 })
 export class DonorService {
 
-  private web3js: any;
+  private web3js: Web3;
+  private web3Modal: Web3Modal;
   private provider: any;
   private accounts: any;
-  web3Modal: any
-  contract: any
+  private contract: any;
 
   constructor() {
-   this.web3Modal = new Web3Modal(WEB3_MODAL_OPTIONS)
+    this.web3Modal = new Web3Modal(WEB3_MODAL_OPTIONS);
+    this.web3js = new Web3(window.ethereum);
+    this.accounts = this.web3js.eth.getAccounts(); 
+    this.contract = new this.web3js.eth.Contract(DONOR_TOKEN_ABI, DONOR_CONTRACT_ADDRESS);
   }
 
   async setDonorUsername(address: string, username: string): Promise<void> {
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
-    this.contract = new this.web3js.eth.Contract(DONOR_TOKEN_ABI, DONOR_CONTRACT_ADDRESS);
     await this.contract.methods.setDonorUsername(address, username).send({
       from: this.accounts[0]
     });
@@ -33,9 +35,7 @@ export class DonorService {
   private async getDonorUsername(address: string): Promise<string> {        
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
-    this.accounts = await this.web3js.eth.getAccounts(); 
-    this.contract = new this.web3js.eth.Contract(DONOR_TOKEN_ABI, DONOR_CONTRACT_ADDRESS);
-    
+    this.accounts = await this.web3js.eth.getAccounts();     
     return await this.contract.methods.getDonorUsername(address).call({
       from: this.accounts[0]
     });

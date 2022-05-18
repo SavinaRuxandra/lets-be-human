@@ -64,6 +64,9 @@ export class TransferService implements OnInit {
   // }
 
   async tranferEthereum(transferAddress: string, amount: number, postId: number, message: string): Promise<void> {
+    this.provider = await this.web3Modal.connect();
+    this.web3js = new Web3(this.provider);
+    this.accounts = await this.web3js.eth.getAccounts(); 
     await this.contract.methods.pay(transferAddress, message, postId).send({
        from: this.accounts[0], value: Web3.utils.toWei(amount.toString(), 'ether') }
     )
@@ -135,21 +138,24 @@ export class TransferService implements OnInit {
 
   getMoneyReceived(address: string): Observable<string> {
     return this.getLiveDonations().pipe((map(donations => {
-      const sum = donations.filter(donations => donations.accountReceiver === address)
+      const sum = donations.filter(donation => donation.accountReceiver === address)
                            .reduce((sum, donation) => sum + +donation.amount, 0)                           
       return sum.toFixed(5).toString();
     })))
   }
 
-  // getNumberOfPosts(address: string): Observable<number> {
-  //   return this.getLiveDonations()
-  // }
-
   getMoneyRaisedForPost(postId: number): Observable<string> {
     return this.getLiveDonations().pipe((map(donations => {      
-      const sum = donations.filter(donations => donations.postId == postId)
+      const sum = donations.filter(donation => donation.postId == postId)
                            .reduce((sum, donation) => sum + +donation.amount, 0)                           
       return sum.toFixed(5).toString();
+    })))
+  }
+
+  getNoHelpedCauses(address: string): Observable<number> {
+    return this.getLiveDonations().pipe((map(donations => {      
+      return donations.filter(donation => donation.accountSender == address)
+                      .length                           
     })))
   }
 }

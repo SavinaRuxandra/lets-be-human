@@ -17,7 +17,7 @@
             autocomplete="off" 
             formControlName="amount"
             >
-          <mat-icon matSuffix>phone</mat-icon>
+          <mat-icon matSuffix><i class='fab fa-ethereum eth-icon'></i></mat-icon>
           <mat-hint class="text-danger" 
                     *ngIf="donationForm.get('amount')?.hasError('required') && donationForm.get('amount')?.dirty">
             Please enter the amount you are willing to donate

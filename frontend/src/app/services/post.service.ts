@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { filter, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Post } from '../models/post.model';
 
@@ -30,5 +30,14 @@ export class PostService {
 
   updatePost(post: Post): Observable<Post> { 
     return this.httpClient.put<Post>(`${this.postUrl}`, post);
+  }
+
+  getNoPostsOfCharityOrganization(address: string) {
+    return this.getAllPosts().pipe(
+      map(posts => {
+        return posts.filter((post) => post.charityOrganizationAddress == address)
+             .length
+      })
+    )
   }
 }

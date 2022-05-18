@@ -71,8 +71,9 @@
                 </div>
                 
                 <div class="statistic-result">
-                    <div>{{(currentBalance$ | async)}} ETH</div>
-                    <div>{{(moneyShared$ | async)}} ETH</div>
+                    <div><i class='fab fa-ethereum eth-icon'></i>{{(currentBalance$ | async)}}</div>
+                    <div><i class='fab fa-ethereum eth-icon'></i>{{(moneyShared$ | async)}}</div>
+                    <div>{{(numberHelpedCauses$ | async)}}</div>
                 </div>
             </div>
         </div>
@@ -207,14 +208,12 @@
                 </div>
                 
                 <div class="statistic-result">
-                    <div>{{(currentBalance$ | async)}} ETH</div>
-                    <div>{{(moneyShared$ | async)}} ETH</div>
-                    <div>{{(moneyReceived$ | async)}} ETH</div>
-                    <div>{{(numberOfPosts$ | async)}} ETH</div>
+                    <div><i class='fab fa-ethereum eth-icon'></i>{{(currentBalance$ | async)}}</div>
+                    <div><i class='fab fa-ethereum eth-icon'></i>{{(moneyShared$ | async)}}</div>
+                    <div><i class='fab fa-ethereum eth-icon'></i>{{(moneyReceived$ | async)}}</div>
+                    <div>{{(numberOfPosts$ | async)}}</div>
                 </div>
             </div>
       
     </div>
-
-
 </div>

@@ -1,0 +1,33 @@
+<div class="dialog-wrapper">
+    <h2 mat-dialog-title>Hello! Welcome to our comunity</h2>
+
+
+    <mat-dialog-content>
+    
+        <mat-form-field class="d-block">
+            <mat-label>Choose a username</mat-label>
+            <input matInput autocomplete="off" [(ngModel)]="username" >
+        </mat-form-field>
+    
+    </mat-dialog-content>
+
+    <mat-dialog-actions class="action-buttons">
+        <button mat-raised-button
+                class="action-button"
+                type="reset" 
+                mat-dialog-close
+                >
+            Cancel
+        </button>
+        <button mat-raised-button
+                type="submit" 
+                class="mat-primary action-button register-button" 
+                mat-dialog-close 
+                (click)="register()"
+                >
+            <span class="register-button-text">
+                Register
+            </span>
+        </button>
+    </mat-dialog-actions>
+</div>

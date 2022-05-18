@@ -11,22 +11,23 @@ import { CharityOrganization } from '../models/charity-organization.model';
 })
 export class CharityOrganizationService {
   
-  private web3js: any;
+  private web3js: Web3;
+  private web3Modal: Web3Modal;
   private provider: any;
   private accounts: any;
-  web3Modal: any
-  contract: any
+  private contract: any;
 
   constructor() {
     this.web3Modal = new Web3Modal(WEB3_MODAL_OPTIONS);
+    this.web3js = new Web3(window.ethereum);
+    this.accounts = this.web3js.eth.getAccounts(); 
+    this.contract = new this.web3js.eth.Contract(CHARITY_ORGANIZATIONS_TOKEN_ABI, CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS);
   }
 
   async addCharityOrganization(address: string, email: string, name: string, description: string, phoneNumber: string): Promise<void> {
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
-    this.contract = new this.web3js.eth.Contract(CHARITY_ORGANIZATIONS_TOKEN_ABI, CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS);
-
     await this.contract.methods.addCharityOrganization(address, email, name, description, phoneNumber).send({
       from: this.accounts[0]
     });
@@ -36,8 +37,6 @@ export class CharityOrganizationService {
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
-    this.contract = new this.web3js.eth.Contract(CHARITY_ORGANIZATIONS_TOKEN_ABI, CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS);
-
     await this.contract.methods.updateCharityOrganization(address, email, name, description, phoneNumber).send({
       from: this.accounts[0]
     });
@@ -46,9 +45,7 @@ export class CharityOrganizationService {
   private async getCharityOrganizationByAddress(address: string): Promise<any> {
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
-    this.accounts = await this.web3js.eth.getAccounts(); 
-    this.contract = new this.web3js.eth.Contract(CHARITY_ORGANIZATIONS_TOKEN_ABI, CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS);
-    
+    this.accounts = await this.web3js.eth.getAccounts();     
     return await this.contract.methods.getCharityOrganizationByAddress(address).call({
       from: this.accounts[0]
     });
@@ -58,8 +55,6 @@ export class CharityOrganizationService {
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
-    this.contract = new this.web3js.eth.Contract(CHARITY_ORGANIZATIONS_TOKEN_ABI, CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS);
-
     return await this.contract.methods.getAllCharityOrganizations().call({
       from: this.accounts[0]
     });

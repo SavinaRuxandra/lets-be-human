@@ -9,6 +9,18 @@
     color: style.$accent-color;
 }
 
+.header-image{
+    align-self: center;
+    margin-bottom: 25px;
+    margin-left: 5px;
+    margin-right: -15px;;
+}
+
+.header-icon {
+    transform: scale(1.15);
+    color: style.$accent-color
+}
+
 .info-icon-wrapper {
     display: block;
     margin-left: auto;
@@ -41,7 +53,7 @@
 }
 
 .modification-icon {
-    color: style.$primary-color;
+    color: style.$accent-color;
 }
 
 .edit-icon:hover {
@@ -73,12 +85,18 @@
 }
 
 .money-raised-text {
-    font-size: 14px;
+    font-size: 15px;
     padding: 10px;
     color: style.$tertiary-color;
     border-radius: 30%;
     background-color: style.$secondary-color;
     opacity: 0.9;
+}
+
+.eth-icon {
+    font-size: 15px;
+    margin-right: 2px;
+    color: style.$tertiary-color;
 }
 
 .donate-button {

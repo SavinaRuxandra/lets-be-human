@@ -104,6 +104,12 @@
   float: right
 }
 
+.eth-icon {
+  font-size: 18px;
+  margin-right: 2px;
+  color: style.$primary-color;
+}
+
 .card::-webkit-scrollbar {
   width: 5px;
 }

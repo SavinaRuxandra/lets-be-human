@@ -9,7 +9,7 @@ import { DonorService } from 'src/app/services/donor.service';
 import { SharedUserDataService } from 'src/app/services/shared-user-data.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { RegisterCharityOrganizationDialogComponent } from '../register/register-charity-organization-dialog/register-charity-organization-dialog.component';
-import { RegisterDonorDialogComponent } from '../register/register-donor-dialog/register-donor-dialog/register-donor-dialog.component';
+import { RegisterDonorDialogComponent } from '../register/register-donor-dialog/register-donor-dialog.component';
 
 @Component({
   selector: 'app-home',
