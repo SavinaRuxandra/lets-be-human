@@ -26,6 +26,7 @@ export class LiveTransactionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscription$ = this.transferService.getLiveDonations().subscribe((donations) => this.donations$ = donations.slice().reverse().slice(0,5))  
+    // this.donations$ = this.transferService.getDonationList();
   }
 
   goToPost(id: number): void {

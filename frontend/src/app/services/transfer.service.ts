@@ -13,17 +13,41 @@ import { WEB3_MODAL_OPTIONS } from 'src/environments/environment';
 })
 export class TransferService implements OnInit {
 
-  private web3js: any;
+  private web3js: Web3;
+  private web3Modal: Web3Modal;
   private provider: any;
   private accounts: any;
-  web3Modal: any
-  contract: any
+  private contract: any;
 
   donationsSource$ = new BehaviorSubject<Donation[]>([]);
+  donations: Donation[] = [];
   balanceSource$ = new BehaviorSubject<number>(0);
   
   constructor() {
     this.web3Modal = new Web3Modal(WEB3_MODAL_OPTIONS);
+    this.web3js = new Web3(window.ethereum);
+    this.accounts = this.web3js.eth.getAccounts(); 
+    this.contract = new this.web3js.eth.Contract(TRANSFER_TOKEN_ABI, TRANSFER_CONTRACT_ADDRESS);
+
+    const $this = this;
+
+    this.contract.events.DonationEvent({}, function(err: any, result: any): void {
+      // const web3js = new Web3(window.ethereum);
+      // const donationDecoded = web3js.eth.abi.decodeParameters(
+      //   ['address', 'address', 'uint256', 'uint64', 'string'], result.raw.data
+      // )
+      // const donation = <Donation> {
+      //   accountSender: donationDecoded[0],
+      //   accountReceiver: donationDecoded[1],
+      //   amount: donationDecoded[2],
+      //   postId: donationDecoded[3],
+      //   message: donationDecoded[4]
+      // }
+      // $this.addDonation(donation);
+      $this.setLiveDonations();
+    });
+      
+    this.getDonations().then(donations => this.donations = donations);
     this.setLiveDonations();
     this.setBalance();
   }
@@ -31,17 +55,18 @@ export class TransferService implements OnInit {
   ngOnInit(): void {
     this.setLiveDonations();
     this.setBalance();
+    this.getDonations().then(donations => this.donations = donations);
   }
 
+  // addDonation(donation: Donation): void {
+  //   this.donations.push(donation);
+  //   this.donationsSource$.next(this.donations)
+  // }
+
   async tranferEthereum(transferAddress: string, amount: number, postId: number, message: string): Promise<void> {
-    this.provider = await this.web3Modal.connect();
-    this.web3js = new Web3(this.provider);
-    this.accounts = await this.web3js.eth.getAccounts(); 
-    this.contract = new this.web3js.eth.Contract(TRANSFER_TOKEN_ABI, TRANSFER_CONTRACT_ADDRESS);
     await this.contract.methods.pay(transferAddress, message, postId).send({
        from: this.accounts[0], value: Web3.utils.toWei(amount.toString(), 'ether') }
     )
-
     this.setLiveDonations();
     this.setBalance();
   }
@@ -50,7 +75,6 @@ export class TransferService implements OnInit {
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
-    this.contract = new this.web3js.eth.Contract(TRANSFER_TOKEN_ABI, TRANSFER_CONTRACT_ADDRESS);
     return await this.contract.methods.getDonations().call({
       from: this.accounts[0]
     });
@@ -61,7 +85,7 @@ export class TransferService implements OnInit {
     this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
     return this.web3js.eth.getBalance(this.accounts[0]).then((balance: string) => {
-      return parseFloat(Web3.utils.fromWei(balance, 'ether')).toFixed(5);
+      return parseFloat(parseFloat(Web3.utils.fromWei(balance, 'ether')).toFixed(5));
     })
   }
 
@@ -79,6 +103,7 @@ export class TransferService implements OnInit {
         donationObjects.push(donationObject);
       })
       this.donationsSource$.next(donationObjects);
+      this.donations = donationObjects;
     })
   }
 
@@ -92,6 +117,10 @@ export class TransferService implements OnInit {
     return this.donationsSource$.asObservable();
   }
 
+  getDonationList(): Donation[] {
+    return this.donations;
+  }
+
   getCurrentBalance(): Observable<number> {
     return this.balanceSource$.asObservable();
   }
@@ -100,7 +129,7 @@ export class TransferService implements OnInit {
     return this.getLiveDonations().pipe((map(donations => {
       const sum = donations.filter(donations => donations.accountSender === address)
                            .reduce((sum, donation) => sum + +donation.amount, 0)                           
-      return sum.toString();
+      return sum.toFixed(5).toString();
     })))
   }
 
@@ -108,7 +137,7 @@ export class TransferService implements OnInit {
     return this.getLiveDonations().pipe((map(donations => {
       const sum = donations.filter(donations => donations.accountReceiver === address)
                            .reduce((sum, donation) => sum + +donation.amount, 0)                           
-      return sum.toString();
+      return sum.toFixed(5).toString();
     })))
   }
 
@@ -120,7 +149,7 @@ export class TransferService implements OnInit {
     return this.getLiveDonations().pipe((map(donations => {      
       const sum = donations.filter(donations => donations.postId == postId)
                            .reduce((sum, donation) => sum + +donation.amount, 0)                           
-      return sum.toString();
+      return sum.toFixed(5).toString();
     })))
   }
 }

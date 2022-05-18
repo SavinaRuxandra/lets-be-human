@@ -28,7 +28,7 @@
       "assert": ["./node_modules/assert"],
       "http": ["./node_modules/stream-http"],
       "https": ["./node_modules/https-browserify"],
-      "os": ["./node_modules/os-browserify"],
+      "os": ["./node_modules/os-browserify/browser"],
       "process": ["./node_modules/process/browser"],
       "path": ["./node_modules/path-browserify"]
   },

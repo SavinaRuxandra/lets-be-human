@@ -63,10 +63,17 @@
 
             <hr class="divider">    
 
-            <div class="statictics-wrapper">
-                    <div class="statistic">Current Balance {{(currentBalance$ | async)}} ETH</div>
-                    <div class="statistic">Money Shared {{(moneyShared$ | async)}} ETH</div>
-                    <!-- Causes helped: {{(helpedCauses$ | async)}} -->
+            <div class="statistics-wrapper">
+                <div class="statistic-headline">
+                    <div class="headline">Current Balance:</div>
+                    <div class="headline">Money Shared:</div>
+                    <div class="headline">Helped Causes:</div>
+                </div>
+                
+                <div class="statistic-result">
+                    <div>{{(currentBalance$ | async)}} ETH</div>
+                    <div>{{(moneyShared$ | async)}} ETH</div>
+                </div>
             </div>
         </div>
     </div>

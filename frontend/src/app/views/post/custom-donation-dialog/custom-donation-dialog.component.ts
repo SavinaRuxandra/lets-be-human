@@ -20,7 +20,7 @@ export class CustomDonationDialogComponent implements OnInit {
 
   createFormGroup(): void {
     this.donationForm = this.formBuilder.group({
-      amount: [0, [Validators.required, Validators.min(0.000000000000000000001)]],
+      amount: ['', [Validators.required, Validators.min(0.000000000000000000001)]],
       message: ['']
     })
   }
