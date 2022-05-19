@@ -2,8 +2,6 @@
 
 pragma solidity >=0.4.22 <0.9.0;
 
-pragma experimental ABIEncoderV2;
-
 contract Transfer {
 
     constructor() payable {}
@@ -17,11 +15,7 @@ contract Transfer {
     }
 
     Donation[] private donations;
-    event DonationEvent(address accountSender,
-                    address accountReceiver,
-                    uint256 amount,
-                    uint64 postId,
-                    string message);
+    event DonationEvent();
 
     function pay(address payable _to, string calldata message, uint64 postId) public
                                                                               payable {
@@ -36,7 +30,8 @@ contract Transfer {
             postId: postId,
             message: message
         }));
-        emit DonationEvent(msg.sender, _to, msg.value, postId, message);
+
+        emit DonationEvent();
     }
 
     function getDonations() external 

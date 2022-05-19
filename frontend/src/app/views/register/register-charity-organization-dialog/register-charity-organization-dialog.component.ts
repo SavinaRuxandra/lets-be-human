@@ -30,7 +30,7 @@ export class RegisterCharityOrganizationDialogComponent implements OnInit {
 
   createForm() {
     this.registerForm = this.formBuilder.group({
-          email: ['', [Validators.required, Validators.email]],
+          email: ['', [Validators.email]],
           name: ['', Validators.required],
           description: ['', Validators.required],
           phoneNumber: [''],

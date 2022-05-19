@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { map, Observable, Subscription, take } from 'rxjs';
 import { HeaderButtonEnum } from 'src/app/models/header-button.enum';
 import { Post } from 'src/app/models/post.model';
@@ -16,11 +15,11 @@ import { TransferService } from 'src/app/services/transfer.service';
 
 export class MainPageComponent implements OnInit {
 
-  currentAddress: Observable<string> = this.sharedUserDataService.getCurrentAddress();
+  currentAddress!: string;
   searchInput!: string;
-  posts$!: Observable<Post[]>;
-  currentUserPosts$!: Observable<Post[]>;
-  helpedCauses!: Post[];
+  posts$: Observable<Post[]> = this.getAllPosts();
+  helpedCauses$!: Observable<Post[]>;
+  currentUserPosts$: Observable<Post[]> = this.getCurrentUserPosts();
 
   activeButton$: Observable<HeaderButtonEnum> = this.sharedHeadlineButtonDataService.getActiveButton();
 
@@ -36,44 +35,44 @@ export class MainPageComponent implements OnInit {
               private transferService: TransferService) {}
 
   ngOnInit(): void {
-    this.setAllPosts();
-    this.setCurrentUserPosts();
-    this.setHelpedCauses()
+    this.sharedUserDataService.getCurrentAddress().pipe(take(1)).subscribe(address => this.currentAddress = address)  
+    this.setHelpedCauses();
   }
 
-  setAllPosts(): void {
-    this.posts$ = this.postService.getAllPosts().pipe(map(posts => {
-      return posts.slice().reverse();
-    }))  
-  }
-
-  setCurrentUserPosts(): void {
-    this.currentUserPosts$ = this.posts$
+  getAllPosts(): Observable<Post[]> {
+    return this.postService.getAllPosts()
       .pipe(
-        map((posts) => {
-          var currentAddress: string;
-          this.currentAddress.pipe(take(1)).subscribe(address => currentAddress = address)
-          return posts.filter(post => post.charityOrganizationAddress === currentAddress)
+        map(posts => {
+          return posts.slice().reverse();
+        })
+      )  
+  }
+  
+  setHelpedCauses(): void {
+    this.subscription$ = this.transferService.getLiveDonations().subscribe(donations => {
+      this.helpedCauses$ = this.posts$.
+        pipe(
+          map(posts => {
+            return posts.filter(post => {
+                return (donations.filter(donation => this.currentAddress == donation.accountSender && post.id == donation.postId)
+                                  .length) > 0;                     
+              })
+          })
+        )
+      })
+  }
+
+  getCurrentUserPosts(): Observable<Post[]> {
+    return this.posts$
+      .pipe(
+        map(posts => {
+          return posts.filter(post => post.charityOrganizationAddress === this.currentAddress)
         })
       );
   }
 
-  setHelpedCauses(): void {
-    let currentAddress: string;
-    this.currentAddress.pipe(take(1)).subscribe(address => currentAddress = address);
-
-    // this.subscription$ = this.transferService.getLiveDonations().subscribe(donations => {
-    //   this.helpedCauses = [];
-    //   donations.filter(donation => donation.accountSender == currentAddress)
-    //     .forEach(donation => {          
-    //       if(!this.helpedCauses.map(post => post.id).includes(donation.postId))
-    //         this.postService.getPostById(donation.postId).pipe(take(1)).subscribe(post => this.helpedCauses.push(post))
-    //     })
-    // })   
-  }
-
   ngOnDestroy() {
-    // this.subscription$.unsubscribe();
+    this.subscription$.unsubscribe();
   }
 }
 

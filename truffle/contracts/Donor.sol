@@ -6,7 +6,9 @@ contract Donor {
     
     mapping(address => string) private donor;
 
-    function getDonorUsername(address accountAddress) public view returns (string memory) {
+    function getDonorUsername(address accountAddress) public 
+                                                      view 
+                                                      returns (string memory) {
         return donor[accountAddress];
     }
 

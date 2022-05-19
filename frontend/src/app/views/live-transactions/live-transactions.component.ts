@@ -25,8 +25,9 @@ export class LiveTransactionsComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
-    this.subscription$ = this.transferService.getLiveDonations().subscribe((donations) => this.donations$ = donations.slice().reverse().slice(0,5))  
-    // this.donations$ = this.transferService.getDonationList();
+    this.subscription$ = this.transferService.getLiveDonations().subscribe((donations) => 
+      this.donations$ = donations.slice().reverse().slice(0,100)
+      )  
   }
 
   goToPost(id: number): void {

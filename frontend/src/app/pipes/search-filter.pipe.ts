@@ -27,9 +27,10 @@ export class SearchFilterPipe implements PipeTransform {
     }
       
     return posts!.filter( post => {
-        const charityOrganization: CharityOrganization = this.charityOrganizations.filter(charityOrganization => charityOrganization.accountAddress === post.charityOrganizationAddress)[0];        
-        return charityOrganization.name.trim().toLowerCase().indexOf(searchInput.trim().toLowerCase()) == 0;
-              //  post.description.trim().toLowerCase().indexOf(searchInput.trim().toLowerCase()) == 0; ?? should I
+        const charityOrganization: CharityOrganization = this.charityOrganizations
+          .filter(charityOrganization => 
+            charityOrganization.accountAddress === post.charityOrganizationAddress)[0];        
+            return charityOrganization.name.trim().toLowerCase().indexOf(searchInput.trim().toLowerCase()) == 0;
       });
   }
 }

@@ -27,11 +27,15 @@ contract CharityOrganizations {
                 charityOrganizations[i] =  CharityOrganization(accountAddress, email, name, description, phoneNumber);
     }
 
-    function getCharityOrganizationByAddress(address accountAddress) view public returns (CharityOrganization memory) {
+    function getCharityOrganizationByAddress(address accountAddress) view 
+                                                                     public 
+                                                                     returns (CharityOrganization memory) {
         return charityOrganization[accountAddress];
     }
 
-    function getAllCharityOrganizations() view public returns (CharityOrganization[] memory) {
+    function getAllCharityOrganizations() view 
+                                          public 
+                                          returns (CharityOrganization[] memory) {
         return charityOrganizations;
     }
 }

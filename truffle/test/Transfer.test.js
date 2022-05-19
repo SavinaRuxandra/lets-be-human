@@ -1,6 +1,5 @@
 //used Mocha and Chai
 const Transfer = artifacts.require('./Transfer.sol');
-const Web3 = require("web3")
 
 contract('Transfer', (accounts) => {
 
@@ -20,17 +19,10 @@ contract('Transfer', (accounts) => {
   })
 
   it("should make transfer", async () => {
-    this.transfer.events.DonationEvent({
-      fromBlock:'latest'
-    }, 
-      function(err, result) {
-        console.log("LALA");
-        // console.log(Web3.eth.abi.decodeParameters(['address', 'address', 'uint256', 'uint64', 'string'], result))
-      });
     const startingBalance = await web3.eth.getBalance(accountReceiver)
-    const result = (await this.transfer.pay(accountReceiver, "This is a messsage", 2, { from: accountSender, value: 1 * 1e18 }));
+    result = await this.transfer.pay(accountReceiver, "This is a messsage", 2, { from: accountSender, value: 1 * 1e18 });
     assert.equal((await web3.eth.getBalance(accountReceiver)), eval(startingBalance) + eval(1 * 1e18));
-    
+    assert.equal(result.logs[0].event, "DonationEvent")
   });
 
   it('should list donations', async () => {

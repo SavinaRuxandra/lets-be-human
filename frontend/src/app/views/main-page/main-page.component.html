@@ -16,7 +16,7 @@
             </div>
 
             <div *ngIf="(activeButton$ | async) === WISHLIST_POSTS_BUTTON">
-                <div *ngFor="let post of helpedCauses  | searchFilter: searchInput">
+                <div *ngFor="let post of (helpedCauses$ | async) | searchFilter: searchInput">
                     <app-post class="post" [post]="post!"></app-post>
                 </div>
             </div>

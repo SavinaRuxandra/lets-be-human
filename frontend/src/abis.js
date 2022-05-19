@@ -1,4 +1,4 @@
-export const TRANSFER_CONTRACT_ADDRESS = '0xe435De63b86B7d0F1B3619Caa5ceB0495b495dA4';
+export const TRANSFER_CONTRACT_ADDRESS = '0x93e1876F241950e13932b27a41871122070BB487';
 export const TRANSFER_TOKEN_ABI = [
   {
     "inputs": [],
@@ -8,38 +8,7 @@ export const TRANSFER_TOKEN_ABI = [
   },
   {
     "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "accountSender",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "accountReceiver",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint64",
-        "name": "postId",
-        "type": "uint64"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "message",
-        "type": "string"
-      }
-    ],
+    "inputs": [],
     "name": "DonationEvent",
     "type": "event"
   },
@@ -110,7 +79,7 @@ export const TRANSFER_TOKEN_ABI = [
   }
 ];
 
-export const DONOR_CONTRACT_ADDRESS = '0xbd15e9137D18A9EDb4D836FB76f0E4842e2E3c36';
+export const DONOR_CONTRACT_ADDRESS = '0xc4C74626748e10C9392fE07ED3c268D848D762F8';
 export const DONOR_TOKEN_ABI= [
   {
     "inputs": [
@@ -152,7 +121,7 @@ export const DONOR_TOKEN_ABI= [
   }
 ]
 
-export const CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS = '0xf085FD1b6189D0840cAfF7dE86Bc72Dcee70C312';
+export const CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS = '0x94b1F4e4A058b9239A78e4052D7c001DFF89be53';
 export const CHARITY_ORGANIZATIONS_TOKEN_ABI = [
   {
     "inputs": [

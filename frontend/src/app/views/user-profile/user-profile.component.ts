@@ -16,18 +16,18 @@ import { TransferService } from 'src/app/services/transfer.service';
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent {
 
   currentUserRole!: UserRole;
   currentAddress!: string
   currentDonor!: Donor;
   currentCharityOrganization!: CharityOrganization;
 
-  moneyShared$!: Observable<string>;
-  moneyReceived$!: Observable<string>; 
-  currentBalance$: Observable<number> = this.transferService.getCurrentBalance();
-  numberOfPosts$!: Observable<number>;
-  numberHelpedCauses$!: Observable<number>;
+  moneyShared$!: Observable<string> 
+  moneyReceived$!: Observable<string> 
+  currentBalance$!: Observable<string> 
+  numberOfPosts$!: Observable<number> 
+  numberHelpedCauses$!: Observable<number> 
 
   username!: FormControl;
   editCharityOrganizationForm!: FormGroup;
@@ -54,10 +54,10 @@ export class UserProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.moneyShared$=  this.transferService.getMoneyShared(this.currentAddress);
-    this.moneyReceived$ = this.transferService.getMoneyReceived(this.currentAddress);
+    this.moneyShared$ = this.transferService.getMoneyShared(this.currentAddress);
+    this.moneyReceived$ = this.transferService.getMoneyReceived(this.currentAddress); 
     this.currentBalance$ = this.transferService.getCurrentBalance();
-    this.numberOfPosts$ = this.postService.getNoPostsOfCharityOrganization(this.currentAddress);
+    this.numberOfPosts$  = this.postService.getNoPostsOfCharityOrganization(this.currentAddress);
     this.numberHelpedCauses$ = this.transferService.getNoHelpedCauses(this.currentAddress);
   }
 

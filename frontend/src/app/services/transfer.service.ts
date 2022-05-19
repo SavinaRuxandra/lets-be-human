@@ -1,8 +1,7 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import Web3 from 'web3';
 import Web3Modal from "web3modal";
 import { BehaviorSubject, map, Observable } from 'rxjs';
-
 import { TRANSFER_CONTRACT_ADDRESS, TRANSFER_TOKEN_ABI } from "../../abis";
 import { Donation } from '../models/donation';
 import { WEB3_MODAL_OPTIONS } from 'src/environments/environment';
@@ -11,7 +10,7 @@ import { WEB3_MODAL_OPTIONS } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class TransferService implements OnInit {
+export class TransferService {
 
   private web3js: Web3;
   private web3Modal: Web3Modal;
@@ -20,8 +19,7 @@ export class TransferService implements OnInit {
   private contract: any;
 
   donationsSource$ = new BehaviorSubject<Donation[]>([]);
-  donations: Donation[] = [];
-  balanceSource$ = new BehaviorSubject<number>(0);
+  balanceSource$ = new BehaviorSubject<string>('0');
   
   constructor() {
     this.web3Modal = new Web3Modal(WEB3_MODAL_OPTIONS);
@@ -29,39 +27,15 @@ export class TransferService implements OnInit {
     this.accounts = this.web3js.eth.getAccounts(); 
     this.contract = new this.web3js.eth.Contract(TRANSFER_TOKEN_ABI, TRANSFER_CONTRACT_ADDRESS);
 
+    this.setDonations();
+    this.setBalance();
+
     const $this = this;
-
     this.contract.events.DonationEvent({}, function(err: any, result: any): void {
-      // const web3js = new Web3(window.ethereum);
-      // const donationDecoded = web3js.eth.abi.decodeParameters(
-      //   ['address', 'address', 'uint256', 'uint64', 'string'], result.raw.data
-      // )
-      // const donation = <Donation> {
-      //   accountSender: donationDecoded[0],
-      //   accountReceiver: donationDecoded[1],
-      //   amount: donationDecoded[2],
-      //   postId: donationDecoded[3],
-      //   message: donationDecoded[4]
-      // }
-      // $this.addDonation(donation);
-      $this.setLiveDonations();
-    });
-      
-    this.getDonations().then(donations => this.donations = donations);
-    this.setLiveDonations();
-    this.setBalance();
+      $this.setDonations();
+      $this.setBalance();
+    })
   }
-
-  ngOnInit(): void {
-    this.setLiveDonations();
-    this.setBalance();
-    this.getDonations().then(donations => this.donations = donations);
-  }
-
-  // addDonation(donation: Donation): void {
-  //   this.donations.push(donation);
-  //   this.donationsSource$.next(this.donations)
-  // }
 
   async tranferEthereum(transferAddress: string, amount: number, postId: number, message: string): Promise<void> {
     this.provider = await this.web3Modal.connect();
@@ -70,11 +44,9 @@ export class TransferService implements OnInit {
     await this.contract.methods.pay(transferAddress, message, postId).send({
        from: this.accounts[0], value: Web3.utils.toWei(amount.toString(), 'ether') }
     )
-    this.setLiveDonations();
-    this.setBalance();
   }
 
-  async getDonations() {
+  private async getDonations() {
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
@@ -83,30 +55,36 @@ export class TransferService implements OnInit {
     });
   }
 
-  private async getBalance(): Promise<number> {  
+  private setDonations(): void {
+    let donationObjects: Donation[] = [];
+    this.getDonations().then((donations) => {
+      donations.forEach((donation: any[]) => {
+        donationObjects.push(this.buildDonationObjFromList(donation));
+      })
+      this.donationsSource$.next(donationObjects);
+    })
+  }
+
+  getLiveDonations(): Observable<Donation[]> {
+    return this.donationsSource$.asObservable();
+  }
+
+  private buildDonationObjFromList(donation: any[]): Donation {
+    return <Donation> {
+      accountSender: donation[0],
+      accountReceiver: donation[1],
+      amount: parseFloat(parseFloat(Web3.utils.fromWei(donation[2], 'ether')).toFixed(5)),
+      postId: donation[3],
+      message: donation[4]
+    }
+  }
+
+  private async getBalance(): Promise<string> {  
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
     return this.web3js.eth.getBalance(this.accounts[0]).then((balance: string) => {
-      return parseFloat(parseFloat(Web3.utils.fromWei(balance, 'ether')).toFixed(5));
-    })
-  }
-
-  private setLiveDonations(): void {
-    let donationObjects: Donation[] = [];
-    this.getDonations().then((donations) => {
-      donations.forEach((donation: any[]) => {
-        const donationObject: Donation = <Donation> {
-          accountSender: donation[0],
-          accountReceiver: donation[1],
-          amount: parseFloat(Web3.utils.fromWei(donation[2], 'ether')),  //TODO
-          postId: donation[3],
-          message: donation[4]
-        }
-        donationObjects.push(donationObject);
-      })
-      this.donationsSource$.next(donationObjects);
-      this.donations = donationObjects;
+      return parseFloat(Web3.utils.fromWei(balance, 'ether')).toFixed(5);
     })
   }
 
@@ -116,15 +94,7 @@ export class TransferService implements OnInit {
     })
   }
 
-  getLiveDonations(): Observable<Donation[]> {
-    return this.donationsSource$.asObservable();
-  }
-
-  getDonationList(): Donation[] {
-    return this.donations;
-  }
-
-  getCurrentBalance(): Observable<number> {
+  getCurrentBalance(): Observable<string> {
     return this.balanceSource$.asObservable();
   }
 
