@@ -2,7 +2,7 @@
 
 pragma solidity >=0.4.22 <0.9.0;
 
-contract Donor {
+contract Donors {
     
     mapping(address => string) private donor;
 

@@ -71,14 +71,16 @@ export class CreatePostComponent implements OnInit {
       formData.append('photos', this.photosFile[i]);
     }
 
-    this.postService.addPost(formData)
-        .pipe(take(1))
-        .subscribe(() => {
+    this.postService.addPost(postToAdd)
+        .then(() => {
           this.snackbar.success("Post successfully added");
           this.goBack();
+          console.log("YEEE");
+          
         },
         err => {
           this.snackbar.error("The post could not be added");
+          console.log(err);
         })
   }
 

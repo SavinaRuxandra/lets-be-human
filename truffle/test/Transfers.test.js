@@ -1,13 +1,13 @@
 //used Mocha and Chai
-const Transfer = artifacts.require('./Transfer.sol');
+const Transfers = artifacts.require('./Transfers.sol');
 
 contract('Transfer', (accounts) => {
 
-  accountSender = accounts[2]
-  accountReceiver = accounts[0]
+  accountSender = accounts[5]
+  accountReceiver = accounts[2]
 
   before(async () => {
-    this.transfer = await Transfer.deployed()
+    this.transfer = await Transfers.deployed()
   })
 
   it('should deploy successfully', async () => {

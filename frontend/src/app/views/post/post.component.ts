@@ -95,8 +95,7 @@ export class PostComponent implements OnInit {
       readMoreUrl: this.editForm.controls['readMoreUrl'].value,
     };
     this.postService.updatePost(postToUpdate)
-    .pipe(take(1))
-    .subscribe(() => {
+    .then(() => {
       this.postService.getPostById(this.post.id).subscribe(post => this.post = post);
       this.snackbar.success("Post successfully updated");
     },
@@ -122,8 +121,7 @@ export class PostComponent implements OnInit {
 
   deletePost(): void {
     this.postService.deletePostById(this.post.id)
-        .pipe(take(1))
-        .subscribe(() => {
+        .then(() => {
           window.location.reload();
           this.snackbar.success("Post successfully deleted");
         },

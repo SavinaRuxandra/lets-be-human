@@ -24,20 +24,36 @@ export class CharityOrganizationService {
     this.contract = new this.web3js.eth.Contract(CHARITY_ORGANIZATIONS_TOKEN_ABI, CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS);
   }
 
-  async addCharityOrganization(address: string, email: string, name: string, description: string, phoneNumber: string): Promise<void> {
+  async addCharityOrganization(address: string, 
+                               email: string, 
+                               name: string, 
+                               description: string, 
+                               phoneNumber: string): Promise<void> {
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
-    await this.contract.methods.addCharityOrganization(address, email, name, description, phoneNumber).send({
+    await this.contract.methods.addCharityOrganization(address, 
+                                                       email, 
+                                                       name, 
+                                                       description, 
+                                                       phoneNumber).send({
       from: this.accounts[0]
     });
   }
 
-  async updateCharityOrganization(address: string, email: string, name: string, description: string, phoneNumber: string): Promise<void> {
+  async updateCharityOrganization(address: string, 
+                                  email: string, 
+                                  name: string, 
+                                  description: string, 
+                                  phoneNumber: string): Promise<void> {
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
-    await this.contract.methods.updateCharityOrganization(address, email, name, description, phoneNumber).send({
+    await this.contract.methods.updateCharityOrganization(address, 
+                                                          email, 
+                                                          name, 
+                                                          description, 
+                                                          phoneNumber).send({
       from: this.accounts[0]
     });
   }
@@ -75,7 +91,8 @@ export class CharityOrganizationService {
   }
 
   getCharityOrganizationByAddressAsObject(address: string): Promise<CharityOrganization> {
-    return this.getCharityOrganizationByAddress(address).then(charityOrganization => {
+    return this.getCharityOrganizationByAddress(address)
+    .then(charityOrganization => {
       return <CharityOrganization> {
         accountAddress: charityOrganization[0],
         email: charityOrganization[1],

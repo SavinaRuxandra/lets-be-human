@@ -1,4 +1,4 @@
-export const TRANSFER_CONTRACT_ADDRESS = '0x93e1876F241950e13932b27a41871122070BB487';
+export const TRANSFER_CONTRACT_ADDRESS = '0x6D2Fb31E7Cd304d266b484e7d554541A6CE6B9db';
 export const TRANSFER_TOKEN_ABI = [
   {
     "inputs": [],
@@ -68,7 +68,7 @@ export const TRANSFER_TOKEN_ABI = [
             "type": "string"
           }
         ],
-        "internalType": "struct Transfer.Donation[]",
+        "internalType": "struct Transfers.Donation[]",
         "name": "",
         "type": "tuple[]"
       }
@@ -79,7 +79,7 @@ export const TRANSFER_TOKEN_ABI = [
   }
 ];
 
-export const DONOR_CONTRACT_ADDRESS = '0xc4C74626748e10C9392fE07ED3c268D848D762F8';
+export const DONOR_CONTRACT_ADDRESS = '0x210816F8036Ca952FaAbc6FEb9efDAa3F3b2ce8C';
 export const DONOR_TOKEN_ABI= [
   {
     "inputs": [
@@ -121,7 +121,7 @@ export const DONOR_TOKEN_ABI= [
   }
 ]
 
-export const CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS = '0x94b1F4e4A058b9239A78e4052D7c001DFF89be53';
+export const CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS = '0x1f24d8Acb61aE144Da4280D5861D54500EBCbf7C';
 export const CHARITY_ORGANIZATIONS_TOKEN_ABI = [
   {
     "inputs": [
@@ -269,6 +269,182 @@ export const CHARITY_ORGANIZATIONS_TOKEN_ABI = [
           }
         ],
         "internalType": "struct CharityOrganizations.CharityOrganization[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  }
+]
+
+export const POSTS_CONTRACT_ADDRESS = '0xe4Df98e393Ca11C4177428b3387209DC0A869bD6';
+export const POSTS_TOKEN_ABI = [
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "charityOrganizationAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "headline",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "readMoreUrl",
+        "type": "string"
+      }
+    ],
+    "name": "addPost",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "charityOrganizationAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "headline",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "readMoreUrl",
+        "type": "string"
+      }
+    ],
+    "name": "updatePost",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "name": "deletePostById",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "name": "getPostById",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "charityOrganizationAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "headline",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "readMoreUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "bool",
+            "name": "deleted",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct Posts.Post",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [],
+    "name": "getAllPosts",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "charityOrganizationAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "headline",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "readMoreUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "bool",
+            "name": "deleted",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct Posts.Post[]",
         "name": "",
         "type": "tuple[]"
       }

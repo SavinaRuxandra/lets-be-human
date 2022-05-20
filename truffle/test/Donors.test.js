@@ -1,12 +1,12 @@
 //used Mocha and Chai
-const Donor = artifacts.require('./Donor.sol')
+const Donors = artifacts.require('./Donors.sol')
 
 contract('Donor', (accounts) => {
 
   currentAccount = accounts[0]
 
   before(async () => {
-    this.donor = await Donor.deployed()
+    this.donor = await Donors.deployed()
   })
 
   it('should deploy successfully', async () => {
