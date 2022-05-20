@@ -32,11 +32,11 @@ export class AuthentificationService {
   }
 
   async getCurrentAddress(): Promise<string> {
-    this.web3Modal.clearCachedProvider();
+    // this.web3Modal.clearCachedProvider();
 
-    this.web3Modal = new Web3Modal(WEB3_MODAL_OPTIONS);
-    this.provider = await this.web3Modal.connect();
-    this.web3js = new Web3(this.provider);
+    // this.web3Modal = new Web3Modal(WEB3_MODAL_OPTIONS);
+    // this.provider = await this.web3Modal.connect();
+    this.web3js = new Web3(window.ethereum);
     this.accounts = await this.web3js.eth.getAccounts();       
     
     return this.accounts[0];
@@ -68,17 +68,6 @@ export class AuthentificationService {
       }
     }));
   }
-
-  // onChangeAddress(): void {
-  //   window.ethereum.on('accountsChanged', () => this.ngZone.run(() => {
-  //     let currentRole;
-  //     this.sharedUserDataService.getCurrentUserRole().pipe(take(1)).subscribe(role => currentRole = role)
-  //     if(currentRole != UserRole.LOGGED_OUT) {        
-  //       this.logOut();
-  //       this.snack.info("Uups! Looks like you changed your current address. Login again with the new address");
-  //     }
-  //   }));
-  // }
 }
 
 

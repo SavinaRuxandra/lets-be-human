@@ -47,9 +47,9 @@
       <carousel [isAnimated]="true"  
                 [interval]='0'
                 >
-        <slide *ngFor="let photo of photos">
-          <img [src]="photo" 
-               class = "photo"
+        <slide *ngFor="let photo of post.photos">
+          <img src="https:\ipfs.infura.io\ipfs\{{photo}}"
+               class="photo"
                >   
         </slide>   
       </carousel>
@@ -57,7 +57,6 @@
       <a href= "{{ post.readMoreUrl }}" target="_blank">
         <div *ngIf="post.readMoreUrl" 
               class="d-flex justify-content-end align-items-center read-more"
-              
               >
           <div>Read more</div>
           <mat-icon>arrow_right_alt</mat-icon>
@@ -124,10 +123,10 @@
         <carousel [isAnimated]="true"  
                   [interval]='0'
                   >
-          <slide *ngFor="let photo of photos; let i=index">
-            <img [src]="photo"
-                 class="photo"
-                 >   
+          <slide *ngFor="let photo of post.photos; let i=index">
+            <img class="photo" 
+                src="https:\ipfs.infura.io\ipfs\{{photo}}"
+                >   
           </slide>   
         </carousel>
 

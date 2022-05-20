@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { map, Observable, Subscription, take } from 'rxjs';
+import { filter, map, Observable, Subscription, take } from 'rxjs';
 import { HeaderButtonEnum } from 'src/app/models/header-button.enum';
 import { Post } from 'src/app/models/post.model';
 import { PostService } from 'src/app/services/post.service';
@@ -39,11 +39,12 @@ export class MainPageComponent implements OnInit {
     this.setHelpedCauses();
   }
 
-  getAllPosts(): Observable<Post[]> {
+  getAllPosts(): Observable<Post[]> {        
     return this.postService.getAllPosts()
       .pipe(
         map(posts => {
-          return posts.slice().reverse();
+          return posts.filter(post => post.deleted == false)
+                      .slice().reverse();
         })
       )  
   }

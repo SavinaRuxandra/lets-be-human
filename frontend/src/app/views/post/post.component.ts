@@ -6,7 +6,6 @@ import { Post } from 'src/app/models/post.model';
 import { CharityOrganizationService } from 'src/app/services/charity-organization.service';
 import { CharityOrganization } from 'src/app/models/charity-organization.model';
 import { Observable, take } from 'rxjs';
-import { DomSanitizer } from '@angular/platform-browser';
 import { HeaderButtonEnum } from 'src/app/models/header-button.enum';
 import { SharedHeadlineButtonDataService } from 'src/app/services/shared-headline-button-data.service';
 import { PostService } from 'src/app/services/post.service';
@@ -43,16 +42,14 @@ export class PostComponent implements OnInit {
               private sharedUserDataService: SharedUserDataService,
               private dialog: MatDialog,
               private snackbar: SnackbarService,
-              private formBuilder: FormBuilder,
-              private sanitizer: DomSanitizer) { }
+              private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {    
     this.charityOrganizationService.getCharityOrganizationByAddressAsObject(this.post.charityOrganizationAddress).then(charityOrganization => {
         this.charityOrganization = charityOrganization
       })
     this.sharedUserDataService.getCurrentUserRole().pipe(take(1)).subscribe(userRole => this.currentUserRole = userRole);
-    this.photos = this.post.photos.map((photo: string) => this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + photo));
-    this.moneyRaised$ = this.transferService.getMoneyRaisedForPost(this.post.id);
+    this.moneyRaised$ = this.transferService.getMoneyRaisedForPost(this.post.id);    
   }
 
   openCustomDonationDialog(): void {
@@ -90,19 +87,22 @@ export class PostComponent implements OnInit {
   updatePost(): void {        
     const postToUpdate: Post = <Post> {
       id: this.post.id,
+      charityOrganizationAddress: this.post.charityOrganizationAddress,
       headline: this.editForm.controls['headline'].value,
       description: this.editForm.controls['description'].value,
       readMoreUrl: this.editForm.controls['readMoreUrl'].value,
+      photos: this.post.photos
     };
     this.postService.updatePost(postToUpdate)
     .then(() => {
       this.postService.getPostById(this.post.id).subscribe(post => this.post = post);
       this.snackbar.success("Post successfully updated");
+      this.editMode = false;
     },
     err => {
       this.snackbar.error("The post could not be updated");
+      this.editMode = false;
     })
-    this.editMode = false;
   }
 
   cancelEdit(): void {
@@ -125,7 +125,7 @@ export class PostComponent implements OnInit {
           window.location.reload();
           this.snackbar.success("Post successfully deleted");
         },
-        err => {
+        err => {          
           this.snackbar.error("Post could not be deleted")
         });
 

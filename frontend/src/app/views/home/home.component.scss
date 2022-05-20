@@ -38,7 +38,7 @@
     background: -moz-linear-gradient(top left, style.$primary-color, style.$secondary-color);
     background: linear-gradient(to bottom right, style.$primary-color, style.$secondary-color);
     color: style.$tertiary-color;
-    opacity: 0.8;
+    opacity: 0.7;
 } 
 
 .charity-organization-button {
@@ -46,13 +46,13 @@
     background: -moz-linear-gradient(top left, style.$primary-color, style.$secondary-color);
     background: linear-gradient(to bottom right, style.$primary-color, style.$secondary-color);
     color: style.$tertiary-color;
-    opacity: 0.8;
+    opacity: 0.7;
 }
 
 .guest-button {
     background-color: style.$tertiary-color;
     color: style.$accent-color;
-    opacity: 0.9;
+    opacity: 0.7;
 }
 
 .donor-text {
@@ -69,7 +69,6 @@
 }
 
 .login-button:hover {
-    width: 220px;
-    height: 120px;
+
     opacity: 1;
 } 

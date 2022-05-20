@@ -10,19 +10,20 @@ contract Posts {
         string headline;
         string description;
         string readMoreUrl;
+        string[] photos;
         bool deleted;
     }
 
     Post[] private posts;
     uint count = 0;
 
-    function addPost(address charityOrganizationAddress, string memory headline, string memory description, string memory readMoreUrl) public {
-        posts.push(Post(count, charityOrganizationAddress, headline, description, readMoreUrl, false));
+    function addPost(address charityOrganizationAddress, string memory headline, string memory description, string memory readMoreUrl, string[] memory photos) public {
+        posts.push(Post(count, charityOrganizationAddress, headline, description, readMoreUrl, photos, false));
         count++;
     }
 
-    function updatePost(uint id, address charityOrganizationAddress, string memory headline, string memory description, string memory readMoreUrl) public {
-        posts[id] =  Post(id, charityOrganizationAddress, headline, description, readMoreUrl, false);
+    function updatePost(uint id, address charityOrganizationAddress, string memory headline, string memory description, string memory readMoreUrl, string[] memory photos) public {
+        posts[id] =  Post(id, charityOrganizationAddress, headline, description, readMoreUrl, photos, false);
     }
 
     function deletePostById(uint id) public {

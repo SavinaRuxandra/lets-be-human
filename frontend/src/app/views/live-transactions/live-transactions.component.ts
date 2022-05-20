@@ -36,7 +36,8 @@ export class LiveTransactionsComponent implements OnInit {
         this.router.navigate(['/post', id]);
         this.sharedHeadlineButtonDataService.setActiveButton(HeaderButtonEnum.NONE);
       },
-      err => this.snackService.error("This post was deleted"));
+      err => this.snackService.error("An error occured. Please try again later.")
+    )
   }
 
   ngOnDestroy() {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { create } from 'ipfs-http-client';
 import { take } from 'rxjs';
 import { HeaderButtonEnum } from 'src/app/models/header-button.enum';
 import { Post } from 'src/app/models/post.model';
@@ -18,7 +19,7 @@ export class CreatePostComponent implements OnInit {
 
   createPostForm!: FormGroup;
   photos: any[] = [];
-  photosFile: File[] = [];
+  photosArrayBuffer: any [] = [];
   currentAddress!: string;
 
   constructor(private postService: PostService,
@@ -43,20 +44,25 @@ export class CreatePostComponent implements OnInit {
   }
 
   onFileChanges(event: any): void {
-    const reader = new FileReader();
+    const reader1 = new FileReader();
+    const reader2 = new FileReader();
+
     
     if(event.target.files && event.target.files.length) {
       const [file] = event.target.files;
-      reader.readAsDataURL(file);
-    
-      reader.onload = () => {
-        this.photos.push(reader.result?.toString());
-        this.photosFile.push(file);
+      reader1.readAsDataURL(file);
+      reader1.onload = () => {
+        this.photos.push(Buffer.from(reader1.result!));
       };
+
+      reader2.readAsArrayBuffer(file);
+      reader2.onload = () => {
+        this.photosArrayBuffer.push(reader2.result);
+      }
     }
   }
 
-  addPost(): void {
+  async addPost(): Promise<void> {
     const postToAdd: Post = <Post> {
       charityOrganizationAddress: this.currentAddress,
       headline: this.createPostForm.controls['headline'].value,
@@ -64,29 +70,33 @@ export class CreatePostComponent implements OnInit {
       readMoreUrl: this.createPostForm.controls['readMoreUrl'].value,
     };
 
-    const formData = new FormData();
-    formData.append('post', new Blob([JSON.stringify(postToAdd)], { type: 'application/json' }))
+    const ipfs = create({
+      host: 'ipfs.infura.io',
+      port: 5001,
+      protocol: 'https',
+    });
 
-    for (let i = 0; i < this.photosFile.length; i++) {
-      formData.append('photos', this.photosFile[i]);
-    }
-
+    postToAdd.photos = []    
+    for (let i = 0; i < this.photosArrayBuffer.length; i++) {
+      await ipfs.add(this.photosArrayBuffer[i])
+        .then((file:any) => {          
+          postToAdd.photos.push(file.path);
+        })  
+    }     
+    
     this.postService.addPost(postToAdd)
-        .then(() => {
-          this.snackbar.success("Post successfully added");
-          this.goBack();
-          console.log("YEEE");
-          
-        },
-        err => {
-          this.snackbar.error("The post could not be added");
-          console.log(err);
-        })
+      .then(() => {
+        this.snackbar.success("Post successfully added");
+        this.goBack();
+      },
+      err => {
+        this.snackbar.error("The post could not be added");
+      })
   }
 
   removeImageAtIndex(index: number): void {
     this.photos.splice(index, 1);
-    this.photosFile.splice(index, 1);
+    this.photosArrayBuffer.splice(index, 1);
   }
 
   cancel(): void {

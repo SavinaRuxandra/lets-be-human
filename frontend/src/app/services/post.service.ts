@@ -27,11 +27,13 @@ export class PostService {
   async addPost(post: Post): Promise<void> { 
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
-    this.accounts = await this.web3js.eth.getAccounts(); 
+    this.accounts = await this.web3js.eth.getAccounts();
+
     await this.contract.methods.addPost(post.charityOrganizationAddress,
                                         post.headline,
                                         post.description,
-                                        post.readMoreUrl).send({
+                                        post.readMoreUrl,
+                                        post.photos).send({
       from: this.accounts[0]
     });  
   }
@@ -40,7 +42,7 @@ export class PostService {
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
-    await this.contract.methods.deletePostById().send({
+    await this.contract.methods.deletePostById(postId).send({
       from: this.accounts[0]
     });      
   }
@@ -53,7 +55,8 @@ export class PostService {
                                            post.charityOrganizationAddress,
                                            post.headline,
                                            post.description,
-                                           post.readMoreUrl).send({
+                                           post.readMoreUrl,
+                                           post.photos).send({
       from: this.accounts[0]
     });   
   }
@@ -82,7 +85,7 @@ export class PostService {
     this.provider = await this.web3Modal.connect();
     this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
-    return await this.contract.methods.getPostById().call({
+    return await this.contract.methods.getPostById(id).call({
       from: this.accounts[0]
     });    
   }
@@ -93,15 +96,18 @@ export class PostService {
     }));
   }
   
-  private buildPostObjFromList(post: any[]): Post {
+  private buildPostObjFromList(post: any[]): Post {     
+    // console.log("!!!!!!!!!!!!!,", post);
+       
     return <Post> {
       id: post[0],
       charityOrganizationAddress: post[1],
       headline: post[2],
       description: post[3],
       readMoreUrl: post[4],
-      photos: []
-    }
+      photos: post[5],
+      deleted: post[6]
+    } 
   }
 
   getNoPostsOfCharityOrganization(address: string) {

@@ -4,5 +4,6 @@ export interface Post {
     headline: string
     description: string
     readMoreUrl: string
-    photos: any
+    photos: string[]
+    deleted: boolean
 }

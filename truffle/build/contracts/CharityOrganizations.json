@@ -8447,12 +8447,12 @@
     "1337": {
       "events": {},
       "links": {},
-      "address": "0x1f24d8Acb61aE144Da4280D5861D54500EBCbf7C",
-      "transactionHash": "0x10ad702d03816c179f9d7813c89344b572d76f41fcbb49053935e4acb234f1c6"
+      "address": "0x886F4b93F98348433457D1198f773ED70ac549A9",
+      "transactionHash": "0xab43b876f32964b6e60b41f7e54f9d002463915e3ae4b30d7b415549ac268c8a"
     }
   },
   "schemaVersion": "3.4.7",
-  "updatedAt": "2022-05-19T23:08:53.665Z",
+  "updatedAt": "2022-05-20T13:07:47.552Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
