@@ -6,7 +6,6 @@ import { Donor } from '../models/donor.model';
 import { UserRole } from '../models/user-role.model';
 import { SharedUserDataService } from './shared-user-data.service';
 import { Router } from '@angular/router';
-import { WEB3_MODAL_OPTIONS } from 'src/environments/environment';
 import { SnackbarService } from './snackbar.service';
 import { SharedHeadlineButtonDataService } from './shared-headline-button-data.service';
 import { HeaderButtonEnum } from '../models/header-button.enum';
@@ -18,28 +17,29 @@ import { HeaderButtonEnum } from '../models/header-button.enum';
 export class AuthentificationService {
 
   private web3js: any;
-  private provider: any;
   private accounts: any;
-  web3Modal: any
 
   constructor(private sharedUserDataService: SharedUserDataService,
               private sharedHeadlineButtonDataService: SharedHeadlineButtonDataService,
               private router: Router,
               private snack: SnackbarService,
               private ngZone: NgZone) { 
-    this.web3Modal = new Web3Modal(WEB3_MODAL_OPTIONS);
     this.onChangeAddress();
   }
 
   async getCurrentAddress(): Promise<string> {
-    // this.web3Modal.clearCachedProvider();
+    if(window.ethereum) {
+      this.web3js = new Web3(window.ethereum);
+      this.accounts = await this.web3js.eth.getAccounts();       
+      
+      return this.accounts[0];
+    }
 
-    // this.web3Modal = new Web3Modal(WEB3_MODAL_OPTIONS);
-    // this.provider = await this.web3Modal.connect();
-    this.web3js = new Web3(window.ethereum);
-    this.accounts = await this.web3js.eth.getAccounts();       
-    
-    return this.accounts[0];
+    else {
+      this.snack.error("You need MetaMask in order to connect. Try to login as guest")
+      return "";
+    }
+
   }
 
   setCurrentDonor(donor: Donor): void {                    
@@ -61,13 +61,15 @@ export class AuthentificationService {
   }
 
   onChangeAddress(): void {
-    window.ethereum.on('accountsChanged', () => this.ngZone.run(() => {
-      if(this.router.url != '/home') {        
-        this.logOut();
-        this.snack.info("Uups! Looks like you changed your current address. Login again with the new address");
-      }
-    }));
-  }
+    if(window.ethereum) {
+      window.ethereum.on('accountsChanged', () => this.ngZone.run(() => {
+        if(this.router.url != '/home') {        
+          this.logOut();
+          this.snack.info("Uups! Looks like you changed your current address");
+        }
+      }));
+    }
+    }
 }
 
 

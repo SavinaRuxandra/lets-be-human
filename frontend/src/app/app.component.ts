@@ -1,8 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-
-// import ipfsClient from 'ipfs-api'
-// const ipfs = ipfsClient({host:'ipfs.infura.io', post:'5001', protocol: 'https'})
-// import { create, globSource } from 'ipfs'
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +7,5 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent {
   title = 'blockchainApp';
-
-  constructor(){}
 
 }

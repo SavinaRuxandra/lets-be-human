@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import Web3 from 'web3';
-import Web3Modal from "web3modal";
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { TRANSFER_CONTRACT_ADDRESS, TRANSFER_TOKEN_ABI } from "../../abis";
 import { Donation } from '../models/donation';
-import { WEB3_MODAL_OPTIONS } from 'src/environments/environment';
 
 
 @Injectable({
@@ -12,9 +10,7 @@ import { WEB3_MODAL_OPTIONS } from 'src/environments/environment';
 })
 export class TransferService {
 
-  private web3js: Web3;
-  private web3Modal: Web3Modal;
-  private provider: any;
+  private web3js!: Web3;
   private accounts: any;
   private contract: any;
 
@@ -22,24 +18,33 @@ export class TransferService {
   balanceSource$ = new BehaviorSubject<string>('0');
   
   constructor() {
-    this.web3Modal = new Web3Modal(WEB3_MODAL_OPTIONS);
-    this.web3js = new Web3(window.ethereum);
-    this.accounts = this.web3js.eth.getAccounts(); 
-    this.contract = new this.web3js.eth.Contract(TRANSFER_TOKEN_ABI, TRANSFER_CONTRACT_ADDRESS);
+    if(window.ethereum) {
+      this.web3js = new Web3(window.ethereum);
+      this.accounts = this.web3js.eth.getAccounts(); 
+      this.contract = new this.web3js.eth.Contract(TRANSFER_TOKEN_ABI, TRANSFER_CONTRACT_ADDRESS);
+      this.setDonations();
+      this.setBalance();
 
-    this.setDonations();
-    this.setBalance();
+      const $this = this;
+      this.contract.events.DonationEvent({}, function(err: any, result: any): void {
+        $this.setDonations();
+        $this.setBalance();
+      })
+    }
+    else {
+      this.web3js = new Web3();
+      this.web3js.setProvider(new Web3.providers.HttpProvider("http://localhost:8545"))
+      this.contract = new this.web3js.eth.Contract(TRANSFER_TOKEN_ABI, TRANSFER_CONTRACT_ADDRESS);
+      this.setDonations();
 
-    const $this = this;
-    this.contract.events.DonationEvent({}, function(err: any, result: any): void {
-      $this.setDonations();
-      $this.setBalance();
-    })
+      const $this = this;
+      this.contract.events.DonationEvent({}, function(err: any, result: any): void {
+        $this.setDonations();
+      })
+    }
   }
 
   async tranferEthereum(transferAddress: string, amount: number, postId: number, message: string): Promise<void> {
-    this.provider = await this.web3Modal.connect();
-    this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
     await this.contract.methods.pay(transferAddress, message, postId).send({
        from: this.accounts[0], value: Web3.utils.toWei(amount.toString(), 'ether') }
@@ -47,12 +52,8 @@ export class TransferService {
   }
 
   private async getDonations() {
-    this.provider = await this.web3Modal.connect();
-    this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
-    return await this.contract.methods.getDonations().call({
-      from: this.accounts[0]
-    });
+    return await this.contract.methods.getDonations().call();
   }
 
   private setDonations(): void {
@@ -80,8 +81,6 @@ export class TransferService {
   }
 
   private async getBalance(): Promise<string> {  
-    this.provider = await this.web3Modal.connect();
-    this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
     return this.web3js.eth.getBalance(this.accounts[0]).then((balance: string) => {
       return parseFloat(Web3.utils.fromWei(balance, 'ether')).toFixed(5);

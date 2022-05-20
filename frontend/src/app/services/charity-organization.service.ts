@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import Web3Modal from "web3modal";
 import Web3 from 'web3';
 import { CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS, CHARITY_ORGANIZATIONS_TOKEN_ABI } from "../../abis";
-import { WEB3_MODAL_OPTIONS } from 'src/environments/environment';
 import { CharityOrganization } from '../models/charity-organization.model';
 
 
@@ -11,17 +9,21 @@ import { CharityOrganization } from '../models/charity-organization.model';
 })
 export class CharityOrganizationService {
   
-  private web3js: Web3;
-  private web3Modal: Web3Modal;
-  private provider: any;
+  private web3js!: Web3;
   private accounts: any;
   private contract: any;
 
   constructor() {
-    this.web3Modal = new Web3Modal(WEB3_MODAL_OPTIONS);
-    this.web3js = new Web3(window.ethereum);
-    this.accounts = this.web3js.eth.getAccounts(); 
-    this.contract = new this.web3js.eth.Contract(CHARITY_ORGANIZATIONS_TOKEN_ABI, CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS);
+    if(window.ethereum) {
+      this.web3js = new Web3(window.ethereum);
+      this.accounts = this.web3js.eth.getAccounts(); 
+      this.contract = new this.web3js.eth.Contract(CHARITY_ORGANIZATIONS_TOKEN_ABI, CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS);
+    }
+    else {
+      this.web3js = new Web3();
+      this.web3js.setProvider(new Web3.providers.HttpProvider("http://localhost:8545"))
+      this.contract = new this.web3js.eth.Contract(CHARITY_ORGANIZATIONS_TOKEN_ABI, CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS);
+    }
   }
 
   async addCharityOrganization(address: string, 
@@ -29,8 +31,6 @@ export class CharityOrganizationService {
                                name: string, 
                                description: string, 
                                phoneNumber: string): Promise<void> {
-    this.provider = await this.web3Modal.connect();
-    this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
     await this.contract.methods.addCharityOrganization(address, 
                                                        email, 
@@ -46,8 +46,6 @@ export class CharityOrganizationService {
                                   name: string, 
                                   description: string, 
                                   phoneNumber: string): Promise<void> {
-    this.provider = await this.web3Modal.connect();
-    this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
     await this.contract.methods.updateCharityOrganization(address, 
                                                           email, 
@@ -59,21 +57,13 @@ export class CharityOrganizationService {
   }
 
   private async getCharityOrganizationByAddress(address: string): Promise<any> {
-    this.provider = await this.web3Modal.connect();
-    this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts();     
-    return await this.contract.methods.getCharityOrganizationByAddress(address).call({
-      from: this.accounts[0]
-    });
+    return await this.contract.methods.getCharityOrganizationByAddress(address).call();
   }
 
   private async getCharityOrganizations(): Promise<any> {
-    this.provider = await this.web3Modal.connect();
-    this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
-    return await this.contract.methods.getAllCharityOrganizations().call({
-      from: this.accounts[0]
-    });
+    return await this.contract.methods.getAllCharityOrganizations().call();
   }
 
   getCharityOrganizationsAsObjects(): Promise<CharityOrganization[]> {

@@ -17,12 +17,21 @@ contract Posts {
     Post[] private posts;
     uint count = 0;
 
-    function addPost(address charityOrganizationAddress, string memory headline, string memory description, string memory readMoreUrl, string[] memory photos) public {
+    function addPost(address charityOrganizationAddress, 
+                     string memory headline, 
+                     string memory description, 
+                     string memory readMoreUrl, 
+                     string[] memory photos) public {
         posts.push(Post(count, charityOrganizationAddress, headline, description, readMoreUrl, photos, false));
         count++;
     }
 
-    function updatePost(uint id, address charityOrganizationAddress, string memory headline, string memory description, string memory readMoreUrl, string[] memory photos) public {
+    function updatePost(uint id,
+                        address charityOrganizationAddress, 
+                        string memory headline, 
+                        string memory description, 
+                        string memory readMoreUrl, 
+                        string[] memory photos) public {
         posts[id] =  Post(id, charityOrganizationAddress, headline, description, readMoreUrl, photos, false);
     }
 

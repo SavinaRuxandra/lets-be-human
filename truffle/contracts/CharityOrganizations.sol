@@ -15,16 +15,24 @@ contract CharityOrganizations {
     mapping(address => CharityOrganization) private charityOrganization;
     CharityOrganization[] private charityOrganizations;
 
-    function addCharityOrganization(address accountAddress, string memory email, string memory name, string memory description, string memory phoneNumber) public {
+    function addCharityOrganization(address accountAddress, 
+                                    string memory email, 
+                                    string memory name, 
+                                    string memory description, 
+                                    string memory phoneNumber) public {
         charityOrganization[accountAddress] = CharityOrganization(accountAddress, email, name, description, phoneNumber);
         charityOrganizations.push(charityOrganization[accountAddress]);
     }
 
-    function updateCharityOrganization(address accountAddress, string memory email, string memory name, string memory description, string memory phoneNumber) public {
+    function updateCharityOrganization(address accountAddress, 
+                                       string memory email, 
+                                       string memory name, 
+                                       string memory description, 
+                                       string memory phoneNumber) public {
         charityOrganization[accountAddress] = CharityOrganization(accountAddress, email, name, description, phoneNumber);
         for(uint i=0; i < charityOrganizations.length; i++)
             if(charityOrganizations[i].accountAddress == accountAddress)
-                charityOrganizations[i] =  CharityOrganization(accountAddress, email, name, description, phoneNumber);
+                charityOrganizations[i] = CharityOrganization(accountAddress, email, name, description, phoneNumber);
     }
 
     function getCharityOrganizationByAddress(address accountAddress) view 

@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { POSTS_CONTRACT_ADDRESS, POSTS_TOKEN_ABI } from "../../abis";
-import Web3Modal from "web3modal";
 import Web3 from 'web3';
 import { from, map, Observable, of } from 'rxjs';
-import { WEB3_MODAL_OPTIONS } from 'src/environments/environment';
 import { Post } from '../models/post.model';
 
 @Injectable({
@@ -11,22 +9,24 @@ import { Post } from '../models/post.model';
 })
 export class PostService {
 
-  private web3js: Web3;
-  private web3Modal: Web3Modal;
-  private provider: any;
+  private web3js!: Web3;
   private accounts: any;
   private contract: any;
 
   constructor() {
-    this.web3Modal = new Web3Modal(WEB3_MODAL_OPTIONS);
-    this.web3js = new Web3(window.ethereum);
-    this.accounts = this.web3js.eth.getAccounts(); 
-    this.contract = new this.web3js.eth.Contract(POSTS_TOKEN_ABI, POSTS_CONTRACT_ADDRESS);
+    if(window.ethereum) {
+      this.web3js = new Web3(window.ethereum);
+      this.accounts = this.web3js.eth.getAccounts(); 
+      this.contract = new this.web3js.eth.Contract(POSTS_TOKEN_ABI, POSTS_CONTRACT_ADDRESS);
+    }
+    else {
+      this.web3js = new Web3();
+      this.web3js.setProvider(new Web3.providers.HttpProvider("http://localhost:8545"))
+      this.contract = new this.web3js.eth.Contract(POSTS_TOKEN_ABI, POSTS_CONTRACT_ADDRESS);
+    }
    }
 
   async addPost(post: Post): Promise<void> { 
-    this.provider = await this.web3Modal.connect();
-    this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts();
 
     await this.contract.methods.addPost(post.charityOrganizationAddress,
@@ -39,8 +39,6 @@ export class PostService {
   }
 
   async deletePostById(postId: number): Promise<void> { 
-    this.provider = await this.web3Modal.connect();
-    this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
     await this.contract.methods.deletePostById(postId).send({
       from: this.accounts[0]
@@ -48,8 +46,6 @@ export class PostService {
   }
 
   async updatePost(post: Post): Promise<void> { 
-    this.provider = await this.web3Modal.connect();
-    this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
     await this.contract.methods.updatePost(post.id,
                                            post.charityOrganizationAddress,
@@ -62,12 +58,7 @@ export class PostService {
   }
 
   private async getAllPostsPromise(): Promise<any> {
-    this.provider = await this.web3Modal.connect();
-    this.web3js = new Web3(this.provider);
-    this.accounts = await this.web3js.eth.getAccounts(); 
-    return await this.contract.methods.getAllPosts().call({
-      from: this.accounts[0]
-    });  
+    return await this.contract.methods.getAllPosts().call();  
   }
 
   getAllPosts(): Observable<Post[]> {
@@ -82,12 +73,8 @@ export class PostService {
   }
 
   private async getPostByIdPromise(id: number): Promise<any> { 
-    this.provider = await this.web3Modal.connect();
-    this.web3js = new Web3(this.provider);
     this.accounts = await this.web3js.eth.getAccounts(); 
-    return await this.contract.methods.getPostById(id).call({
-      from: this.accounts[0]
-    });    
+    return await this.contract.methods.getPostById(id).call();    
   }
 
   getPostById(id: number): Observable<Post> {
@@ -96,9 +83,7 @@ export class PostService {
     }));
   }
   
-  private buildPostObjFromList(post: any[]): Post {     
-    // console.log("!!!!!!!!!!!!!,", post);
-       
+  private buildPostObjFromList(post: any[]): Post {            
     return <Post> {
       id: post[0],
       charityOrganizationAddress: post[1],
