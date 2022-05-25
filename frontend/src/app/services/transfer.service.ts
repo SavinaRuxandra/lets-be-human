@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Web3 from 'web3';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable } from 'rxjs';
 import { TRANSFER_CONTRACT_ADDRESS, TRANSFER_TOKEN_ABI } from "../../abis";
 import { Donation } from '../models/donation';
 
@@ -123,8 +123,9 @@ export class TransferService {
 
   getNoHelpedCauses(address: string): Observable<number> {
     return this.getLiveDonations().pipe((map(donations => {      
-      return donations.filter(donation => donation.accountSender == address)
-                      .length                           
+      const filteredCauses =  donations.filter(donation => donation.accountSender == address)
+                      .map(donations => donations.postId)
+      return new Set(filteredCauses).size;                      
     })))
   }
 }

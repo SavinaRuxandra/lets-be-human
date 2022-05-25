@@ -126,10 +126,10 @@
 
                 <hr class="divider">
 
-                <div>
+                <div  *ngIf="currentCharityOrganization">
                     <div><span class="headline">Email:</span> {{currentCharityOrganization.email}}</div>
                     <div><span class="headline">Description:</span> {{currentCharityOrganization.description}}</div>
-                    <div *ngIf="currentCharityOrganization.phoneNumber">
+                    <div *ngIf="currentCharityOrganization.phoneNumber != ''">
                         <span class="headline">Phone number:</span> {{currentCharityOrganization.phoneNumber}}
                     </div>
                 </div>
@@ -189,7 +189,7 @@
 
                     <mat-form-field appearance="outline">
                         <input matInput 
-                               type="number" 
+                               type="text" 
                                placeholder="Phone Number"  
                                formControlName="phoneNumber" 
                                autocomplete="off">
@@ -204,6 +204,7 @@
                     <div class="headline">Current Balance:</div>
                     <div class="headline">Money Shared:</div>
                     <div class="headline">Money Received:</div>
+                    <div class="headline">Helped Causes:</div>
                     <div class="headline">Number of Posts:</div>
                 </div>
                 
@@ -211,6 +212,7 @@
                     <div><i class='fab fa-ethereum eth-icon'></i>{{(currentBalance$ | async)}}</div>
                     <div><i class='fab fa-ethereum eth-icon'></i>{{(moneyShared$ | async)}}</div>
                     <div><i class='fab fa-ethereum eth-icon'></i>{{(moneyReceived$ | async)}}</div>
+                    <div>{{(numberHelpedCauses$ | async)}}</div>
                     <div>{{(numberOfPosts$ | async)}}</div>
                 </div>
             </div>

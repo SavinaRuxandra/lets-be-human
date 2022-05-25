@@ -30,7 +30,7 @@ export class CharityOrganizationService {
                                email: string, 
                                name: string, 
                                description: string, 
-                               phoneNumber: string): Promise<void> {
+                               phoneNumber: string): Promise<void> {                                 
     this.accounts = await this.web3js.eth.getAccounts(); 
     await this.contract.methods.addCharityOrganization(address, 
                                                        email, 
@@ -46,6 +46,8 @@ export class CharityOrganizationService {
                                   name: string, 
                                   description: string, 
                                   phoneNumber: string): Promise<void> {
+    console.log(phoneNumber);
+
     this.accounts = await this.web3js.eth.getAccounts(); 
     await this.contract.methods.updateCharityOrganization(address, 
                                                           email, 

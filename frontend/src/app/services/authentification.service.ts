@@ -31,12 +31,11 @@ export class AuthentificationService {
     if(window.ethereum) {
       this.web3js = new Web3(window.ethereum);
       this.accounts = await this.web3js.eth.getAccounts();       
-      
       return this.accounts[0];
     }
 
     else {
-      this.snack.error("You need MetaMask in order to connect. Try to login as guest")
+      this.snack.error("You need MetaMask in order to connect. Try to log in as guest")
       return "";
     }
 
