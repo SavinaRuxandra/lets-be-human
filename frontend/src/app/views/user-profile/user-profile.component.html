@@ -127,7 +127,9 @@
                 <hr class="divider">
 
                 <div  *ngIf="currentCharityOrganization">
-                    <div><span class="headline">Email:</span> {{currentCharityOrganization.email}}</div>
+                    <div *ngIf="currentCharityOrganization.email != ''">
+                        <span class="headline">Email:</span> {{currentCharityOrganization.email}}
+                    </div>                    
                     <div><span class="headline">Description:</span> {{currentCharityOrganization.description}}</div>
                     <div *ngIf="currentCharityOrganization.phoneNumber != ''">
                         <span class="headline">Phone number:</span> {{currentCharityOrganization.phoneNumber}}
@@ -165,10 +167,6 @@
                                formControlName="email" 
                                autocomplete="off"
                                >
-                        <mat-hint *ngIf="editCharityOrganizationForm.get('email')?.hasError('required') && editCharityOrganizationForm.get('email')?.dirty"
-                                  class="text-danger">
-                            The email is required
-                        </mat-hint>
                         <mat-hint *ngIf="editCharityOrganizationForm.get('email')?.hasError('email') && editCharityOrganizationForm.get('email')?.dirty"
                                    class="text-danger">
                             Please enter a valid email

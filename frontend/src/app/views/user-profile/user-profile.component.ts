@@ -84,7 +84,7 @@ export class UserProfileComponent {
   createCharityOrganizationFormBuilder() {
     this.editCharityOrganizationForm = this.formBuilder.group({
       name: [this.currentCharityOrganization.name, Validators.required],
-      email: [this.currentCharityOrganization.email, [Validators.required, Validators.email]],
+      email: [this.currentCharityOrganization.email, [Validators.email]],
       description: [this.currentCharityOrganization.description, Validators.required],
       phoneNumber: [this.currentCharityOrganization.phoneNumber]
     })
