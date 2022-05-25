@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DONOR_CONTRACT_ADDRESS, DONOR_TOKEN_ABI } from "../../abis";
+import { DONOR_CONTRACT_ADDRESS, DONOR_TOKEN_ABI } from "../../../abis";
 import Web3 from 'web3';
 import { Donor } from '../models/donor.model';
 

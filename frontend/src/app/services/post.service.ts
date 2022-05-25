@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { POSTS_CONTRACT_ADDRESS, POSTS_TOKEN_ABI } from "../../abis";
+import { POSTS_CONTRACT_ADDRESS, POSTS_TOKEN_ABI } from "../../../abis";
 import Web3 from 'web3';
 import { from, map, Observable, of } from 'rxjs';
 import { Post } from '../models/post.model';

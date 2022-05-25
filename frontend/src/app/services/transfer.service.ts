@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import Web3 from 'web3';
 import { BehaviorSubject, filter, map, Observable } from 'rxjs';
-import { TRANSFER_CONTRACT_ADDRESS, TRANSFER_TOKEN_ABI } from "../../abis";
+import { TRANSFER_CONTRACT_ADDRESS, TRANSFER_TOKEN_ABI } from "../../../abis";
 import { Donation } from '../models/donation';
 
 
