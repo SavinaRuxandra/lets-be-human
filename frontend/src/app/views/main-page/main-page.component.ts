@@ -5,7 +5,7 @@ import { Post } from 'src/app/models/post.model';
 import { PostService } from 'src/app/services/post.service';
 import { SharedHeadlineButtonDataService } from 'src/app/services/shared-headline-button-data.service';
 import { SharedUserDataService } from 'src/app/services/shared-user-data.service';
-import { TransferService } from 'src/app/services/transfer.service';
+import { DonationService } from 'src/app/services/donation.service';
 
 @Component({
   selector: 'app-main-page',
@@ -32,7 +32,7 @@ export class MainPageComponent implements OnInit {
   constructor(private postService: PostService,
               private sharedUserDataService: SharedUserDataService,
               private sharedHeadlineButtonDataService: SharedHeadlineButtonDataService,
-              private transferService: TransferService) {}
+              private transferService: DonationService) {}
 
   ngOnInit(): void {
     this.sharedUserDataService.getCurrentAddress().pipe(take(1)).subscribe(address => this.currentAddress = address)  

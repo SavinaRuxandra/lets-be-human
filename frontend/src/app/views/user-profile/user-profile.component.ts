@@ -9,7 +9,7 @@ import { DonorService } from 'src/app/services/donor.service';
 import { PostService } from 'src/app/services/post.service';
 import { SharedUserDataService } from 'src/app/services/shared-user-data.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
-import { TransferService } from 'src/app/services/transfer.service';
+import { DonationService } from 'src/app/services/donation.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -38,7 +38,7 @@ export class UserProfileComponent {
   readonly CHARITY_ORGANIZATION = UserRole.CHARITY_ORGANIZATION
 
   constructor(private sharedUserDataService: SharedUserDataService,
-              private transferService: TransferService,
+              private transferService: DonationService,
               private donorService: DonorService,
               private charityOrganizationService: CharityOrganizationService,
               private postService: PostService,

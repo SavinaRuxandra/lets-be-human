@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import Web3 from 'web3';
 import { BehaviorSubject, filter, map, Observable } from 'rxjs';
-import { TRANSFER_CONTRACT_ADDRESS, TRANSFER_TOKEN_ABI } from "../../../abis";
+import { DONATION_CONTRACT_ADDRESS, DONATION_TOKEN_ABI } from "../../../abis";
 import { Donation } from '../models/donation';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class TransferService {
+export class DonationService {
 
   private web3js!: Web3;
   private accounts: any;
@@ -21,12 +21,12 @@ export class TransferService {
     if(window.ethereum) {
       this.web3js = new Web3(window.ethereum);
       this.accounts = this.web3js.eth.getAccounts(); 
-      this.contract = new this.web3js.eth.Contract(TRANSFER_TOKEN_ABI, TRANSFER_CONTRACT_ADDRESS);
+      this.contract = new this.web3js.eth.Contract(DONATION_TOKEN_ABI, DONATION_CONTRACT_ADDRESS);
       this.setDonations();
       this.setBalance();
 
       const $this = this;
-      this.contract.events.DonationEvent({}, function(err: any, result: any): void {
+      this.contract.events.DonationEvent({}, function(): void {
         $this.setDonations();
         $this.setBalance();
       })
@@ -34,21 +34,22 @@ export class TransferService {
     else {
       this.web3js = new Web3();
       this.web3js.setProvider(new Web3.providers.HttpProvider("http://localhost:8545"))
-      this.contract = new this.web3js.eth.Contract(TRANSFER_TOKEN_ABI, TRANSFER_CONTRACT_ADDRESS);
+      this.contract = new this.web3js.eth.Contract(DONATION_TOKEN_ABI, DONATION_CONTRACT_ADDRESS);
       this.setDonations();
 
       const $this = this;
-      this.contract.events.DonationEvent({}, function(err: any, result: any): void {
+      this.contract.events.DonationEvent({}, function(): void {
         $this.setDonations();
       })
     }
   }
 
-  async tranferEthereum(transferAddress: string, amount: number, postId: number, message: string): Promise<void> {
+  async donate(accountReceiver: string, amount: number, postId: number, message: string): Promise<void> {
     this.accounts = await this.web3js.eth.getAccounts(); 
-    await this.contract.methods.pay(transferAddress, message, postId).send({
-       from: this.accounts[0], value: Web3.utils.toWei(amount.toString(), 'ether') }
-    )
+    await this.contract.methods.donate(accountReceiver, message, postId).send({
+                                                                          from: this.accounts[0],
+                                                                          value: Web3.utils.toWei(amount.toString(), 'ether')
+                                                                        })
   }
 
   private async getDonations() {

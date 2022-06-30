@@ -6,7 +6,7 @@ import { HeaderButtonEnum } from 'src/app/models/header-button.enum';
 import { PostService } from 'src/app/services/post.service';
 import { SharedHeadlineButtonDataService } from 'src/app/services/shared-headline-button-data.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
-import { TransferService } from 'src/app/services/transfer.service';
+import { DonationService } from 'src/app/services/donation.service';
 
 @Component({
   selector: 'app-live-transactions',
@@ -18,7 +18,7 @@ export class LiveTransactionsComponent implements OnInit {
   donations$!: Donation[]
   subscription$!: Subscription;
 
-  constructor(private transferService: TransferService,
+  constructor(private transferService: DonationService,
               private postService: PostService,
               private sharedHeadlineButtonDataService: SharedHeadlineButtonDataService,
               private snackService: SnackbarService,

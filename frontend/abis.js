@@ -1,5 +1,5 @@
-export const TRANSFER_CONTRACT_ADDRESS = '0x20f9377761626Ae243118321CdF5fb35E36945E7';
-export const TRANSFER_TOKEN_ABI = [
+export const DONATION_CONTRACT_ADDRESS = '0xF274Cfa052c7ca00dD5f668aD64C2A4649e9F7ED';
+export const DONATION_TOKEN_ABI = [
   {
     "inputs": [],
     "stateMutability": "payable",
@@ -30,7 +30,7 @@ export const TRANSFER_TOKEN_ABI = [
         "type": "uint64"
       }
     ],
-    "name": "pay",
+    "name": "donate",
     "outputs": [],
     "stateMutability": "payable",
     "type": "function",
@@ -68,7 +68,7 @@ export const TRANSFER_TOKEN_ABI = [
             "type": "string"
           }
         ],
-        "internalType": "struct Transfers.Donation[]",
+        "internalType": "struct Donations.Donation[]",
         "name": "",
         "type": "tuple[]"
       }
@@ -79,7 +79,7 @@ export const TRANSFER_TOKEN_ABI = [
   }
 ];
 
-export const DONOR_CONTRACT_ADDRESS = '0xBbDb0D380Da5Cf5aaAF1D5e8532e879A2968754C';
+export const DONOR_CONTRACT_ADDRESS = '0x99823B694AA53AE878B00393c90160DC3A810b56';
 export const DONOR_TOKEN_ABI= [
   {
     "inputs": [
@@ -121,7 +121,7 @@ export const DONOR_TOKEN_ABI= [
   }
 ]
 
-export const CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS = '0xB1B7AFFAdbE32efbF8752EA7758eF4f613cE306C';
+export const CHARITY_ORGANIZATIONS_CONTRACT_ADDRESS = '0xcb86BFf5ECB40a902EABc451BCcEC1c837733C72';
 export const CHARITY_ORGANIZATIONS_TOKEN_ABI = [
   {
     "inputs": [
@@ -279,7 +279,7 @@ export const CHARITY_ORGANIZATIONS_TOKEN_ABI = [
   }
 ]
 
-export const POSTS_CONTRACT_ADDRESS = '0x04c4321857B8697C8e9Da398464A941A2a4B0e80';
+export const POSTS_CONTRACT_ADDRESS = '0xa54061932Eb61eD23Bab06FdC1Db10A67809539d';
 export const POSTS_TOKEN_ABI = [
   {
     "inputs": [

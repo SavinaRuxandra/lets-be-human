@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TransferService } from 'src/app/services/transfer.service';
+import { DonationService } from 'src/app/services/donation.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomDonationDialogComponent } from './custom-donation-dialog/custom-donation-dialog.component';
 import { Post } from 'src/app/models/post.model';
@@ -36,7 +36,7 @@ export class PostComponent implements OnInit {
   readonly CURRENT_USER_POSTS_BUTTON = HeaderButtonEnum.CURRENT_USER_POSTS
 
   constructor(private postService: PostService,
-              private transferService: TransferService,
+              private transferService: DonationService,
               private charityOrganizationService: CharityOrganizationService,
               private sharedHeadlineButtonDataService: SharedHeadlineButtonDataService,
               private sharedUserDataService: SharedUserDataService,
@@ -68,7 +68,7 @@ export class PostComponent implements OnInit {
   }
 
   makeTransfer(amount: number, message: string): void {
-    this.transferService.tranferEthereum(this.charityOrganization.accountAddress, amount, this.post.id, message)
+    this.transferService.donate(this.charityOrganization.accountAddress, amount, this.post.id, message)
   }
 
   openEditMode(): void {
